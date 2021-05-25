@@ -1,0 +1,43 @@
+version: 2.1
+
+executors:
+  java11:
+    docker:
+      - image: 'adoptopenjdk:11-openj9'
+
+jobs:
+  maven-test-reports:
+    executor: java11
+    steps:
+      - checkout
+      - run:
+          command: './mvnw verify jacoco:report'
+      - store_test_results:
+          path: 'target/surefire-reports'
+      - persist_to_workspace:
+          root: 'target/site/jacoco'
+          paths:
+            - 'jacoco.xml'
+  codecov-upload:
+    executor: java11
+    working_directory: '/tmp/reports'
+    steps:
+      - checkout
+      - attach_workspace:
+          at: '/tmp/reports'
+      - run:
+          command: './codecov.sh'
+  codecoverage-check:
+    executor: java11
+    steps:
+      - checkout
+      - run: './mvnw -P codeCoverageCheck verify'
+
+workflows:
+  test:
+    jobs:
+      - maven-test-reports
+      - codecoverage-check
+      - codecov-upload:
+          requires:
+            - maven-test-reports
