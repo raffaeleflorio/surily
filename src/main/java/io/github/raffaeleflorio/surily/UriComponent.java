@@ -36,9 +36,9 @@ public interface UriComponent {
   CharSequence encoded(Charset charset);
 
   /**
-   * Builds the String representation
+   * Builds the unencoded representation
    *
-   * @return The String representation
+   * @return The unencoded representation
    * @since 1.0.0
    */
   String asString();
