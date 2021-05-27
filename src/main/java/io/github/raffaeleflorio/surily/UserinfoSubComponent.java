@@ -19,7 +19,7 @@ package io.github.raffaeleflorio.surily;
  * Userinfo subcomponent of an {@link AuthorityComponent}
  *
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)
- * @see <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-3.2.1">RFC3986 about the userinfo subcomponent</a>
+ * @see <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-3.2.1">RFC3986 about userinfo subcomponent</a>
  * @since 1.0.0
  */
 public interface UserinfoSubComponent extends UriComponent {

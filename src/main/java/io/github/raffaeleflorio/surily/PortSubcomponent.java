@@ -19,7 +19,7 @@ package io.github.raffaeleflorio.surily;
  * Port subcomponent of an {@link AuthorityComponent}
  *
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)
- * @see <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-3.2.3">RFC3986 about the port subcomponent</a>
+ * @see <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-3.2.3">RFC3986 about port subcomponent</a>
  * @since 1.0.0
  */
 public interface PortSubcomponent extends UriComponent {

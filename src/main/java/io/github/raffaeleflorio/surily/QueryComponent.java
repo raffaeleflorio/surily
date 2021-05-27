@@ -19,7 +19,7 @@ package io.github.raffaeleflorio.surily;
  * Query component of an URI
  *
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)
- * @see <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-3.4">RFC3986 about the query component</a>
+ * @see <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-3.4">RFC3986 about query component</a>
  * @since 1.0.0
  */
 public interface QueryComponent extends UriComponent {

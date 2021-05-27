@@ -19,7 +19,7 @@ package io.github.raffaeleflorio.surily;
  * Authority component of an URI
  *
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)
- * @see <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-3.2">RFC3986 about the authority component</a>
+ * @see <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-3.2">RFC3986 about authority component</a>
  * @since 1.0.0
  */
 public interface AuthorityComponent extends UriComponent {
