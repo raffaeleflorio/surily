@@ -15,12 +15,12 @@
  */
 package io.github.raffaeleflorio.surily;
 
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class EnglishLowerCaseAlphabetTest {
   @Test
@@ -37,5 +37,25 @@ class EnglishLowerCaseAlphabetTest {
       26,
       new EnglishLowerCaseAlphabet().size()
     );
+  }
+
+
+  @Nested
+  class ImmutabilityTest {
+    @Test
+    void testAdd() throws Throwable {
+      assertThrows(
+        UnsupportedOperationException.class,
+        () -> new EnglishLowerCaseAlphabet().add('~')
+      );
+    }
+
+    @Test
+    void testRemove() throws Throwable {
+      assertThrows(
+        UnsupportedOperationException.class,
+        () -> new EnglishLowerCaseAlphabet().remove('z')
+      );
+    }
   }
 }
