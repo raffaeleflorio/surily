@@ -25,9 +25,16 @@ import static org.junit.jupiter.api.Assertions.*;
 class EnglishLowerCaseAlphabetTest {
   @Test
   void testIterator() throws Throwable {
-    assertIterableEquals(
+    assertSetEquals(
       Set.of('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'),
       new EnglishLowerCaseAlphabet()
+    );
+  }
+
+  private void assertSetEquals(final Set<Character> expected, final Set<Character> actual) {
+    assertAll(
+      () -> assertEquals(expected.size(), actual.size()),
+      () -> assertTrue(expected.containsAll(actual))
     );
   }
 

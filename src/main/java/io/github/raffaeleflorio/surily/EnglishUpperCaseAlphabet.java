@@ -21,8 +21,14 @@ import java.util.Set;
 
 /**
  * English upper-case alphabet (i.e. A-Z)
+ *
+ * @author Raffaele Florio (raffaeleflorio@protonmail.com)
+ * @since 1.0.0
  */
 final class EnglishUpperCaseAlphabet extends AbstractSet<Character> {
+  /**
+   * Builds the alphabet
+   */
   EnglishUpperCaseAlphabet() {
     this(
       Set.of('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z')

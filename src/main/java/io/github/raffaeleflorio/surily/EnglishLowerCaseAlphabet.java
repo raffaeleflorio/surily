@@ -21,8 +21,16 @@ import java.util.Set;
 
 /**
  * English lower-case alphabet (i.e. a-z)
+ *
+ * @author Raffaele Florio (raffaeleflorio@protonmail.com)
+ * @since 1.0.0
  */
 final class EnglishLowerCaseAlphabet extends AbstractSet<Character> {
+  /**
+   * Builds the alphabet
+   *
+   * @since 1.0.0
+   */
   EnglishLowerCaseAlphabet() {
     this(
       Set.of('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z')
