@@ -53,16 +53,7 @@ public final class PercentEncoded implements CharSequence {
     this(
       origin,
       charset,
-      new MergedSet<>(
-        new MergedSet<>(
-          new MergedSet<>(
-            new EnglishLowerCaseAlphabet(),
-            new EnglishUpperCaseAlphabet()
-          ),
-          new Digits()
-        ),
-        Set.of('-', '.', '_', '~')
-      )
+      new UnreservedCharacters()
     );
   }
 
