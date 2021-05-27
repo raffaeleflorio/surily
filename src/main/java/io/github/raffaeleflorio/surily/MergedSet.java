@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 /**
  * Merged set
  *
- * @param <T> The element type
+ * @param <T> The elements type
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)
  * @since 1.0.0
  */
