@@ -42,12 +42,17 @@ final class MergedSet<T> extends AbstractSet<T> {
 
   @Override
   public Iterator<T> iterator() {
-    return Stream.concat(one.stream(), two.stream()).iterator();
+    return stream().iterator();
+  }
+
+  @Override
+  public Stream<T> stream() {
+    return Stream.concat(one.stream(), two.stream()).distinct();
   }
 
   @Override
   public int size() {
-    return one.size() + two.size();
+    return Long.valueOf(stream().count()).intValue();
   }
 
   private final Set<T> one;

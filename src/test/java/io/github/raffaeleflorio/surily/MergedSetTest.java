@@ -44,4 +44,18 @@ class MergedSetTest {
       new MergedSet<>(Set.of(1, 2, 3), Set.of(42, 43)).size()
     );
   }
+
+  @Test
+  void testNoDuplicates() throws Throwable {
+    assertAll(
+      () -> assertEquals(
+        5,
+        new MergedSet<>(Set.of(1, 2, 3), Set.of(3, 42, 43)).size()
+      ),
+      () -> assertSetEquals(
+        Set.of(1, 2, 3, 42, 43),
+        new MergedSet<>(Set.of(1, 2, 3), Set.of(3, 42, 43))
+      )
+    );
+  }
 }
