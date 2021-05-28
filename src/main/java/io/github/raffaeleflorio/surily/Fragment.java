@@ -39,11 +39,8 @@ public final class Fragment implements FragmentComponent {
         s,
         charset,
         new MergedSet<>(
-          new MergedSet<>(
-            new UnreservedCharacters(),
-            new SubDelims()
-          ),
-          Set.of(':', '@', '/', '?')
+          new Pchar(),
+          Set.of('/', '?')
         )
       )
     );
