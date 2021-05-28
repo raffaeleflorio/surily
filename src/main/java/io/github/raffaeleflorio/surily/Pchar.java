@@ -33,8 +33,8 @@ final class Pchar extends AbstractSet<Character> {
    */
   Pchar() {
     this(
-      new MergedSet<>(
-        new MergedSet<>(
+      new UnionSet<>(
+        new UnionSet<>(
           new UnreservedCharacters(),
           new SubDelims()
         ),

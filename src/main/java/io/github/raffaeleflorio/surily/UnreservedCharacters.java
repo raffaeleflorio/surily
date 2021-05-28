@@ -33,9 +33,9 @@ final class UnreservedCharacters extends AbstractSet<Character> {
    */
   UnreservedCharacters() {
     this(
-      new MergedSet<>(
-        new MergedSet<>(
-          new MergedSet<>(
+      new UnionSet<>(
+        new UnionSet<>(
+          new UnionSet<>(
             new EnglishLowerCaseAlphabet(),
             new EnglishUpperCaseAlphabet()
           ),

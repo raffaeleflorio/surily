@@ -21,21 +21,21 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 /**
- * Merged set
+ * Union set
  *
  * @param <T> The elements type
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)
  * @since 1.0.0
  */
-final class MergedSet<T> extends AbstractSet<T> {
+final class UnionSet<T> extends AbstractSet<T> {
   /**
-   * Builds the set
+   * Builds the union set
    *
    * @param one A set
    * @param two Another set
    * @since 1.0.0
    */
-  MergedSet(final Set<T> one, final Set<T> two) {
+  UnionSet(final Set<T> one, final Set<T> two) {
     this.one = one;
     this.two = two;
   }

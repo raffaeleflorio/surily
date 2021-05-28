@@ -38,7 +38,7 @@ public final class Fragment implements FragmentComponent {
       (s, charset) -> new PercentEncoded(
         s,
         charset,
-        new MergedSet<>(
+        new UnionSet<>(
           new Pchar(),
           Set.of('/', '?')
         )

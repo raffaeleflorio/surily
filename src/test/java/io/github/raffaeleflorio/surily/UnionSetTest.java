@@ -21,12 +21,12 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MergedSetTest {
+class UnionSetTest {
   @Test
-  void testIterator() throws Throwable {
+  void testUnion() throws Throwable {
     assertSetEquals(
       Set.of(1, 2, 3, 9, 8, 7),
-      new MergedSet<>(Set.of(1, 2, 3), Set.of(9, 8, 7))
+      new UnionSet<>(Set.of(1, 2, 3), Set.of(9, 8, 7))
     );
   }
 
@@ -41,7 +41,7 @@ class MergedSetTest {
   void testSize() throws Throwable {
     assertEquals(
       5,
-      new MergedSet<>(Set.of(1, 2, 3), Set.of(42, 43)).size()
+      new UnionSet<>(Set.of(1, 2, 3), Set.of(42, 43)).size()
     );
   }
 
@@ -50,11 +50,11 @@ class MergedSetTest {
     assertAll(
       () -> assertEquals(
         5,
-        new MergedSet<>(Set.of(1, 2, 3), Set.of(3, 42, 43)).size()
+        new UnionSet<>(Set.of(1, 2, 3), Set.of(3, 42, 43)).size()
       ),
       () -> assertSetEquals(
         Set.of(1, 2, 3, 42, 43),
-        new MergedSet<>(Set.of(1, 2, 3), Set.of(3, 42, 43))
+        new UnionSet<>(Set.of(1, 2, 3), Set.of(3, 42, 43))
       )
     );
   }
