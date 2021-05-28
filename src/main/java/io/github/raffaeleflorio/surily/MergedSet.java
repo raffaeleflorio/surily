@@ -52,7 +52,7 @@ final class MergedSet<T> extends AbstractSet<T> {
 
   @Override
   public int size() {
-    return Long.valueOf(stream().count()).intValue();
+    return Long.valueOf(stream().count()).intValue(); // FIXME
   }
 
   private final Set<T> one;

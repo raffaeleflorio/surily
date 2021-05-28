@@ -27,7 +27,7 @@ import java.util.Set;
  */
 final class Digits extends AbstractSet<Character> {
   /**
-   * Builds the digits
+   * Builds the digits set
    *
    * @since 1.0.0
    */

@@ -27,7 +27,9 @@ import java.util.Set;
  */
 final class EnglishUpperCaseAlphabet extends AbstractSet<Character> {
   /**
-   * Builds the alphabet
+   * Builds the alphabet set
+   *
+   * @since 1.0.0
    */
   EnglishUpperCaseAlphabet() {
     this(

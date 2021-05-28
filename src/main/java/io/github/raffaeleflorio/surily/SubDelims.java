@@ -26,6 +26,12 @@ import java.util.Set;
  * @since 1.0.0
  */
 final class SubDelims extends AbstractSet<Character> {
+  /**
+   * Builds the sub-delims set
+   *
+   * @author Raffaele Florio (raffaeleflorio@protonmail.com)
+   * @since 1.0.0
+   */
   SubDelims() {
     this(Set.of('!', '$', '&', '\'', '(', ')', '*', '+', ',', ';', '='));
   }
