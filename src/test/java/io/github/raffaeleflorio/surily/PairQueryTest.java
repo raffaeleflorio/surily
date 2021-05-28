@@ -16,10 +16,11 @@
 package io.github.raffaeleflorio.surily;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import java.nio.charset.StandardCharsets;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class PairQueryTest {
   @Test
@@ -65,7 +66,7 @@ class PairQueryTest {
   }
 
   @Test
-  void testCustomDelimiter() throws Throwable {
+  void testDelimiterFromUnreservedCharactersSet() throws Throwable {
     assertEquals(
       "the%20key%20with%20%40@the%20value%20with%20@",
       new PairQuery("the key with @", "the value with @", '@').encoded(StandardCharsets.UTF_8)
@@ -77,6 +78,38 @@ class PairQueryTest {
     assertEquals(
       "key?=value with multiple\nwhitespaces",
       new PairQuery("key?", "value with multiple\nwhitespaces").asString()
+    );
+  }
+
+  @Test
+  void testDisallowedDelimiters() throws Throwable {
+    assertAll(
+      () -> assertThrowsWithMessage(
+        IllegalStateException.class,
+        () -> new PairQuery("key", "value", '#').encoded(StandardCharsets.UTF_8),
+        illegalDelimiter('#')
+      ),
+      () -> assertThrowsWithMessage(
+        IllegalStateException.class,
+        () -> new PairQuery("key", "value", '\u219D').encoded(StandardCharsets.UTF_8),
+        illegalDelimiter('\u219D')
+      ),
+      () -> assertThrowsWithMessage(
+        IllegalStateException.class,
+        () -> new PairQuery("key", "value", '%').encoded(StandardCharsets.UTF_8),
+        illegalDelimiter('%')
+      )
+    );
+  }
+
+  private String illegalDelimiter(final Character delimiter) {
+    return String.format("Illegal delimiter: <%s>", delimiter);
+  }
+
+  private void assertThrowsWithMessage(final Class<? extends Throwable> expectedException, final Executable executable, final String expectedMessage) {
+    assertEquals(
+      expectedMessage,
+      assertThrows(expectedException, executable).getMessage()
     );
   }
 }

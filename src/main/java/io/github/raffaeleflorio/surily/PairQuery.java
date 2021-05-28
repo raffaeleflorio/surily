@@ -68,6 +68,13 @@ public final class PairQuery implements QueryComponent {
           new Pchar(),
           Set.of('/', '?')
         )
+      ),
+      new DiffSet<>(
+        new UnionSet<>(
+          new Pchar(),
+          Set.of('/', '?')
+        ),
+        Set.of('%')
       )
     );
   }
@@ -75,28 +82,37 @@ public final class PairQuery implements QueryComponent {
   /**
    * Builds a key-value query
    *
-   * @param key           The key
-   * @param value         The value
-   * @param delimiter     The delimiter (e.g. =)
-   * @param keyEncoding   The key encoding function
-   * @param valueEncoding The value encoding function
+   * @param key               The key
+   * @param value             The value
+   * @param delimiter         The delimiter (e.g. =)
+   * @param keyEncoding       The key encoding function
+   * @param valueEncoding     The value encoding function
+   * @param allowedDelimiters The allowed delimiters
    * @since 1.0.0
    */
-  PairQuery(final CharSequence key, final CharSequence value, final Character delimiter, final BiFunction<CharSequence, Charset, CharSequence> keyEncoding, final BiFunction<CharSequence, Charset, CharSequence> valueEncoding) {
+  PairQuery(final CharSequence key, final CharSequence value, final Character delimiter, final BiFunction<CharSequence, Charset, CharSequence> keyEncoding, final BiFunction<CharSequence, Charset, CharSequence> valueEncoding, final Set<Character> allowedDelimiters) {
     this.key = key;
     this.value = value;
     this.delimiter = delimiter;
     this.keyEncoding = keyEncoding;
     this.valueEncoding = valueEncoding;
+    this.allowedDelimiters = allowedDelimiters;
   }
 
   @Override
   public CharSequence encoded(final Charset charset) {
+    assertDelimiter();
     return concatenated(
       keyEncoding.apply(key, charset),
       delimiter,
       valueEncoding.apply(value, charset)
     );
+  }
+
+  private void assertDelimiter() {
+    if (!allowedDelimiters.contains(delimiter)) {
+      throw new IllegalStateException(String.format("Illegal delimiter: <%s>", delimiter));
+    }
   }
 
   private String concatenated(final CharSequence key, final Character delimiter, final CharSequence value) {
@@ -113,4 +129,5 @@ public final class PairQuery implements QueryComponent {
   private final Character delimiter;
   private final BiFunction<CharSequence, Charset, CharSequence> keyEncoding;
   private final BiFunction<CharSequence, Charset, CharSequence> valueEncoding;
+  private final Set<Character> allowedDelimiters;
 }
