@@ -66,7 +66,7 @@ public final class PercentEncoded implements CharSequence {
    * @since 1.0.0
    */
   public PercentEncoded(final CharSequence origin, final Charset charset, final Set<Character> unreserved) {
-    this(origin, charset, unreserved, List.of('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'));
+    this(origin, charset, new DiffSet<>(unreserved, Set.of('%')), List.of('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'));
   }
 
   /**

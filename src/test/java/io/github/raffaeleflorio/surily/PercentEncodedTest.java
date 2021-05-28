@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -119,6 +120,14 @@ class PercentEncodedTest {
     assertIterableEquals(
       List.of(0x25, 0x43, 0x33, 0x25, 0x39, 0x37),
       new PercentEncoded("\u00D7", StandardCharsets.UTF_8).codePoints().boxed().collect(Collectors.toUnmodifiableList())
+    );
+  }
+
+  @Test
+  void testPercentAlwaysEncoded() throws Throwable {
+    assertEquals(
+      "%25",
+      new PercentEncoded("%", StandardCharsets.ISO_8859_1, Set.of('%')).toString()
     );
   }
 }
