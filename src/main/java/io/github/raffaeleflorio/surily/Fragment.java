@@ -35,14 +35,7 @@ public final class Fragment implements FragmentComponent {
   public Fragment(final CharSequence origin) {
     this(
       origin,
-      (s, charset) -> new PercentEncoded(
-        s,
-        charset,
-        new UnionSet<>(
-          new Pchar(),
-          Set.of('/', '?')
-        )
-      )
+      (s, charset) -> new PercentEncoded(s, charset, new UnionSet<>(new Pchar(), Set.of('/', '?')))
     );
   }
 
