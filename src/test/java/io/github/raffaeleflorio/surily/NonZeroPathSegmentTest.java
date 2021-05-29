@@ -20,8 +20,7 @@ import org.junit.jupiter.api.function.Executable;
 
 import java.nio.charset.StandardCharsets;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class NonZeroPathSegmentTest {
   @Test
@@ -39,5 +38,13 @@ class NonZeroPathSegmentTest {
   @Test
   void testAsString() throws Throwable {
     assertIllegalNonZeroSegment(() -> new NonZeroPathSegment("").asString());
+  }
+
+  @Test
+  void testWithNonZeroSegment() throws Throwable {
+    assertAll(
+      () -> assertDoesNotThrow(() -> new NonZeroPathSegment("ok")).encoded(StandardCharsets.UTF_16BE),
+      () -> assertDoesNotThrow(() -> new NonZeroPathSegment(" ")).asString()
+    );
   }
 }
