@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
- * Concatenated {@link QueryComponent}
+ * RFC3986 compliant concatenated {@link QueryComponent}
  *
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)
  * @since 1.0.0

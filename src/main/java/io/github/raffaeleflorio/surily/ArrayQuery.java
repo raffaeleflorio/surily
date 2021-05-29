@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 /**
- * Array {@link QueryComponent} like: key=value0&key=value1 or key[]=value0&key[]=value1
+ * RFC3986 compliant array {@link QueryComponent} like: key=value0&key=value1 or key[]=value0&key[]=value1
  *
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)
  * @since 1.0.0

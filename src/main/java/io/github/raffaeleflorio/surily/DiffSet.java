@@ -22,7 +22,7 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
- * Difference of two set
+ * Difference set
  *
  * @param <T> The elements type
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)

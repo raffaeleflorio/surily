@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * RFC3986 allowed query characters (pchar / "/" / "?")
+ * RFC3986 query characters (i.e. pchar / "/" / "?")
  *
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)
  * @since 1.0.0
