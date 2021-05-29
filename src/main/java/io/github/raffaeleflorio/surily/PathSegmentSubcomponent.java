@@ -16,11 +16,10 @@
 package io.github.raffaeleflorio.surily;
 
 /**
- * Path component of an URI
+ * Segment subcomponent of a {@link PathComponent}
  *
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)
- * @see <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-3.3">RFC3986 about path component</a>
  * @since 1.0.0
  */
-public interface PathComponent extends UriComponent, Iterable<PathSegmentSubcomponent> {
+public interface PathSegmentSubcomponent extends UriComponent {
 }
