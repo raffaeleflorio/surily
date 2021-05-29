@@ -78,7 +78,6 @@ public final class PairQuery implements QueryComponent {
 
   @Override
   public CharSequence encoded(final Charset charset) {
-    assertDelimiter();
     return concatenated(
       keyEncoding.apply(key, charset),
       delimiter,
@@ -86,14 +85,15 @@ public final class PairQuery implements QueryComponent {
     );
   }
 
+  private String concatenated(final CharSequence key, final Character delimiter, final CharSequence value) {
+    assertDelimiter();
+    return String.format("%s%s%s", key, delimiter, value);
+  }
+
   private void assertDelimiter() {
     if (!allowedDelimiters.contains(delimiter)) {
       throw new IllegalStateException(String.format("Illegal delimiter: <%s>", delimiter));
     }
-  }
-
-  private String concatenated(final CharSequence key, final Character delimiter, final CharSequence value) {
-    return String.format("%s%s%s", key, delimiter, value);
   }
 
   @Override

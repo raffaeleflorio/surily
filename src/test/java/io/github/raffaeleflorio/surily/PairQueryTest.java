@@ -96,7 +96,7 @@ class PairQueryTest {
       ),
       () -> assertThrowsWithMessage(
         IllegalStateException.class,
-        () -> new PairQuery("key", "value", '%').encoded(StandardCharsets.UTF_8),
+        () -> new PairQuery("key", "value", '%').asString(),
         illegalDelimiter('%')
       )
     );

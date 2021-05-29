@@ -87,7 +87,7 @@ class ConcatenatedQueriesTest {
       ),
       () -> assertThrowsWithMessage(
         IllegalStateException.class,
-        () -> new ConcatenatedQueries(List.of(new QueryComponent.Fake("query", "query")), '[').encoded(StandardCharsets.ISO_8859_1),
+        () -> new ConcatenatedQueries(List.of(new QueryComponent.Fake("query", "query")), '[').asString(),
         illegalDelimiter('[')
       )
     );

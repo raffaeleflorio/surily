@@ -79,20 +79,20 @@ public final class ConcatenatedQueries implements QueryComponent {
 
   @Override
   public CharSequence encoded(final Charset charset) {
-    assertValidDelimiter();
     return components()
       .map(component -> componentEncodingFn.apply(component, charset))
       .collect(Collectors.joining(delimiter.toString()));
+  }
+
+  private Stream<QueryComponent> components() {
+    assertValidDelimiter();
+    return StreamSupport.stream(components.spliterator(), false);
   }
 
   private void assertValidDelimiter() {
     if (!allowedDelimiters.contains(delimiter)) {
       throw new IllegalStateException(String.format("Illegal delimiter: <%s>", delimiter));
     }
-  }
-
-  private Stream<QueryComponent> components() {
-    return StreamSupport.stream(components.spliterator(), false);
   }
 
   @Override
