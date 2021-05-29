@@ -54,8 +54,8 @@ class PercentEncodedTest {
   @Test
   void testASCIIWhitespaces() throws Throwable {
     assertEquals(
-      "%08%09%0A%0C%0D",
-      new PercentEncoded("\b\t\n\f\r").toString()
+      "%08%09%0A%0C%0D%20",
+      new PercentEncoded("\b\t\n\f\r ").toString()
     );
   }
 
@@ -128,6 +128,14 @@ class PercentEncodedTest {
     assertEquals(
       "%25",
       new PercentEncoded("%", StandardCharsets.ISO_8859_1, Set.of('%')).toString()
+    );
+  }
+
+  @Test
+  void testWhitespacesAlwaysEncoded() throws Throwable {
+    assertEquals(
+      "%08%09%0A%0C%0D%20",
+      new PercentEncoded("\b\t\n\f\r ", StandardCharsets.US_ASCII, Set.of(' ', '\b', '\t', '\n', '\f', '\r')).toString()
     );
   }
 }

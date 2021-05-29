@@ -58,15 +58,26 @@ public final class PercentEncoded implements CharSequence {
   }
 
   /**
-   * Builds the percent-encoded char sequence
+   * Builds the percent-encoded char sequence with a subset of allowed RFC3986 characters (i.e. reserved + unreserved characters)
    *
    * @param origin     The char sequence to decorate
    * @param charset    The charset to get bytes of non-ASCII characters
-   * @param unreserved The reserved ASCII characters set
+   * @param unreserved The subset of allowed RFC3986 characters
    * @since 1.0.0
    */
   public PercentEncoded(final CharSequence origin, final Charset charset, final Set<Character> unreserved) {
-    this(origin, charset, new DiffSet<>(unreserved, Set.of('%')), List.of('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'));
+    this(
+      origin,
+      charset,
+      new IntersectionSet<>(
+        new UnionSet<>(
+          new ReservedCharacters(),
+          new UnreservedCharacters()
+        ),
+        unreserved
+      ),
+      List.of('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F')
+    );
   }
 
   /**
@@ -109,7 +120,7 @@ public final class PercentEncoded implements CharSequence {
   }
 
   private Boolean unreserved(final Integer codepoint) {
-    return codepoint < 128 && unreserved.contains(Character.toChars(codepoint)[0]);
+    return unreserved.contains(Character.toChars(codepoint)[0]);
   }
 
   private String encoded(final Integer codepoint) {
