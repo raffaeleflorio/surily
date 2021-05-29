@@ -42,30 +42,17 @@ public final class PairQuery implements QueryComponent {
    *
    * @param key       The key
    * @param value     The value
-   * @param delimiter The key-value delimiter
+   * @param delimiter The delimiter (e.g. =)
    * @since 1.0.0
    */
-  public PairQuery(final CharSequence key, final CharSequence value, final Character delimiter) {
-    this(key, value, delimiter, new UnionSet<>(new Pchar(), Set.of('/', '?')));
-  }
-
-  /**
-   * Builds a key-value query
-   *
-   * @param key             The key
-   * @param value           The value
-   * @param delimiter       The delimiter (e.g. =)
-   * @param queryCharacters The allowed query characters
-   * @since 1.0.0
-   */
-  PairQuery(final CharSequence key, final CharSequence value, final Character delimiter, final UnionSet<Character> queryCharacters) {
+  PairQuery(final CharSequence key, final CharSequence value, final Character delimiter) {
     this(
       key,
       value,
       delimiter,
-      (s, charset) -> new PercentEncoded(s, charset, new DiffSet<>(queryCharacters, Set.of(delimiter))),
-      (s, charset) -> new PercentEncoded(s, charset, queryCharacters),
-      new DiffSet<>(queryCharacters, Set.of('%'))
+      (s, charset) -> new PercentEncoded(s, charset, new DiffSet<>(new QueryCharacters(), Set.of(delimiter))),
+      (s, charset) -> new PercentEncoded(s, charset, new QueryCharacters()),
+      new DiffSet<>(new QueryCharacters(), Set.of('%'))
     );
   }
 
