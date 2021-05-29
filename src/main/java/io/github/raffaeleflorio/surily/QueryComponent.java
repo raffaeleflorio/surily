@@ -15,6 +15,8 @@
  */
 package io.github.raffaeleflorio.surily;
 
+import java.nio.charset.Charset;
+
 /**
  * Query component of an URI
  *
@@ -23,4 +25,44 @@ package io.github.raffaeleflorio.surily;
  * @since 1.0.0
  */
 public interface QueryComponent extends UriComponent {
+  /**
+   * {@link QueryComponent} for testing purpose
+   *
+   * @author Raffaele Florio (raffaeleflorio@protonmail.com)
+   * @since 1.0.0
+   */
+  final class Fake implements QueryComponent {
+    /**
+     * Builds a fake with its representations
+     *
+     * @param encoded  The encoded representation
+     * @param asString The String representation
+     * @since 1.0.0
+     */
+    public Fake(final CharSequence encoded, final String asString) {
+      this(new UriComponent.Fake(encoded, asString));
+    }
+
+    /**
+     * Builds a fake with its representations from an {@link UriComponent}
+     *
+     * @param origin The component
+     * @since 1.0.0
+     */
+    public Fake(final UriComponent origin) {
+      this.origin = origin;
+    }
+
+    @Override
+    public CharSequence encoded(final Charset charset) {
+      return origin.encoded(charset);
+    }
+
+    @Override
+    public String asString() {
+      return origin.asString();
+    }
+
+    private final UriComponent origin;
+  }
 }
