@@ -5,18 +5,21 @@
 [![Codecov reports](https://img.shields.io/codecov/c/github/raffaeleflorio/surily)](https://codecov.io/gh/raffaeleflorio/surily)
 
 Surily is collection of objects about [URI](https://datatracker.ietf.org/doc/html/rfc3986) for Java 11+. It's written with object
-thinking, standardization, minimalism in mind. Excluding JDK 11+ it doesn't require any dependencies.
+thinking, standardization and minimalism in mind. Excluding JDK 11+ it doesn't require any dependencies.
+
+*It's in work in progress state*
 
 ## Examples
 
 Here you are some examples:
 
 ```java
+  // WIP
 ```
 
 ## Integration with Maven
 
-Surily is distributed through the [Maven Central Repository](https://search.maven.org/). So you can integrate it with:
+Surily will be distributed through the [Maven Central Repository](https://search.maven.org/). So you can integrate it with:
 
 ```xml
 <dependency>
