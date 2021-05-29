@@ -112,4 +112,12 @@ class PairQueryTest {
       assertThrows(expectedException, executable).getMessage()
     );
   }
+
+  @Test
+  void testEmptyKeyValue() throws Throwable {
+    assertEquals(
+      "=",
+      new PairQuery("", "").encoded(StandardCharsets.US_ASCII)
+    );
+  }
 }
