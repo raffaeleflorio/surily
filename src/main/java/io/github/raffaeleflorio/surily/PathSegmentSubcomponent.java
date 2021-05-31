@@ -25,7 +25,7 @@ import java.nio.charset.Charset;
  */
 public interface PathSegmentSubcomponent extends UriComponent {
   /**
-   * A {@link PathSegmentSubcomponent} for testing-purpose
+   * A {@link PathSegmentSubcomponent} for testing purpose
    *
    * @author Raffaele Florio (raffaeleflorio@protonmail.com)
    * @since 1.0.0

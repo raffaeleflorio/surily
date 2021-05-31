@@ -32,7 +32,7 @@ import java.util.stream.Stream;
  */
 public final class AbsolutePath implements PathComponent {
   /**
-   * Builds the root absolute path (i.e. /)
+   * Builds a root absolute path (i.e. /)
    *
    * @since 1.0.0
    */

@@ -60,4 +60,13 @@ class PathSegmentTest {
       )
     );
   }
+
+  @Test
+  void testUnreservedCharacters() throws Throwable {
+    var unreserved = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~!$&'()*+,;=:@";
+    assertEquals(
+      unreserved,
+      new PathSegment(unreserved).encoded(StandardCharsets.UTF_8)
+    );
+  }
 }

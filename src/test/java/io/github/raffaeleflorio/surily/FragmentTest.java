@@ -47,4 +47,9 @@ class FragmentTest {
       new Fragment(expected).asString()
     );
   }
+
+  @Test
+  void testEmptyFragment() throws Throwable {
+    assertEquals("", new Fragment("").encoded(StandardCharsets.ISO_8859_1));
+  }
 }

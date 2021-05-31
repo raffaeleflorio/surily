@@ -44,7 +44,7 @@ public interface UriComponent {
   String asString();
 
   /**
-   * {@link UriComponent} for testing-purpose
+   * {@link UriComponent} for testing purpose
    *
    * @author Raffaele Florio (raffaeleflorio@protonmail.com)
    * @since 1.0.0
