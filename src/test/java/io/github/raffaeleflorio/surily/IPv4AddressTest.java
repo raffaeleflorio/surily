@@ -35,7 +35,7 @@ class IPv4AddressTest {
   void testAsString() throws Throwable {
     assertEquals(
       "255.255.255.0",
-      new IPv4Address(255, 255, 255, 0).encoded(StandardCharsets.US_ASCII)
+      new IPv4Address(255, 255, 255, 0).asString()
     );
   }
 
