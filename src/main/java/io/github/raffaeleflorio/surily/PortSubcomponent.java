@@ -15,6 +15,8 @@
  */
 package io.github.raffaeleflorio.surily;
 
+import java.nio.charset.Charset;
+
 /**
  * Port subcomponent of an {@link AuthorityComponent}
  *
@@ -23,4 +25,33 @@ package io.github.raffaeleflorio.surily;
  * @since 1.0.0
  */
 public interface PortSubcomponent extends UriComponent {
+  /**
+   * {@link PortSubcomponent} for testing purpose
+   *
+   * @author Raffaele Florio (raffaeleflorio@protonmail.com)
+   * @since 1.0.0
+   */
+  final class Fake implements PortSubcomponent {
+    /**
+     * Builds a fake
+     *
+     * @param port The port
+     * @since 1.0.0
+     */
+    public Fake(final Integer port) {
+      this.port = port;
+    }
+
+    @Override
+    public CharSequence encoded(final Charset charset) {
+      return port.toString();
+    }
+
+    @Override
+    public String asString() {
+      return port.toString();
+    }
+
+    private final Integer port;
+  }
 }
