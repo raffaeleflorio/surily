@@ -70,7 +70,6 @@ public final class IPv4Address implements HostSubcomponent {
   private List<Integer> octets() {
     assertMaxLength();
     return Arrays.stream(address.toString().split("\\.", 4))
-      .map(this::number)
       .map(this::octet)
       .collect(Collectors.toUnmodifiableList());
   }
@@ -81,19 +80,20 @@ public final class IPv4Address implements HostSubcomponent {
     }
   }
 
+  private Integer octet(final String s) {
+    var i = number(s);
+    if (i < 0 || i > 255) {
+      throw illegalIPAddress();
+    }
+    return i;
+  }
+
   private Integer number(final String s) {
     try {
       return Integer.parseInt(s);
     } catch (Exception e) {
       throw illegalIPAddress();
     }
-  }
-
-  private Integer octet(final Integer i) {
-    if (i < 0 || i > 255) {
-      throw illegalIPAddress();
-    }
-    return i;
   }
 
   private RuntimeException illegalIPAddress() {
