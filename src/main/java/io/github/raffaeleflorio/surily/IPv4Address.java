@@ -16,6 +16,9 @@
 package io.github.raffaeleflorio.surily;
 
 import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * RFC3986 compliant IPv4 address {@link HostSubcomponent}
@@ -33,10 +36,16 @@ public final class IPv4Address implements HostSubcomponent {
    * @param fourth The fourth IP octet
    */
   public IPv4Address(final Integer first, final Integer second, final Integer third, final Integer fourth) {
-    this.first = first;
-    this.second = second;
-    this.third = third;
-    this.fourth = fourth;
+    this(String.format("%s.%s.%s.%s", first, second, third, fourth));
+  }
+
+  /**
+   * Builds an IPv4 address
+   *
+   * @param address The address
+   */
+  public IPv4Address(final CharSequence address) {
+    this.address = address;
   }
 
   @Override
@@ -45,24 +54,43 @@ public final class IPv4Address implements HostSubcomponent {
   }
 
   private String address() {
-    assertLegalOctets();
-    return String.format("%s.%s.%s.%s", first, second, third, fourth);
+    var octets = octets();
+    return String.format("%s.%s.%s.%s", octets.get(0), octets.get(1), octets.get(2), octets.get(3));
   }
 
-  private void assertLegalOctets() {
-    if (!octet(first) || !octet(second) || !octet(third) || !octet(fourth)) {
-      throw illegalOctets();
+  private List<Integer> octets() {
+    assertMaxLength();
+    return Arrays.stream(address.toString().split("\\.", 4))
+      .map(this::number)
+      .map(this::octet)
+      .collect(Collectors.toUnmodifiableList());
+  }
+
+  private void assertMaxLength() {
+    if (address.length() > 15) {
+      throw illegalIPAddress();
     }
   }
 
-  private Boolean octet(final Integer value) {
-    return value > -1 && value < 256;
+  private Integer number(final String s) {
+    try {
+      return Integer.parseInt(s);
+    } catch (Exception e) {
+      throw illegalIPAddress();
+    }
   }
 
-  private RuntimeException illegalOctets() {
+  private Integer octet(final Integer i) {
+    if (i < 0 || i > 255) {
+      throw illegalIPAddress();
+    }
+    return i;
+  }
+
+  private RuntimeException illegalIPAddress() {
     return new IllegalStateException(
       String.format(
-        "Illegal IPv4 octets: <%s,%s,%s,%s>", first, second, third, fourth
+        "Illegal IPv4 address: <%s>", address.length() > 4096 ? address.toString().substring(0, 4096).concat("...") : address
       )
     );
   }
@@ -72,8 +100,5 @@ public final class IPv4Address implements HostSubcomponent {
     return address();
   }
 
-  private final Integer first;
-  private final Integer second;
-  private final Integer third;
-  private final Integer fourth;
+  private final CharSequence address;
 }

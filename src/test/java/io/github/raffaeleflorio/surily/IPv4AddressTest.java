@@ -40,31 +40,75 @@ class IPv4AddressTest {
   }
 
   @Test
-  void testIllegalIPv4Address() throws Throwable {
+  void testIllegalIPv4Addresses() throws Throwable {
     assertAll(
-      () -> assertIllegalIPv4Octets(
+      () -> assertIllegalIPv4Address(
         () -> new IPv4Address(256, 0, 0, 1).asString(),
-        256, 0, 0, 1
+        "256.0.0.1"
       ),
-      () -> assertIllegalIPv4Octets(
+      () -> assertIllegalIPv4Address(
         () -> new IPv4Address(0, 0, 0, -1).encoded(StandardCharsets.US_ASCII),
-        0, 0, 0, -1
+        "0.0.0.-1"
       ),
-      () -> assertIllegalIPv4Octets(
+      () -> assertIllegalIPv4Address(
         () -> new IPv4Address(255, 255, 987, 255).encoded(StandardCharsets.UTF_8),
-        255, 255, 987, 255
+        "255.255.987.255"
       ),
-      () -> assertIllegalIPv4Octets(
+      () -> assertIllegalIPv4Address(
         () -> new IPv4Address(0, 3_000, 0, 0).asString(),
-        0, 3_000, 0, 0
+        "0.3000.0.0"
+      ),
+      () -> assertIllegalIPv4Address(
+        () -> new IPv4Address("a.b.c.d").asString(),
+        "a.b.c.d"
+      ),
+      () -> assertIllegalIPv4Address(
+        () -> new IPv4Address("").encoded(StandardCharsets.US_ASCII),
+        ""
+      ),
+      () -> assertIllegalIPv4Address(
+        () -> new IPv4Address("any").asString(),
+        "any"
+      ),
+      () -> assertIllegalIPv4Address(
+        () -> new IPv4Address("1.2.3.4.5").encoded(StandardCharsets.US_ASCII),
+        "1.2.3.4.5"
+      ),
+      () -> assertIllegalIPv4Address(
+        () -> new IPv4Address("1.2.3.4.b").asString(),
+        "1.2.3.4.b"
+      ),
+      () -> assertIllegalIPv4Address(
+        () -> new IPv4Address("1.2.3.4 ").asString(),
+        "1.2.3.4 "
+      ),
+      () -> assertIllegalIPv4Address(
+        () -> new IPv4Address(" 1.2.3.4").encoded(StandardCharsets.US_ASCII),
+        " 1.2.3.4"
+      ),
+      () -> assertIllegalIPv4Address(
+        () -> new IPv4Address("...").asString(),
+        "..."
+      ),
+      () -> assertIllegalIPv4Address(
+        () -> new IPv4Address(".2.3.4").encoded(StandardCharsets.UTF_16),
+        ".2.3.4"
       )
     );
   }
 
-  private void assertIllegalIPv4Octets(final Executable executable, final Integer first, final Integer second, final Integer third, final Integer fourth) {
+  private void assertIllegalIPv4Address(final Executable executable, final String address) {
     assertEquals(
-      String.format("Illegal IPv4 octets: <%s,%s,%s,%s>", first, second, third, fourth),
+      String.format("Illegal IPv4 address: <%s>", address),
       assertThrows(IllegalStateException.class, executable).getMessage()
+    );
+  }
+
+  @Test
+  void textExceptionMaxLength() throws Throwable {
+    assertIllegalIPv4Address(
+      () -> new IPv4Address("A".repeat(4097)).asString(),
+      "A".repeat(4096).concat("...")
     );
   }
 }

@@ -80,7 +80,7 @@ class SchemeTest {
   }
 
   @Test
-  void testMaximumExceptionMessage() throws Throwable {
+  void testExceptionMaxLength() throws Throwable {
     assertThrowsWithMessage(
       IllegalStateException.class,
       () -> new Scheme("1".repeat(4097)).asString(),
