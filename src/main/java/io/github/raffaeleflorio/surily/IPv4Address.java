@@ -36,7 +36,16 @@ public final class IPv4Address implements HostSubcomponent {
    * @param fourth The fourth IP octet
    */
   public IPv4Address(final Integer first, final Integer second, final Integer third, final Integer fourth) {
-    this(String.format("%s.%s.%s.%s", first, second, third, fourth));
+    this(List.of(first.toString(), second.toString(), third.toString(), fourth.toString()));
+  }
+
+  /**
+   * Builds an IPv4 address
+   *
+   * @param octets The octets
+   */
+  public IPv4Address(final List<CharSequence> octets) {
+    this(String.join(".", octets));
   }
 
   /**
