@@ -77,7 +77,7 @@ public final class IPv6Address implements HostSubcomponent {
                   ; 16 bits of address represented in hexadecimal
    */
   private Boolean legalAddress() {
-    var h16 = "[a-zA-Z0-9]{1,4}";
+    var h16 = "[a-fA-F0-9]{1,4}";
     var ipv4 = "(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])";
     var ls32 = String.format("(%s:%s)|(%s)", h16, h16, ipv4);
     var first = String.format("(%s:){6}(%s)", h16, ls32);

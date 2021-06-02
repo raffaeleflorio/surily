@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -63,7 +64,9 @@ class IPv6AddressTest {
       () -> assertDoesNotThrow(() -> new IPv6Address("::0:0:0:0:0").asString()),
       () -> assertDoesNotThrow(() -> new IPv6Address("::0:0:0:0:0:0").asString()),
       () -> assertDoesNotThrow(() -> new IPv6Address("::0:0:0:0:0:0:0").encoded(StandardCharsets.ISO_8859_1)),
-      () -> assertDoesNotThrow(() -> new IPv6Address("::0000:0:A:f:0:200.0.0.1").asString())
+      () -> assertDoesNotThrow(() -> new IPv6Address("::0000:0:A:f:0:200.0.0.1").asString()),
+      () -> assertDoesNotThrow(() -> new IPv6Address(List.of("A", "B", "C", "D", "E", "F", "0", "1")).asString()),
+      () -> assertDoesNotThrow(() -> new IPv6Address(List.of("::0:1:2:3:4:10.20.30.40")).encoded(StandardCharsets.US_ASCII))
     );
   }
 
@@ -109,6 +112,14 @@ class IPv6AddressTest {
       () -> assertIllegalAddress(
         () -> new IPv6Address("[::1]").asString(),
         "[::1]"
+      ),
+      () -> assertIllegalAddress(
+        () -> new IPv6Address(List.of("A", "B", "C", "D", "E", "F", "0", "z")).encoded(StandardCharsets.UTF_8),
+        "A:B:C:D:E:F:0:z"
+      ),
+      () -> assertIllegalAddress(
+        () -> new IPv6Address(List.of("A", "B", "C", "D", "E", "F", "0", "30.31.32.43")).asString(),
+        "A:B:C:D:E:F:0:30.31.32.43"
       )
     );
   }
