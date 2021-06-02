@@ -120,6 +120,14 @@ class IPv6AddressTest {
       () -> assertIllegalAddress(
         () -> new IPv6Address(List.of("A", "B", "C", "D", "E", "F", "0", "30.31.32.43")).asString(),
         "A:B:C:D:E:F:0:30.31.32.43"
+      ),
+      () -> assertIllegalAddress(
+        () -> new IPv6Address("").encoded(StandardCharsets.US_ASCII),
+        ""
+      ),
+      () -> assertIllegalAddress(
+        () -> new IPv6Address(List.of()).asString(),
+        ""
       )
     );
   }

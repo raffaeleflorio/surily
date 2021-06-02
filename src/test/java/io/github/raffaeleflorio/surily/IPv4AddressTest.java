@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -93,6 +94,14 @@ class IPv4AddressTest {
       () -> assertIllegalIPv4Address(
         () -> new IPv4Address(".2.3.4").encoded(StandardCharsets.UTF_16),
         ".2.3.4"
+      ),
+      () -> assertIllegalIPv4Address(
+        () -> new IPv4Address("").asString(),
+        ""
+      ),
+      () -> assertIllegalIPv4Address(
+        () -> new IPv4Address(List.of()).encoded(StandardCharsets.UTF_16BE),
+        ""
       )
     );
   }
