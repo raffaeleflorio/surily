@@ -16,9 +16,8 @@
 package io.github.raffaeleflorio.surily;
 
 import java.nio.charset.Charset;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.regex.Pattern;
 
 /**
  * RFC3986 compliant IPv4 address {@link HostSubcomponent}
@@ -63,37 +62,17 @@ public final class IPv4Address implements HostSubcomponent {
   }
 
   private String address() {
-    var octets = octets();
-    return String.format("%s.%s.%s.%s", octets.get(0), octets.get(1), octets.get(2), octets.get(3));
-  }
-
-  private List<Integer> octets() {
-    assertMaxLength();
-    return Arrays.stream(address.toString().split("\\.", 4))
-      .map(this::octet)
-      .collect(Collectors.toUnmodifiableList());
-  }
-
-  private void assertMaxLength() {
-    if (address.length() > 15) {
-      throw illegalIPAddress();
+    if (legalAddress()) {
+      return address.toString();
     }
+    throw illegalIPAddress();
   }
 
-  private Integer octet(final String s) {
-    var i = number(s);
-    if (i < 0 || i > 255) {
-      throw illegalIPAddress();
-    }
-    return i;
-  }
-
-  private Integer number(final String s) {
-    try {
-      return Integer.parseInt(s);
-    } catch (Exception e) {
-      throw illegalIPAddress();
-    }
+  private Boolean legalAddress() {
+    return Pattern.matches(
+      "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$",
+      address
+    );
   }
 
   private RuntimeException illegalIPAddress() {
