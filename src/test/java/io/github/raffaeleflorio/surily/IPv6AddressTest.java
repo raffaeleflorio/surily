@@ -141,7 +141,7 @@ class IPv6AddressTest {
   }
 
   @Test
-  void textExceptionMaxLength() throws Throwable {
+  void testExceptionMaxLength() throws Throwable {
     assertIllegalAddress(
       () -> new IPv6Address("A".repeat(4097)).asString(),
       "A".repeat(4096).concat("...")

@@ -114,7 +114,7 @@ class IPv4AddressTest {
   }
 
   @Test
-  void textExceptionMaxLength() throws Throwable {
+  void testExceptionMaxLength() throws Throwable {
     assertIllegalIPv4Address(
       () -> new IPv4Address("A".repeat(4097)).asString(),
       "A".repeat(4096).concat("...")
