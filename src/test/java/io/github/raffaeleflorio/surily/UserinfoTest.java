@@ -51,8 +51,8 @@ class UserinfoTest {
   @Test
   void testEmptyUserinfo() throws Throwable {
     assertAll(
-      () -> assertEquals("", new Userinfo("").encoded(StandardCharsets.UTF_8)),
-      () -> assertEquals("", new Userinfo("").asString())
+      () -> assertEquals("", new Userinfo().encoded(StandardCharsets.UTF_8)),
+      () -> assertEquals("", new Userinfo().asString())
     );
   }
 }

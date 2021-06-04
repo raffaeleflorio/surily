@@ -27,6 +27,15 @@ import java.util.function.BiFunction;
  */
 public final class Userinfo implements UserinfoSubComponent {
   /**
+   * Builds an empty userinfo
+   *
+   * @since 1.0.0
+   */
+  public Userinfo() {
+    this("");
+  }
+
+  /**
    * Builds an userinfo
    *
    * @param userinfo The userinfo
