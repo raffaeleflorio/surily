@@ -42,15 +42,26 @@ class PortTest {
   @Test
   void testIllegalPorts() throws Throwable {
     assertAll(
-      () -> assertIllegalPort(() -> new Port(-5678).asString(), -5678),
-      () -> assertIllegalPort(() -> new Port(65537).encoded(StandardCharsets.US_ASCII), 65537)
+      () -> assertIllegalPort(() -> new Port(-5678).asString(), "-5678"),
+      () -> assertIllegalPort(() -> new Port(65537).encoded(StandardCharsets.US_ASCII), "65537"),
+      () -> assertIllegalPort(() -> new Port("a").asString(), "a"),
+      () -> assertIllegalPort(() -> new Port(" 80").asString(), " 80"),
+      () -> assertIllegalPort(() -> new Port("443 ").asString(), "443 ")
     );
   }
 
-  private void assertIllegalPort(final Executable executable, final Integer port) {
+  private void assertIllegalPort(final Executable executable, final CharSequence port) {
     assertEquals(
       String.format("Illegal port: <%s>", port),
       assertThrows(IllegalStateException.class, executable).getMessage()
+    );
+  }
+
+  @Test
+  void testExceptionMaxLength() throws Throwable {
+    assertIllegalPort(
+      () -> new Port("A".repeat(4097)).encoded(StandardCharsets.UTF_16),
+      "A".repeat(4096).concat("...")
     );
   }
 }

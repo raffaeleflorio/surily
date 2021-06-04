@@ -16,6 +16,7 @@
 package io.github.raffaeleflorio.surily;
 
 import java.nio.charset.Charset;
+import java.util.regex.Pattern;
 
 /**
  * RFC3986 compliant {@link PortSubcomponent}
@@ -31,25 +32,51 @@ public final class Port implements PortSubcomponent {
    * @since 1.0.0
    */
   public Port(final Integer port) {
+    this(port.toString());
+  }
+
+  /**
+   * Builds a port
+   *
+   * @param port The port
+   * @since 1.0.0
+   */
+  public Port(final CharSequence port) {
     this.port = port;
   }
 
   @Override
   public CharSequence encoded(final Charset charset) {
-    return validated();
+    return port();
   }
 
-  private String validated() {
-    if (port < 0 || port > 65536) {
-      throw new IllegalStateException(String.format("Illegal port: <%s>", port));
+  private String port() {
+    if (legalPort()) {
+      return port.toString();
     }
-    return port.toString();
+    throw illegalPort();
+  }
+
+  private Boolean legalPort() {
+    if (Pattern.matches("[0-9]{1,5}", port)) {
+      var x = Integer.parseInt(port.toString());
+      return x > -1 && x < 65537;
+    }
+    return false;
+  }
+
+  private RuntimeException illegalPort() {
+    return new IllegalStateException(
+      String.format(
+        "Illegal port: <%s>", port.length() > 4096 ? port.toString().substring(0, 4096).concat("...") : port
+      )
+    );
   }
 
   @Override
   public String asString() {
-    return validated();
+    return port();
   }
 
-  private final Integer port;
+  private final CharSequence port;
 }
