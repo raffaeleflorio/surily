@@ -73,8 +73,8 @@ class PortTest {
   @Test
   void testEmptyPort() throws Throwable {
     assertAll(
-      () -> assertEquals("", new Port("").asString()),
-      () -> assertEquals("", new Port("").encoded(StandardCharsets.US_ASCII))
+      () -> assertEquals("", new Port().asString()),
+      () -> assertEquals("", new Port().encoded(StandardCharsets.US_ASCII))
     );
   }
 }

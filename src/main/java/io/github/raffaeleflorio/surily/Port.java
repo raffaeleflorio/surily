@@ -25,6 +25,15 @@ import java.nio.charset.Charset;
  */
 public final class Port implements PortSubcomponent {
   /**
+   * Builds an empty port
+   *
+   * @since 1.0.0
+   */
+  public Port() {
+    this("");
+  }
+
+  /**
    * Builds a port
    *
    * @param port The port
