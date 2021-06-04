@@ -58,11 +58,19 @@ public final class Port implements PortSubcomponent {
   }
 
   private Boolean legalPort() {
-    if (Pattern.matches("[0-9]{1,5}", port)) {
-      var x = Integer.parseInt(port.toString());
-      return x > -1 && x < 65537;
-    }
-    return false;
+    return legalNumericPort() || emptyPort();
+  }
+
+  private Boolean legalNumericPort() {
+    return Pattern.matches("[0-9]{1,5}", port) && numericPort() > -1 && numericPort() < 65537;
+  }
+
+  private Integer numericPort() {
+    return Integer.parseInt(port.toString());
+  }
+
+  private Boolean emptyPort() {
+    return port.length() == 0;
   }
 
   private RuntimeException illegalPort() {
