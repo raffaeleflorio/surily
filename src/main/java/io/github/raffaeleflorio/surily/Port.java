@@ -16,7 +16,6 @@
 package io.github.raffaeleflorio.surily;
 
 import java.nio.charset.Charset;
-import java.util.regex.Pattern;
 
 /**
  * RFC3986 compliant {@link PortSubcomponent}
@@ -58,15 +57,16 @@ public final class Port implements PortSubcomponent {
   }
 
   private Boolean legalPort() {
-    return legalNumericPort() || emptyPort();
+    return emptyPort() || legalNumericPort();
   }
 
   private Boolean legalNumericPort() {
-    return Pattern.matches("[0-9]{1,5}", port) && numericPort() > -1 && numericPort() < 65537;
-  }
-
-  private Integer numericPort() {
-    return Integer.parseInt(port.toString());
+    try {
+      var numericPort = Integer.parseInt(port.toString());
+      return numericPort > -1 && numericPort < 65536;
+    } catch (NumberFormatException e) {
+      return false;
+    }
   }
 
   private Boolean emptyPort() {

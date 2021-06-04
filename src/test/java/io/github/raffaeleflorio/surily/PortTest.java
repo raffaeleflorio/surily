@@ -46,7 +46,12 @@ class PortTest {
       () -> assertIllegalPort(() -> new Port(65537).encoded(StandardCharsets.US_ASCII), "65537"),
       () -> assertIllegalPort(() -> new Port("a").asString(), "a"),
       () -> assertIllegalPort(() -> new Port(" 80").asString(), " 80"),
-      () -> assertIllegalPort(() -> new Port("443 ").asString(), "443 ")
+      () -> assertIllegalPort(() -> new Port("443 ").asString(), "443 "),
+      () -> assertIllegalPort(() -> new Port("1234567890").asString(), "1234567890"),
+      () -> assertIllegalPort(() -> new Port("a123").asString(), "a123"),
+      () -> assertIllegalPort(() -> new Port("123a").asString(), "123a"),
+      () -> assertIllegalPort(() -> new Port("65536").asString(), "65536"),
+      () -> assertIllegalPort(() -> new Port("9999999999999999").asString(), "9999999999999999")
     );
   }
 
