@@ -18,13 +18,13 @@ package io.github.raffaeleflorio.surily;
 import java.nio.charset.Charset;
 
 /**
- * Component of an @{@link Uri}
+ * Uniform Resource Identifier
  *
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)
- * @see <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-3">RFC3986 about components</a>
+ * @see <a href="https://datatracker.ietf.org/doc/html/rfc3986">RFC3986 definition</a>
  * @since 1.0.0
  */
-public interface UriComponent {
+public interface Uri {
   /**
    * Builds the ASCII representation with percent encoding applied when needed
    *
@@ -34,45 +34,4 @@ public interface UriComponent {
    * @since 1.0.0
    */
   CharSequence encoded(Charset charset);
-
-  /**
-   * Builds the unencoded representation
-   *
-   * @return The unencoded representation
-   * @since 1.0.0
-   */
-  String asString();
-
-  /**
-   * {@link UriComponent} for testing purpose
-   *
-   * @author Raffaele Florio (raffaeleflorio@protonmail.com)
-   * @since 1.0.0
-   */
-  final class Fake implements UriComponent {
-    /**
-     * Builds a fake with its representations
-     *
-     * @param encoded  The encoded representation
-     * @param asString The String representation
-     * @since 1.0.0
-     */
-    public Fake(final CharSequence encoded, final String asString) {
-      this.encoded = encoded;
-      this.asString = asString;
-    }
-
-    @Override
-    public CharSequence encoded(final Charset charset) {
-      return encoded;
-    }
-
-    @Override
-    public String asString() {
-      return asString;
-    }
-
-    private final CharSequence encoded;
-    private final String asString;
-  }
 }
