@@ -15,6 +15,9 @@
  */
 package io.github.raffaeleflorio.surily;
 
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 /**
  * Fragment component of an URI
  *
@@ -23,4 +26,13 @@ package io.github.raffaeleflorio.surily;
  * @since 1.0.0
  */
 public interface FragmentComponent extends UriComponent {
+  /**
+   * Uses a function if the fragment is defined otherwise another one
+   *
+   * @param fn          The function used when the fragment is defined
+   * @param undefinedFn The supplier used when the fragment is undefined
+   * @param <T>         The result type
+   * @return The result
+   */
+  <T> T ifDefinedElse(Function<FragmentComponent, T> fn, Supplier<T> undefinedFn);
 }

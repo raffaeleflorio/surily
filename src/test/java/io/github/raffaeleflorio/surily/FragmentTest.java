@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FragmentTest {
   @Test
@@ -50,6 +51,11 @@ class FragmentTest {
 
   @Test
   void testEmptyFragment() throws Throwable {
-    assertEquals("", new Fragment("").encoded(StandardCharsets.ISO_8859_1));
+    assertEquals("", new Fragment().encoded(StandardCharsets.ISO_8859_1));
+  }
+
+  @Test
+  void testIfDefinedElse() throws Throwable {
+    assertTrue(new Fragment().ifDefinedElse(x -> true, () -> false));
   }
 }

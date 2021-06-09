@@ -18,6 +18,8 @@ package io.github.raffaeleflorio.surily;
 import java.nio.charset.Charset;
 import java.util.Set;
 import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * RFC3986 compliant {@link FragmentComponent}
@@ -27,7 +29,16 @@ import java.util.function.BiFunction;
  */
 public final class Fragment implements FragmentComponent {
   /**
-   * Builds the fragment
+   * Builds an empty fragment
+   *
+   * @since 1.0.0
+   */
+  public Fragment() {
+    this("");
+  }
+
+  /**
+   * Builds a fragment
    *
    * @param origin The value of the unencoded fragment
    * @since 1.0.0
@@ -40,7 +51,7 @@ public final class Fragment implements FragmentComponent {
   }
 
   /**
-   * Builds the fragment
+   * Builds a fragment
    *
    * @param origin     The value of the unencoded fragment
    * @param encodingFn The encoding function
@@ -59,6 +70,11 @@ public final class Fragment implements FragmentComponent {
   @Override
   public String asString() {
     return origin.toString();
+  }
+
+  @Override
+  public <T> T ifDefinedElse(final Function<FragmentComponent, T> fn, final Supplier<T> undefinedFn) {
+    return fn.apply(this);
   }
 
   private final CharSequence origin;
