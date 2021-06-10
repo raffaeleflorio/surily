@@ -18,6 +18,8 @@ package io.github.raffaeleflorio.surily;
 import java.nio.charset.Charset;
 import java.util.Set;
 import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * RFC3986 compliant key-value {@link QueryComponent}
@@ -99,6 +101,11 @@ public final class PairQuery implements QueryComponent {
   @Override
   public String asString() {
     return concatenated(key, delimiter, value);
+  }
+
+  @Override
+  public <T> T ifDefinedElse(final Function<QueryComponent, T> fn, final Supplier<T> undefinedFn) {
+    return fn.apply(this);
   }
 
   private final CharSequence key;

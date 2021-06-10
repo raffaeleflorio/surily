@@ -120,4 +120,9 @@ class PairQueryTest {
       new PairQuery("", "").encoded(StandardCharsets.US_ASCII)
     );
   }
+
+  @Test
+  void testIfDefinedElse() throws Throwable {
+    assertTrue(new PairQuery("k", "v").ifDefinedElse(x -> true, () -> false));
+  }
 }

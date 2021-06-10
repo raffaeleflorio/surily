@@ -21,6 +21,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ArrayQueryTest {
   @Test
@@ -61,5 +62,10 @@ class ArrayQueryTest {
       "name=1;name=2",
       new ArrayQuery("name", List.of("1", "2"), '=', ';').encoded(StandardCharsets.ISO_8859_1)
     );
+  }
+
+  @Test
+  void testIfDefinedElse() throws Throwable {
+    assertTrue(new ArrayQuery("k", List.of()).ifDefinedElse(x -> true, () -> false));
   }
 }

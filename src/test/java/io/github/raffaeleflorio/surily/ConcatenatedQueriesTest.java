@@ -103,4 +103,9 @@ class ConcatenatedQueriesTest {
       assertThrows(expectedException, executable).getMessage()
     );
   }
+
+  @Test
+  void testIfDefinedElse() throws Throwable {
+    assertTrue(new ConcatenatedQueries(List.of()).ifDefinedElse(x -> true, () -> false));
+  }
 }

@@ -17,6 +17,8 @@ package io.github.raffaeleflorio.surily;
 
 import java.nio.charset.Charset;
 import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -94,6 +96,11 @@ public final class ArrayQuery implements QueryComponent {
   @Override
   public String asString() {
     return concatenatedFn.apply(key, values).asString();
+  }
+
+  @Override
+  public <T> T ifDefinedElse(final Function<QueryComponent, T> fn, final Supplier<T> undefinedFn) {
+    return fn.apply(this);
   }
 
   private final CharSequence key;

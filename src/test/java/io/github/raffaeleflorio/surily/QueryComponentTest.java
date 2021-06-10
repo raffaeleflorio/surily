@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class QueryComponentTest {
   @Nested
@@ -41,6 +42,11 @@ class QueryComponentTest {
         expected,
         new QueryComponent.Fake("any", expected).asString()
       );
+    }
+
+    @Test
+    void testIfDefinedElse() throws Throwable {
+      assertTrue(new QueryComponent.Fake("any", "stuff").ifDefinedElse(x -> true, () -> false));
     }
   }
 }

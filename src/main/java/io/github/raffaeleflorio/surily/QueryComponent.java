@@ -16,6 +16,8 @@
 package io.github.raffaeleflorio.surily;
 
 import java.nio.charset.Charset;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Query component of an URI
@@ -25,6 +27,16 @@ import java.nio.charset.Charset;
  * @since 1.0.0
  */
 public interface QueryComponent extends UriComponent {
+  /**
+   * Uses a function if the query is defined otherwise another one
+   *
+   * @param fn          The function used when the query is defined
+   * @param undefinedFn The supplier used when the query is undefined
+   * @param <T>         The result type
+   * @return The result
+   */
+  <T> T ifDefinedElse(Function<QueryComponent, T> fn, Supplier<T> undefinedFn);
+
   /**
    * {@link QueryComponent} for testing purpose
    *
@@ -61,6 +73,11 @@ public interface QueryComponent extends UriComponent {
     @Override
     public String asString() {
       return origin.asString();
+    }
+
+    @Override
+    public <T> T ifDefinedElse(final Function<QueryComponent, T> fn, final Supplier<T> undefinedFn) {
+      return fn.apply(this);
     }
 
     private final UriComponent origin;
