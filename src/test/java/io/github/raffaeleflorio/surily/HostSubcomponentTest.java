@@ -42,5 +42,13 @@ class HostSubcomponentTest {
         new HostSubcomponent.Fake("any", expected).asString()
       );
     }
+
+    @Test
+    void testIfDefinedElse() throws Throwable {
+      assertEquals(
+        "ok",
+        new HostSubcomponent.Fake("0", "1").ifDefinedElse(x -> "ok", () -> "nok")
+      );
+    }
   }
 }

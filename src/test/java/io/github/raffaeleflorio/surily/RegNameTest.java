@@ -19,8 +19,7 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class RegNameTest {
   @Test
@@ -54,5 +53,10 @@ class RegNameTest {
       "@/?#][",
       new RegName("@/?#][").asString()
     );
+  }
+
+  @Test
+  void testIfDefinedElse() throws Throwable {
+    assertTrue(new RegName("localhost").ifDefinedElse(x -> true, () -> false));
   }
 }

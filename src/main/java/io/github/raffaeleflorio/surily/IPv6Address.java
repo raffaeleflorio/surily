@@ -17,6 +17,8 @@ package io.github.raffaeleflorio.surily;
 
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 /**
@@ -108,6 +110,11 @@ public final class IPv6Address implements HostSubcomponent {
   @Override
   public String asString() {
     return address();
+  }
+
+  @Override
+  public <T> T ifDefinedElse(final Function<HostSubcomponent, T> fn, final Supplier<T> undefinedFn) {
+    return fn.apply(this);
   }
 
   private final CharSequence address;

@@ -147,4 +147,9 @@ class IPv6AddressTest {
       "A".repeat(4096).concat("...")
     );
   }
+
+  @Test
+  void testIfDefinedElse() throws Throwable {
+    assertTrue(new IPv6Address("::1").ifDefinedElse(x -> true, () -> false));
+  }
 }

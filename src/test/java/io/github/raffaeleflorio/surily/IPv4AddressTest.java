@@ -120,4 +120,9 @@ class IPv4AddressTest {
       "A".repeat(4096).concat("...")
     );
   }
+
+  @Test
+  void testIfDefinedElse() throws Throwable {
+    assertTrue(new IPv4Address("31.32.33.255").ifDefinedElse(x -> true, () -> false));
+  }
 }

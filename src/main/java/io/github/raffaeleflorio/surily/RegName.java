@@ -17,6 +17,8 @@ package io.github.raffaeleflorio.surily;
 
 import java.nio.charset.Charset;
 import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * RFC3986 compliant reg-name {@link HostSubcomponent} like DNS name
@@ -68,6 +70,11 @@ public final class RegName implements HostSubcomponent {
   @Override
   public String asString() {
     return regname.toString();
+  }
+
+  @Override
+  public <T> T ifDefinedElse(final Function<HostSubcomponent, T> fn, final Supplier<T> undefinedFn) {
+    return fn.apply(this);
   }
 
   private final CharSequence regname;
