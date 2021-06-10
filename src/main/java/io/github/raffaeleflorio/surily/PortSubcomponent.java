@@ -16,6 +16,8 @@
 package io.github.raffaeleflorio.surily;
 
 import java.nio.charset.Charset;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Port subcomponent of an {@link AuthorityComponent}
@@ -26,6 +28,16 @@ import java.nio.charset.Charset;
  */
 public interface PortSubcomponent extends UriComponent {
   /**
+   * Uses a function if the port is defined otherwise another one
+   *
+   * @param fn          The function used when the port is defined
+   * @param undefinedFn The supplier used when the port is undefined
+   * @param <T>         The result type
+   * @return The result
+   */
+  <T> T ifDefinedElse(Function<PortSubcomponent, T> fn, Supplier<T> undefinedFn);
+
+  /**
    * {@link PortSubcomponent} for testing purpose
    *
    * @author Raffaele Florio (raffaeleflorio@protonmail.com)
@@ -33,7 +45,7 @@ public interface PortSubcomponent extends UriComponent {
    */
   final class Fake implements PortSubcomponent {
     /**
-     * Builds a fake
+     * Builds a fake port
      *
      * @param port The port
      * @since 1.0.0
@@ -50,6 +62,11 @@ public interface PortSubcomponent extends UriComponent {
     @Override
     public String asString() {
       return port.toString();
+    }
+
+    @Override
+    public <T> T ifDefinedElse(final Function<PortSubcomponent, T> fn, final Supplier<T> undefinedFn) {
+      return fn.apply(this);
     }
 
     private final Integer port;

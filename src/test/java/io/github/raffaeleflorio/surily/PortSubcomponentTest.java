@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PortSubcomponentTest {
   @Nested
@@ -38,6 +39,13 @@ class PortSubcomponentTest {
       assertEquals(
         "-42",
         new PortSubcomponent.Fake(-42).asString()
+      );
+    }
+
+    @Test
+    void testIfDefinedElse() throws Throwable {
+      assertTrue(
+        new PortSubcomponent.Fake(123).ifDefinedElse(x -> true, () -> false)
       );
     }
   }

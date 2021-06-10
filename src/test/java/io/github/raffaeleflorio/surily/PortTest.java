@@ -77,4 +77,12 @@ class PortTest {
       () -> assertEquals("", new Port().encoded(StandardCharsets.US_ASCII))
     );
   }
+
+  @Test
+  void testIfDefinedElse() throws Throwable {
+    assertEquals(
+      "it's defined",
+      new Port().ifDefinedElse(x -> "it's defined", () -> "undefined")
+    );
+  }
 }
