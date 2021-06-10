@@ -16,6 +16,8 @@
 package io.github.raffaeleflorio.surily;
 
 import java.nio.charset.Charset;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Scheme component of an URI
@@ -25,6 +27,16 @@ import java.nio.charset.Charset;
  * @since 1.0.0
  */
 public interface SchemeComponent extends UriComponent {
+  /**
+   * Uses a function if the scheme is defined otherwise another one
+   *
+   * @param fn          The function used when the scheme is defined
+   * @param undefinedFn The supplier used when the scheme is undefined
+   * @param <T>         The result type
+   * @return The result
+   */
+  <T> T ifDefinedElse(Function<SchemeComponent, T> fn, Supplier<T> undefinedFn);
+
   /**
    * {@link SchemeComponent} for testing purpose
    *
@@ -51,6 +63,11 @@ public interface SchemeComponent extends UriComponent {
     @Override
     public String asString() {
       return asString;
+    }
+
+    @Override
+    public <T> T ifDefinedElse(final Function<SchemeComponent, T> fn, final Supplier<T> undefinedFn) {
+      return fn.apply(this);
     }
 
     private final CharSequence encoded;

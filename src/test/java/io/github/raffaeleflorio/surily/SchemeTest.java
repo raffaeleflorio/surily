@@ -87,4 +87,9 @@ class SchemeTest {
       String.format("Illegal scheme: <%s...>", "1".repeat(4096))
     );
   }
+
+  @Test
+  void testIfDefinedElse() throws Throwable {
+    assertTrue(new Scheme("ssh").ifDefinedElse(x -> true, () -> false));
+  }
 }

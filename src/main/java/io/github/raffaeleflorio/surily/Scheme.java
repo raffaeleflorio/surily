@@ -16,6 +16,8 @@
 package io.github.raffaeleflorio.surily;
 
 import java.nio.charset.Charset;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * RFC3986 {@link SchemeComponent}
@@ -59,6 +61,11 @@ public final class Scheme implements SchemeComponent {
   @Override
   public String asString() {
     return validated();
+  }
+
+  @Override
+  public <T> T ifDefinedElse(final Function<SchemeComponent, T> fn, final Supplier<T> undefinedFn) {
+    return fn.apply(this);
   }
 
   private final CharSequence scheme;
