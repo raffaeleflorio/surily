@@ -55,4 +55,12 @@ class UserinfoTest {
       () -> assertEquals("", new Userinfo().asString())
     );
   }
+
+  @Test
+  void testIfDefinedElse() throws Throwable {
+    assertEquals(
+      "defined",
+      new Userinfo().ifDefinedElse(x -> "defined", () -> "undefined")
+    );
+  }
 }

@@ -16,6 +16,8 @@
 package io.github.raffaeleflorio.surily;
 
 import java.nio.charset.Charset;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Userinfo subcomponent of an {@link AuthorityComponent}
@@ -25,6 +27,16 @@ import java.nio.charset.Charset;
  * @since 1.0.0
  */
 public interface UserinfoSubComponent extends UriComponent {
+  /**
+   * Uses a function if the userinfo is defined otherwise another one
+   *
+   * @param fn          The function used when the userinfo is defined
+   * @param undefinedFn The supplier used when the userinfo is undefined
+   * @param <T>         The result type
+   * @return The result
+   */
+  <T> T ifDefinedElse(Function<UserinfoSubComponent, T> fn, Supplier<T> undefinedFn);
+
   /**
    * {@link UserinfoSubComponent} for testing purpose
    *
@@ -52,6 +64,11 @@ public interface UserinfoSubComponent extends UriComponent {
     @Override
     public String asString() {
       return asString;
+    }
+
+    @Override
+    public <T> T ifDefinedElse(final Function<UserinfoSubComponent, T> fn, final Supplier<T> undefinedFn) {
+      return fn.apply(this);
     }
 
     private final CharSequence encoded;

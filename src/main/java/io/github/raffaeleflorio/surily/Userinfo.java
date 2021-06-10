@@ -18,6 +18,8 @@ package io.github.raffaeleflorio.surily;
 import java.nio.charset.Charset;
 import java.util.Set;
 import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * RFC3986 compliant {@link UserinfoSubComponent} like: username:scheme-auth-part
@@ -68,6 +70,11 @@ public final class Userinfo implements UserinfoSubComponent {
   @Override
   public String asString() {
     return userinfo.toString();
+  }
+
+  @Override
+  public <T> T ifDefinedElse(final Function<UserinfoSubComponent, T> fn, final Supplier<T> undefinedFn) {
+    return fn.apply(this);
   }
 
   private final CharSequence userinfo;

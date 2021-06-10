@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class UserinfoSubComponentTest {
   @Nested
@@ -41,6 +42,11 @@ class UserinfoSubComponentTest {
         expected,
         new UserinfoSubComponent.Fake("any", expected).asString()
       );
+    }
+
+    @Test
+    void testIfDefinedElse() throws Throwable {
+      assertTrue(new UserinfoSubComponent.Fake("any", "stuff").ifDefinedElse(x -> true, () -> false));
     }
   }
 }
