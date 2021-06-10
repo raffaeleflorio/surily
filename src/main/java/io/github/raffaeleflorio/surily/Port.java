@@ -99,7 +99,7 @@ public final class Port implements PortSubcomponent {
 
   @Override
   public <T> T ifDefinedElse(final Function<PortSubcomponent, T> fn, final Supplier<T> undefinedFn) {
-    return null;
+    return fn.apply(this);
   }
 
   private final CharSequence port;
