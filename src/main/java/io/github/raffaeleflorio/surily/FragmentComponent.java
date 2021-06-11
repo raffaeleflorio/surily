@@ -15,6 +15,7 @@
  */
 package io.github.raffaeleflorio.surily;
 
+import java.nio.charset.Charset;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -35,4 +36,42 @@ public interface FragmentComponent extends UriComponent {
    * @return The result
    */
   <T> T ifDefinedElse(Function<FragmentComponent, T> fn, Supplier<T> undefinedFn);
+
+  /**
+   * {@link FragmentComponent} for testing purpose
+   *
+   * @author Raffaele Florio (raffaeleflorio@protonmail.com)
+   * @since 1.0.0
+   */
+  final class Fake implements FragmentComponent {
+    /**
+     * Builds a fake
+     *
+     * @param encoded  The encoded representation
+     * @param asString The asString representation
+     * @since 1.0.0
+     */
+    public Fake(final CharSequence encoded, final String asString) {
+      this.encoded = encoded;
+      this.asString = asString;
+    }
+
+    @Override
+    public <T> T ifDefinedElse(final Function<FragmentComponent, T> fn, final Supplier<T> undefinedFn) {
+      return fn.apply(this);
+    }
+
+    @Override
+    public CharSequence encoded(final Charset charset) {
+      return encoded;
+    }
+
+    @Override
+    public String asString() {
+      return asString;
+    }
+
+    private final CharSequence encoded;
+    private final String asString;
+  }
 }
