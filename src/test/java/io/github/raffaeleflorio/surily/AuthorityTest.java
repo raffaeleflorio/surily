@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class AuthorityTest {
   @Test
@@ -110,14 +110,6 @@ class AuthorityTest {
   }
 
   @Test
-  void testDefaultUserinfo() throws Throwable {
-    assertEquals(
-      "",
-      new Authority(new HostSubcomponent.Fake("example.com", "example.com")).userinfo().asString()
-    );
-  }
-
-  @Test
   void testHost() throws Throwable {
     assertEquals(
       "example%20.com",
@@ -126,10 +118,39 @@ class AuthorityTest {
   }
 
   @Test
-  void testPort() throws Throwable {
-    assertEquals(
-      "",
-      new Authority(new HostSubcomponent.Fake("example.com", "example.com")).port().asString()
+  void testIfDefinedElse() throws Throwable {
+    assertTrue(new Authority(new HostSubcomponent.Fake("any", "stuff")).ifDefinedElse(x -> true, () -> false));
+  }
+
+  @Test
+  void testUndefinedComponents() throws Throwable {
+    assertAll(
+      () -> assertEquals(
+        "undefined port",
+        new Authority(new HostSubcomponent.Fake("any", "stuff"))
+          .port()
+          .ifDefinedElse(x -> "ops", () -> "undefined port")
+      ),
+      () -> assertEquals(
+        "undefined userinfo",
+        new Authority(new HostSubcomponent.Fake("any", "stuff"))
+          .userinfo()
+          .ifDefinedElse(x -> "ops", () -> "undefined userinfo")
+      ),
+      () -> assertEquals(
+        "undefined port",
+        new Authority(
+          new UserinfoSubComponent.Fake("user", "info"),
+          new HostSubcomponent.Fake("any", "stuff")
+        ).port().ifDefinedElse(x -> "ops", () -> "undefined port")
+      ),
+      () -> assertEquals(
+        "undefined userinfo",
+        new Authority(
+          new HostSubcomponent.Fake("any", "stuff"),
+          new PortSubcomponent.Fake(1234)
+        ).userinfo().ifDefinedElse(x -> "ops", () -> "undefined userinfo")
+      )
     );
   }
 }
