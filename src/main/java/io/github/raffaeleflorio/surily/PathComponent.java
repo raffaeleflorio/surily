@@ -15,6 +15,10 @@
  */
 package io.github.raffaeleflorio.surily;
 
+import java.nio.charset.Charset;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * Path component of an URI
  *
@@ -23,4 +27,44 @@ package io.github.raffaeleflorio.surily;
  * @since 1.0.0
  */
 public interface PathComponent extends UriComponent, Iterable<PathSegmentSubcomponent> {
+  /**
+   * {@link PathComponent} for testing purpose
+   *
+   * @author Raffaele Florio (raffaeleflorio@protonmail.com)
+   * @since 1.0.0
+   */
+  final class Fake implements PathComponent {
+    /**
+     * Builds a fake
+     *
+     * @param encoded  The encoded representation
+     * @param asString The asString representation
+     * @param segments The path segments
+     * @since 1.0.0
+     */
+    public Fake(final CharSequence encoded, final String asString, final List<PathSegmentSubcomponent> segments) {
+      this.encoded = encoded;
+      this.asString = asString;
+      this.segments = segments;
+    }
+
+    @Override
+    public CharSequence encoded(final Charset charset) {
+      return encoded;
+    }
+
+    @Override
+    public String asString() {
+      return asString;
+    }
+
+    @Override
+    public Iterator<PathSegmentSubcomponent> iterator() {
+      return segments.iterator();
+    }
+
+    private final CharSequence encoded;
+    private final String asString;
+    private final List<PathSegmentSubcomponent> segments;
+  }
 }
