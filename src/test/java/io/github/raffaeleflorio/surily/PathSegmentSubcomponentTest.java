@@ -15,6 +15,7 @@
  */
 package io.github.raffaeleflorio.surily;
 
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
@@ -22,21 +23,24 @@ import java.nio.charset.StandardCharsets;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PathSegmentSubcomponentTest {
-  @Test
-  void testEncoded() throws Throwable {
-    var expected = "the encoded representation";
-    assertEquals(
-      expected,
-      new PathSegmentSubcomponent.Fake(expected, "xyz").encoded(StandardCharsets.UTF_16BE)
-    );
-  }
+  @Nested
+  class FakeTest {
+    @Test
+    void testEncoded() throws Throwable {
+      var expected = "the encoded representation";
+      assertEquals(
+        expected,
+        new PathSegmentSubcomponent.Fake(expected, "xyz").encoded(StandardCharsets.UTF_16BE)
+      );
+    }
 
-  @Test
-  void testAsString() throws Throwable {
-    var expected = "the asString representation";
-    assertEquals(
-      expected,
-      new PathSegmentSubcomponent.Fake("any", expected).asString()
-    );
+    @Test
+    void testAsString() throws Throwable {
+      var expected = "the asString representation";
+      assertEquals(
+        expected,
+        new PathSegmentSubcomponent.Fake("any", expected).asString()
+      );
+    }
   }
 }
