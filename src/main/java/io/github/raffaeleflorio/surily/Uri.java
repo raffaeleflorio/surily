@@ -34,4 +34,52 @@ public interface Uri {
    * @since 1.0.0
    */
   CharSequence encoded(Charset charset);
+
+  /**
+   * Builds the unencoded representation
+   *
+   * @return The unencoded representation
+   * @since 1.0.0
+   */
+  String asString();
+
+  /**
+   * Builds the scheme component
+   *
+   * @return The scheme component
+   * @since 1.0.0
+   */
+  SchemeComponent scheme();
+
+  /**
+   * Builds the authority component
+   *
+   * @return The authority component
+   * @since 1.0.0
+   */
+  AuthorityComponent authority();
+
+  /**
+   * Builds the path component
+   *
+   * @return The path component
+   * @since 1.0.0
+   */
+  PathComponent path();
+
+  /**
+   * Builds the query component
+   *
+   * @return The query component
+   * @since 1.0.0
+   */
+  QueryComponent query();
+
+  /**
+   * Builds the fragment component
+   *
+   * @return The fragment component
+   * @since 1.0.0
+   */
+  FragmentComponent fragment();
 }
