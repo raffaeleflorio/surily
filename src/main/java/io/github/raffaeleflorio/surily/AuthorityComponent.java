@@ -15,6 +15,7 @@
  */
 package io.github.raffaeleflorio.surily;
 
+import java.nio.charset.Charset;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -59,4 +60,72 @@ public interface AuthorityComponent extends UriComponent {
    * @since 1.0.0
    */
   UserinfoSubComponent userinfo();
+
+  /**
+   * {@link AuthorityComponent} for testing purpose
+   *
+   * @author Raffaele Florio (raffaeleflorio@protonmail.com)
+   * @since 1.0.0
+   */
+  final class Fake implements AuthorityComponent {
+    /**
+     * Builds a fake
+     *
+     * @param encoded  The encoded representation
+     * @param asString The asString representation
+     * @param userinfo The userinfo
+     * @param host     The host
+     * @param port     The port
+     * @since 1.0.0
+     */
+    public Fake(
+      final CharSequence encoded,
+      final String asString,
+      final UserinfoSubComponent userinfo,
+      final HostSubcomponent host,
+      final PortSubcomponent port
+    ) {
+      this.encoded = encoded;
+      this.asString = asString;
+      this.userinfo = userinfo;
+      this.host = host;
+      this.port = port;
+    }
+
+    @Override
+    public <T> T ifDefinedElse(final Function<AuthorityComponent, T> fn, final Supplier<T> undefinedFn) {
+      return fn.apply(this);
+    }
+
+    @Override
+    public HostSubcomponent host() {
+      return host;
+    }
+
+    @Override
+    public PortSubcomponent port() {
+      return port;
+    }
+
+    @Override
+    public UserinfoSubComponent userinfo() {
+      return userinfo;
+    }
+
+    @Override
+    public CharSequence encoded(final Charset charset) {
+      return encoded;
+    }
+
+    @Override
+    public String asString() {
+      return asString;
+    }
+
+    private final CharSequence encoded;
+    private final String asString;
+    private final UserinfoSubComponent userinfo;
+    private final HostSubcomponent host;
+    private final PortSubcomponent port;
+  }
 }
