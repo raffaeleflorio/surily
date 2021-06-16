@@ -63,7 +63,7 @@ class UndefinedAuthorityTest {
   void testPort() throws Throwable {
     assertEquals(
       "port is undefined",
-      new UndefinedAuthority().host().ifDefinedElse(x -> "42", () -> "port is undefined")
+      new UndefinedAuthority().port().ifDefinedElse(x -> "42", () -> "port is undefined")
     );
   }
 }
