@@ -26,6 +26,15 @@ import java.util.function.Supplier;
  * @since 1.0.0
  */
 public final class UndefinedScheme implements SchemeComponent {
+  /**
+   * Builds an undefined scheme
+   *
+   * @since 1.0.0
+   */
+  public UndefinedScheme() {
+
+  }
+
   @Override
   public <T> T ifDefinedElse(final Function<SchemeComponent, T> fn, final Supplier<T> undefinedFn) {
     return undefinedFn.get();
