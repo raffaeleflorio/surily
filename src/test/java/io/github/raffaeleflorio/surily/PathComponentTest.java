@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 class PathComponentTest {
   @Nested
-  class FakeTest {
+  class AbsoluteFakeTest {
     @Test
     void testIterator() throws Throwable {
       var expected = List.<PathSegmentSubcomponent>of(
@@ -36,7 +36,7 @@ class PathComponentTest {
       );
       assertIterableEquals(
         expected,
-        new PathComponent.Fake("x", "y", expected)
+        new PathComponent.AbsoluteFake("x", "y", expected)
       );
     }
 
@@ -45,7 +45,7 @@ class PathComponentTest {
       var expected = "this path is encoded";
       assertEquals(
         expected,
-        new PathComponent.Fake(expected, "any stuff", List.of()).encoded(StandardCharsets.UTF_16BE)
+        new PathComponent.AbsoluteFake(expected, "any stuff", List.of()).encoded(StandardCharsets.UTF_16BE)
       );
     }
 
@@ -54,25 +54,59 @@ class PathComponentTest {
       var expected = "this is asString";
       assertEquals(
         expected,
-        new PathComponent.Fake("e", expected, List.of()).asString()
+        new PathComponent.AbsoluteFake("e", expected, List.of()).asString()
       );
     }
 
     @Test
     void testIfAbsoluteElse() throws Throwable {
       assertEquals(
-        "it starts with /, so it's absolute",
-        new PathComponent.Fake("/xyz", "", List.of())
-          .ifAbsoluteElse(x -> "it starts with /, so it's absolute", x -> "ops")
+        "it's absolute, but fake",
+        new PathComponent.AbsoluteFake("", "", List.of())
+          .ifAbsoluteElse(x -> "it's absolute, but fake", x -> "ops")
+      );
+    }
+  }
+
+  @Nested
+  class RelativeFakeTest {
+    @Test
+    void testIterator() throws Throwable {
+      var expected = List.<PathSegmentSubcomponent>of(
+        new PathSegmentSubcomponent.Fake("encoded", "asString"),
+        new PathSegmentSubcomponent.Fake("encoded1", "asString"),
+        new PathSegmentSubcomponent.Fake("encoded2", "asString")
+      );
+      assertIterableEquals(
+        expected,
+        new PathComponent.RelativeFake("x", "y", expected)
       );
     }
 
     @Test
-    void testElseOfIfAbsoluteElse() throws Throwable {
+    void testAsString() throws Throwable {
+      var expected = "this path is encoded";
       assertEquals(
-        "it's relative",
-        new PathComponent.Fake("relative", "", List.of())
-          .ifAbsoluteElse(x -> "nope", x -> "it's relative")
+        expected,
+        new PathComponent.RelativeFake(expected, "any stuff", List.of()).encoded(StandardCharsets.UTF_16BE)
+      );
+    }
+
+    @Test
+    void testEncoded() throws Throwable {
+      var expected = "this is asString";
+      assertEquals(
+        expected,
+        new PathComponent.RelativeFake("e", expected, List.of()).asString()
+      );
+    }
+
+    @Test
+    void testIfAbsoluteElse() throws Throwable {
+      assertEquals(
+        "it's relative, but fake",
+        new PathComponent.RelativeFake("", "", List.of())
+          .ifAbsoluteElse(x -> "nope", x -> "it's relative, but fake")
       );
     }
   }
