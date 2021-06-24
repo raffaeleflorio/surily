@@ -122,4 +122,15 @@ class AbsolutePathTest {
       ).encoded(StandardCharsets.UTF_8)
     );
   }
+
+  @Test
+  void testIfAbsoluteElse() throws Throwable {
+    assertAll(
+      () -> assertTrue(
+        new AbsolutePath(List.of(new PathSegmentSubcomponent.Fake("x", "x")))
+          .<Boolean>ifAbsoluteElse(x -> true, x -> false)
+      ),
+      () -> assertTrue(new AbsolutePath().<Boolean>ifAbsoluteElse(x -> true, x -> false))
+    );
+  }
 }

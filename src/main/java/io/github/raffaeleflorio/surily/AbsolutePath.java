@@ -90,6 +90,11 @@ public final class AbsolutePath implements PathComponent {
     return segments().iterator();
   }
 
+  @Override
+  public <T> T ifAbsoluteElse(final Function<PathComponent, T> fn, final Function<PathComponent, T> relativeFn) {
+    return fn.apply(this);
+  }
+
   private final List<PathSegmentSubcomponent> segments;
   private final Function<PathSegmentSubcomponent, PathSegmentSubcomponent> zeroSegmentFn;
 }

@@ -127,4 +127,20 @@ class RelativePathTest {
       ).encoded(StandardCharsets.US_ASCII)
     );
   }
+
+  @Test
+  void testIfAbsoluteElse() throws Throwable {
+    assertAll(
+      () -> assertFalse(
+        new RelativePath(
+          List.of(
+            new PathSegmentSubcomponent.Fake("", ""),
+            new PathSegmentSubcomponent.Fake("", ""),
+            new PathSegmentSubcomponent.Fake("", "")
+          )
+        ).<Boolean>ifAbsoluteElse(x -> true, y -> false)
+      ),
+      () -> assertFalse(new RelativePath().<Boolean>ifAbsoluteElse(x -> true, y -> false))
+    );
+  }
 }

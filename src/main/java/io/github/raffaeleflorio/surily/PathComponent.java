@@ -18,6 +18,7 @@ package io.github.raffaeleflorio.surily;
 import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * Path component of an URI
@@ -27,6 +28,16 @@ import java.util.List;
  * @since 1.0.0
  */
 public interface PathComponent extends UriComponent, Iterable<PathSegmentSubcomponent> {
+  /**
+   * Uses a function if the path is absolute otherwise another one
+   *
+   * @param fn         The function used when the path is absolute
+   * @param relativeFn The function used when the path is relative
+   * @param <T>        The result type
+   * @return The result
+   */
+  <T> T ifAbsoluteElse(Function<PathComponent, T> fn, Function<PathComponent, T> relativeFn);
+
   /**
    * {@link PathComponent} for testing purpose
    *
@@ -61,6 +72,11 @@ public interface PathComponent extends UriComponent, Iterable<PathSegmentSubcomp
     @Override
     public Iterator<PathSegmentSubcomponent> iterator() {
       return segments.iterator();
+    }
+
+    @Override
+    public <T> T ifAbsoluteElse(final Function<PathComponent, T> fn, final Function<PathComponent, T> relativeFn) {
+      return encoded.toString().startsWith("/") ? fn.apply(this) : relativeFn.apply(this);
     }
 
     private final CharSequence encoded;

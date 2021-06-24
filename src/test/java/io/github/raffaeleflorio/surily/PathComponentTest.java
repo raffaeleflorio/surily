@@ -57,5 +57,23 @@ class PathComponentTest {
         new PathComponent.Fake("e", expected, List.of()).asString()
       );
     }
+
+    @Test
+    void testIfAbsoluteElse() throws Throwable {
+      assertEquals(
+        "it starts with /, so it's absolute",
+        new PathComponent.Fake("/xyz", "", List.of())
+          .ifAbsoluteElse(x -> "it starts with /, so it's absolute", x -> "ops")
+      );
+    }
+
+    @Test
+    void testElseOfIfAbsoluteElse() throws Throwable {
+      assertEquals(
+        "it's relative",
+        new PathComponent.Fake("relative", "", List.of())
+          .ifAbsoluteElse(x -> "nope", x -> "it's relative")
+      );
+    }
   }
 }
