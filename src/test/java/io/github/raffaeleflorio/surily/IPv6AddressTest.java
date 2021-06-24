@@ -71,7 +71,7 @@ class IPv6AddressTest {
   }
 
   @Test
-  void testIllegalIPv6Address() throws Throwable {
+  void testIllegalIPv6Addresses() throws Throwable {
     assertAll(
       () -> assertIllegalAddress(
         () -> new IPv6Address(":").asString(),
