@@ -19,13 +19,13 @@ import java.nio.charset.Charset;
 import java.util.function.BiFunction;
 
 /**
- * RFC3986 compliant absolute {@link Uri}
+ * RFC3986 compliant absolute {@link UriReference}
  *
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)
  * @see <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-4.3">RFC3986 definition</a>
  * @since 1.0.0
  */
-public final class AbsoluteUri implements Uri {
+public final class AbsoluteUri implements UriReference {
   /**
    * Builds an absolute URI with an empty path and an undefined query
    *

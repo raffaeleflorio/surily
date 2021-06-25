@@ -18,13 +18,13 @@ package io.github.raffaeleflorio.surily;
 import java.nio.charset.Charset;
 
 /**
- * Uniform Resource Identifier
+ * The most common used resource identifier. It is either a URI or a relative reference.
  *
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)
- * @see <a href="https://datatracker.ietf.org/doc/html/rfc3986">RFC3986 definition</a>
+ * @see <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-4.1">RFC3986 definition</a>
  * @since 1.0.0
  */
-public interface Uri {
+public interface UriReference {
   /**
    * Builds the ASCII representation with percent encoding applied when needed
    *

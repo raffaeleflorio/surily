@@ -18,7 +18,7 @@ package io.github.raffaeleflorio.surily;
 import java.nio.charset.Charset;
 
 /**
- * Component of an @{@link Uri}
+ * Component of an @{@link UriReference}
  *
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)
  * @see <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-3">RFC3986 about components</a>

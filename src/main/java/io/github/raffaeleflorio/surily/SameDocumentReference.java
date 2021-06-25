@@ -18,13 +18,13 @@ package io.github.raffaeleflorio.surily;
 import java.nio.charset.Charset;
 
 /**
- * RFC3986 compliant same-document reference {@link Uri}
+ * RFC3986 compliant same-document {@link UriReference}
  *
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)
  * @see <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-4.4">RFC3986 definition</a>
  * @since 1.0.0
  */
-public final class SameDocumentReference implements Uri {
+public final class SameDocumentReference implements UriReference {
   /**
    * Builds a reference
    *
