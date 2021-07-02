@@ -133,4 +133,12 @@ class RelativePartTest {
       "A".repeat(4096).concat("...")
     );
   }
+
+  @Test
+  void testAsStringWithOnlyAPath() throws Throwable {
+    assertEquals(
+      "a/path",
+      new PathComponent.AbsoluteFake("", "a/path", List.of()).asString()
+    );
+  }
 }
