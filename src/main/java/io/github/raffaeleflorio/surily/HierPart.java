@@ -16,6 +16,7 @@
 package io.github.raffaeleflorio.surily;
 
 import java.nio.charset.Charset;
+import java.util.function.Function;
 
 /**
  * RFC3986 compliant hier-part
@@ -52,21 +53,23 @@ public final class HierPart implements UriComponent {
   }
 
   private String encodedWithAuthority(final AuthorityComponent authority, final Charset charset) {
-    return concatenated(
-      authority.encoded(charset),
-      path.ifAbsoluteElse(
-        x -> x.encoded(charset),
-        y -> {
-          throw illegalPathException();
-        })
-    );
+    return concatenated(authority.encoded(charset), absolutePath().encoded(charset));
   }
 
   private String concatenated(final CharSequence authority, final CharSequence path) {
     return String.format("//%s%s", authority, path);
   }
 
-  private RuntimeException illegalPathException() {
+  private PathComponent absolutePath() {
+    return path.ifAbsoluteElse(
+      Function.identity(),
+      x -> {
+        throw illegalPathException(x);
+      }
+    );
+  }
+
+  private RuntimeException illegalPathException(final PathComponent path) {
     var illegalPath = path.asString();
     return new IllegalStateException(
       String.format(
@@ -86,14 +89,7 @@ public final class HierPart implements UriComponent {
   }
 
   private String asStringWithAuthority(final AuthorityComponent authority) {
-    return concatenated(
-      authority.asString(),
-      path.ifAbsoluteElse(
-        PathComponent::asString,
-        y -> {
-          throw illegalPathException();
-        })
-    );
+    return concatenated(authority.asString(), absolutePath().asString());
   }
 
   private String asStringWithoutAuthority() {
