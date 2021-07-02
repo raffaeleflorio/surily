@@ -138,7 +138,7 @@ class RelativePartTest {
   void testAsStringWithOnlyAPath() throws Throwable {
     assertEquals(
       "a/path",
-      new PathComponent.AbsoluteFake("", "a/path", List.of()).asString()
+      new RelativePart(new PathComponent.RelativeFake("", "a/path", List.of())).asString()
     );
   }
 }
