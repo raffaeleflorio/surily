@@ -75,14 +75,14 @@ class PathSegmentTest {
     assertAll(
       () -> assertEquals(
         "double",
-        new PathSegment("..").ifDotElse(x -> "double", y -> "nope")
+        new PathSegment("..").ifDotElse(x -> "single", y -> "double", z -> "normal")
       ), () -> assertEquals(
         "single",
-        new PathSegment(".").ifDotElse(x -> "single", y -> "nope")
+        new PathSegment(".").ifDotElse(x -> "single", y -> "double", z -> "normal")
       ),
       () -> assertEquals(
         "normal segment",
-        new PathSegment("...").ifDotElse(x -> "triple", y -> "normal segment")
+        new PathSegment("...").ifDotElse(x -> "single", y -> "double", z -> "normal segment")
       )
     );
   }

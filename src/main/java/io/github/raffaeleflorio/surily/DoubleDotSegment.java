@@ -44,8 +44,12 @@ public final class DoubleDotSegment implements PathSegmentSubcomponent {
   }
 
   @Override
-  public <T> T ifDotElse(final Function<PathSegmentSubcomponent, T> fn, final Function<PathSegmentSubcomponent, T> normalSegmentFn) {
-    return origin.ifDotElse(fn, normalSegmentFn);
+  public <T> T ifDotElse(
+    Function<PathSegmentSubcomponent, T> singleFn,
+    Function<PathSegmentSubcomponent, T> doubleFn,
+    Function<PathSegmentSubcomponent, T> normalSegmentFn
+  ) {
+    return origin.ifDotElse(singleFn, doubleFn, normalSegmentFn);
   }
 
   private final PathSegmentSubcomponent origin;

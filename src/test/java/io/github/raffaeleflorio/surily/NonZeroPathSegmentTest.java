@@ -51,9 +51,9 @@ class NonZeroPathSegmentTest {
   @Test
   void testIfDotElse() throws Throwable {
     assertAll(
-      () -> assertTrue(new NonZeroPathSegment(".").<Boolean>ifDotElse(x -> true, y -> false)),
-      () -> assertTrue(new NonZeroPathSegment("..").<Boolean>ifDotElse(x -> true, y -> false)),
-      () -> assertTrue(new NonZeroPathSegment("any").<Boolean>ifDotElse(x -> false, y -> true))
+      () -> assertTrue(new NonZeroPathSegment(".").<Boolean>ifDotElse(x -> true, y -> false, z -> false)),
+      () -> assertTrue(new NonZeroPathSegment("..").<Boolean>ifDotElse(x -> false, y -> true, z -> false)),
+      () -> assertTrue(new NonZeroPathSegment("any").<Boolean>ifDotElse(x -> false, y -> false, z -> true))
     );
   }
 }

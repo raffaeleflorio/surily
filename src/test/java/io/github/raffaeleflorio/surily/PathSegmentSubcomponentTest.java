@@ -47,7 +47,7 @@ class PathSegmentSubcomponentTest {
     @Test
     void testIfDotElse() throws Throwable {
       assertFalse(
-        new PathSegmentSubcomponent.Fake("", "").<Boolean>ifDotElse(x -> true, y -> false)
+        new PathSegmentSubcomponent.Fake("", "").<Boolean>ifDotElse(x -> true, y -> true, z -> false)
       );
     }
   }

@@ -19,7 +19,8 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DotSegmentTest {
   @Test
@@ -34,6 +35,6 @@ class DotSegmentTest {
 
   @Test
   void testIfDotElse() throws Throwable {
-    assertTrue(new DotSegment().<Boolean>ifDotElse(x -> true, y -> false));
+    assertTrue(new DotSegment().<Boolean>ifDotElse(x -> true, y -> false, z -> false));
   }
 }

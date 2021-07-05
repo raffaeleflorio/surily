@@ -26,15 +26,20 @@ import java.util.function.Function;
  */
 public interface PathSegmentSubcomponent extends UriComponent {
   /**
-   * Uses a function if the segment is a dot-segment otherwise another one
+   * Uses a function if the segment is a dot segment (i.e. "." or "..") otherwise another one
    *
-   * @param fn              The function to use if the segment is a dot segment
+   * @param singleFn        The function to use if the segment is a dot segment (i.e. ".")
+   * @param doubleFn        The function to use if the segment is a double dot segment (i.e. "..")
    * @param normalSegmentFn The function to use if the segment is a normal segment
    * @param <T>             The result type
    * @return The result
    * @since 1.0.0
    */
-  <T> T ifDotElse(Function<PathSegmentSubcomponent, T> fn, Function<PathSegmentSubcomponent, T> normalSegmentFn);
+  <T> T ifDotElse(
+    Function<PathSegmentSubcomponent, T> singleFn,
+    Function<PathSegmentSubcomponent, T> doubleFn,
+    Function<PathSegmentSubcomponent, T> normalSegmentFn
+  );
 
   /**
    * A {@link PathSegmentSubcomponent} for testing purpose
@@ -66,7 +71,11 @@ public interface PathSegmentSubcomponent extends UriComponent {
     }
 
     @Override
-    public <T> T ifDotElse(final Function<PathSegmentSubcomponent, T> fn, final Function<PathSegmentSubcomponent, T> normalSegmentFn) {
+    public <T> T ifDotElse(
+      Function<PathSegmentSubcomponent, T> singleFn,
+      Function<PathSegmentSubcomponent, T> doubleFn,
+      Function<PathSegmentSubcomponent, T> normalSegmentFn
+    ) {
       return normalSegmentFn.apply(this);
     }
 

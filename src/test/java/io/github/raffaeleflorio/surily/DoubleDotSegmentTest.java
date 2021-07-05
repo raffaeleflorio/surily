@@ -35,6 +35,6 @@ class DoubleDotSegmentTest {
 
   @Test
   void testIfDotElse() throws Throwable {
-    assertTrue(new DoubleDotSegment().<Boolean>ifDotElse(x -> true, y -> false));
+    assertTrue(new DoubleDotSegment().<Boolean>ifDotElse(x -> false, y -> true, z -> false));
   }
 }
