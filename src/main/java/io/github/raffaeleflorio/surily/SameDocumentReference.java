@@ -32,47 +32,53 @@ public final class SameDocumentReference implements UriReference {
    * @since 1.0.0
    */
   public SameDocumentReference(final FragmentComponent fragment) {
-    this.fragment = fragment;
+    this(new RelativeRef(fragment));
+  }
+
+  /**
+   * Builds a reference
+   *
+   * @param origin The relative-ref origin
+   * @since 1.0.0
+   */
+  private SameDocumentReference(final UriReference origin) {
+    this.origin = origin;
   }
 
   @Override
   public CharSequence encoded(final Charset charset) {
-    return reference(fragment.encoded(charset));
-  }
-
-  private String reference(final CharSequence x) {
-    return "#".concat(x.toString());
+    return origin.encoded(charset);
   }
 
   @Override
   public String asString() {
-    return reference(fragment.asString());
+    return origin.asString();
   }
 
   @Override
   public SchemeComponent scheme() {
-    return new UndefinedScheme();
+    return origin.scheme();
   }
 
   @Override
   public AuthorityComponent authority() {
-    return new UndefinedAuthority();
+    return origin.authority();
   }
 
   @Override
   public PathComponent path() {
-    return new RelativePath();
+    return origin.path();
   }
 
   @Override
   public QueryComponent query() {
-    return new UndefinedQuery();
+    return origin.query();
   }
 
   @Override
   public FragmentComponent fragment() {
-    return fragment;
+    return origin.fragment();
   }
 
-  private final FragmentComponent fragment;
+  private final UriReference origin;
 }
