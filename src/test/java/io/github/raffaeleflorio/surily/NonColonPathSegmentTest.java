@@ -37,4 +37,13 @@ class NonColonPathSegmentTest {
       new NonColonPathSegment(":::").asString()
     );
   }
+
+  @Test
+  void testIfDotElse() throws Throwable {
+    assertAll(
+      () -> assertTrue(new NonColonPathSegment(".").<Boolean>ifDotElse(x -> true, y -> false)),
+      () -> assertTrue(new NonColonPathSegment("..").<Boolean>ifDotElse(x -> true, y -> false)),
+      () -> assertTrue(new NonColonPathSegment("./").<Boolean>ifDotElse(x -> false, y -> true))
+    );
+  }
 }

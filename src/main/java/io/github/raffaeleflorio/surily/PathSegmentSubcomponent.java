@@ -16,6 +16,7 @@
 package io.github.raffaeleflorio.surily;
 
 import java.nio.charset.Charset;
+import java.util.function.Function;
 
 /**
  * Segment subcomponent of a {@link PathComponent}
@@ -24,6 +25,17 @@ import java.nio.charset.Charset;
  * @since 1.0.0
  */
 public interface PathSegmentSubcomponent extends UriComponent {
+  /**
+   * Uses a function if the segment is a dot-segment otherwise another one
+   *
+   * @param fn              The function to use if the segment is a dot segment
+   * @param normalSegmentFn The function to use if the segment is a normal segment
+   * @param <T>             The result type
+   * @return The result
+   * @since 1.0.0
+   */
+  <T> T ifDotElse(Function<PathSegmentSubcomponent, T> fn, Function<PathSegmentSubcomponent, T> normalSegmentFn);
+
   /**
    * A {@link PathSegmentSubcomponent} for testing purpose
    *
@@ -51,6 +63,11 @@ public interface PathSegmentSubcomponent extends UriComponent {
     @Override
     public String asString() {
       return asString;
+    }
+
+    @Override
+    public <T> T ifDotElse(final Function<PathSegmentSubcomponent, T> fn, final Function<PathSegmentSubcomponent, T> normalSegmentFn) {
+      return normalSegmentFn.apply(this);
     }
 
     private final CharSequence encoded;

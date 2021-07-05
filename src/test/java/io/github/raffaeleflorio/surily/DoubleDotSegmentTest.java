@@ -20,21 +20,21 @@ import org.junit.jupiter.api.Test;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class DotDotSegmentTest {
+class DoubleDotSegmentTest {
   @Test
   void testEncoded() throws Throwable {
-    assertEquals(
-      "..",
-      new DotDotSegment().encoded(StandardCharsets.ISO_8859_1)
-    );
+    assertEquals("..", new DoubleDotSegment().encoded(StandardCharsets.ISO_8859_1));
   }
 
   @Test
   void testAsString() throws Throwable {
-    assertEquals(
-      "..",
-      new DotDotSegment().asString()
-    );
+    assertEquals("..", new DoubleDotSegment().asString());
+  }
+
+  @Test
+  void testIfDotElse() throws Throwable {
+    assertTrue(new DoubleDotSegment().<Boolean>ifDotElse(x -> true, y -> false));
   }
 }

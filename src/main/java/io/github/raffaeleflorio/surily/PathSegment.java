@@ -17,6 +17,7 @@ package io.github.raffaeleflorio.surily;
 
 import java.nio.charset.Charset;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  * RFC3986 compliant {@link PathSegmentSubcomponent}
@@ -64,6 +65,11 @@ public final class PathSegment implements PathSegmentSubcomponent {
   @Override
   public String asString() {
     return segment.toString();
+  }
+
+  @Override
+  public <T> T ifDotElse(final Function<PathSegmentSubcomponent, T> fn, final Function<PathSegmentSubcomponent, T> normalSegmentFn) {
+    return segment.equals(".") || segment.equals("..") ? fn.apply(this) : normalSegmentFn.apply(this);
   }
 
   private final CharSequence segment;

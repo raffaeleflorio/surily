@@ -47,4 +47,13 @@ class NonZeroPathSegmentTest {
       () -> assertDoesNotThrow(() -> new NonZeroPathSegment(" ")).asString()
     );
   }
+
+  @Test
+  void testIfDotElse() throws Throwable {
+    assertAll(
+      () -> assertTrue(new NonZeroPathSegment(".").<Boolean>ifDotElse(x -> true, y -> false)),
+      () -> assertTrue(new NonZeroPathSegment("..").<Boolean>ifDotElse(x -> true, y -> false)),
+      () -> assertTrue(new NonZeroPathSegment("any").<Boolean>ifDotElse(x -> false, y -> true))
+    );
+  }
 }

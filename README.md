@@ -54,10 +54,10 @@ class Examples {
       "../../../../etc/passwd",
       new RelativePath(
         List.of(
-          new DotDotSegment(),
-          new DotDotSegment(),
-          new DotDotSegment(),
-          new DotDotSegment(),
+          new DoubleDotSegment(),
+          new DoubleDotSegment(),
+          new DoubleDotSegment(),
+          new DoubleDotSegment(),
           new PathSegment("etc"),
           new PathSegment("passwd")
         )

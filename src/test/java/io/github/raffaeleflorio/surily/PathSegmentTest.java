@@ -69,4 +69,21 @@ class PathSegmentTest {
       new PathSegment(unreserved).encoded(StandardCharsets.UTF_8)
     );
   }
+
+  @Test
+  void testIfDotElse() throws Throwable {
+    assertAll(
+      () -> assertEquals(
+        "double",
+        new PathSegment("..").ifDotElse(x -> "double", y -> "nope")
+      ), () -> assertEquals(
+        "single",
+        new PathSegment(".").ifDotElse(x -> "single", y -> "nope")
+      ),
+      () -> assertEquals(
+        "normal segment",
+        new PathSegment("...").ifDotElse(x -> "triple", y -> "normal segment")
+      )
+    );
+  }
 }

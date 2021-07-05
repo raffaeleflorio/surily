@@ -16,6 +16,7 @@
 package io.github.raffaeleflorio.surily;
 
 import java.nio.charset.Charset;
+import java.util.function.Function;
 
 /**
  * Double dot {@link PathSegmentSubcomponent} (i.e. "..")
@@ -23,14 +24,29 @@ import java.nio.charset.Charset;
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)
  * @since 1.0.0
  */
-public final class DotDotSegment implements PathSegmentSubcomponent {
+public final class DoubleDotSegment implements PathSegmentSubcomponent {
+  public DoubleDotSegment() {
+    this(new PathSegment(".."));
+  }
+
+  DoubleDotSegment(final PathSegmentSubcomponent origin) {
+    this.origin = origin;
+  }
+
   @Override
   public CharSequence encoded(final Charset charset) {
-    return "..";
+    return origin.encoded(charset);
   }
 
   @Override
   public String asString() {
-    return "..";
+    return origin.asString();
   }
+
+  @Override
+  public <T> T ifDotElse(final Function<PathSegmentSubcomponent, T> fn, final Function<PathSegmentSubcomponent, T> normalSegmentFn) {
+    return origin.ifDotElse(fn, normalSegmentFn);
+  }
+
+  private final PathSegmentSubcomponent origin;
 }

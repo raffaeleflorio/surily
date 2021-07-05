@@ -16,6 +16,7 @@
 package io.github.raffaeleflorio.surily;
 
 import java.nio.charset.Charset;
+import java.util.function.Function;
 
 /**
  * Single dot {@link PathSegmentSubcomponent} (i.e. ".")
@@ -24,13 +25,28 @@ import java.nio.charset.Charset;
  * @since 1.0.0
  */
 public final class DotSegment implements PathSegmentSubcomponent {
+  public DotSegment() {
+    this(new PathSegment("."));
+  }
+
+  DotSegment(final PathSegment origin) {
+    this.origin = origin;
+  }
+
   @Override
   public CharSequence encoded(final Charset charset) {
-    return ".";
+    return origin.encoded(charset);
   }
 
   @Override
   public String asString() {
-    return ".";
+    return origin.asString();
   }
+
+  @Override
+  public <T> T ifDotElse(final Function<PathSegmentSubcomponent, T> fn, final Function<PathSegmentSubcomponent, T> normalSegmentFn) {
+    return origin.ifDotElse(fn, normalSegmentFn);
+  }
+
+  private final PathSegment origin;
 }
