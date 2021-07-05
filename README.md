@@ -48,6 +48,22 @@ class Examples {
       ).encoded(StandardCharsets.UTF_8)
     );
   }
+
+  void assertPathTraversal() {
+    assertEquals(
+      "../../../../etc/passwd",
+      new RelativePath(
+        List.of(
+          new DotDotSegment(),
+          new DotDotSegment(),
+          new DotDotSegment(),
+          new DotDotSegment(),
+          new PathSegment("etc"),
+          new PathSegment("passwd")
+        )
+      ).encoded(StandardCharsets.US_ASCII)
+    );
+  }
   // WIP
 }
 ```
