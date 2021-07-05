@@ -39,6 +39,15 @@ class Examples {
       ).asString()
     );
   }
+
+  void assertSameDocumentReference() {
+    assertEquals(
+      "#a%20reference%20in%20a%20document",
+      new SameDocumentReference(
+        new Fragment("a reference in a document")
+      ).encoded(StandardCharsets.UTF_8)
+    );
+  }
   // WIP
 }
 ```
@@ -49,6 +58,7 @@ Surily will be distributed through the [Maven Central Repository](https://search
 with:
 
 ```xml
+
 <dependency>
   <groupId>io.github.raffaeleflorio</groupId>
   <artifactId>surily</artifactId>
