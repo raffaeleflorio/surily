@@ -19,9 +19,10 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class PathWithoutDotSegmentsTest {
   @Test
@@ -34,9 +35,6 @@ class PathWithoutDotSegmentsTest {
           "",
           List.of(
             new PathSegmentSubcomponent.Fake("path", ""),
-            /*new PathSegmentSubcomponent.Fake("..", ""),
-            new PathSegmentSubcomponent.Fake("..", ""),
-            */
             new DoubleDotSegment(),
             new DoubleDotSegment(),
             new PathSegmentSubcomponent.Fake("with", ""),
@@ -57,11 +55,8 @@ class PathWithoutDotSegmentsTest {
           "",
           "",
           List.of(
-            //new PathSegmentSubcomponent.Fake(".", ""),
             new DotSegment(),
             new PathSegmentSubcomponent.Fake("path", "path"),
-            /*new PathSegmentSubcomponent.Fake(".", ""),
-            new PathSegmentSubcomponent.Fake(".", "")*/
             new DotSegment(),
             new DotSegment()
           )
@@ -84,5 +79,33 @@ class PathWithoutDotSegmentsTest {
           .ifAbsoluteElse(x -> "absolute", y -> "relative")
       )
     );
+  }
+
+  @Test
+  void testIterable() throws Throwable {
+    assertIterableEquals(
+      List.of(
+        "segment0", "segment2"
+      ),
+      asString(
+        new PathWithoutDotSegments(
+          new PathComponent.AbsoluteFake(
+            "",
+            "",
+            List.of(
+              new PathSegmentSubcomponent.Fake("", "segment0"),
+              new DotSegment(),
+              new PathSegmentSubcomponent.Fake("", "segment2")
+            )
+          )
+        )
+      )
+    );
+  }
+
+  private List<String> asString(final PathComponent path) {
+    return StreamSupport.stream(path.spliterator(), false)
+      .map(PathSegmentSubcomponent::asString)
+      .collect(Collectors.toUnmodifiableList());
   }
 }
