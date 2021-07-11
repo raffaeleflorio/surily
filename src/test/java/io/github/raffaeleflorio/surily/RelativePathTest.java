@@ -40,10 +40,10 @@ class RelativePathTest {
       "%2F/../../ok%5B.txt",
       new RelativePath(
         List.of(
-          new PathSegmentSubcomponent.Fake("%2F", "/"),
-          new PathSegmentSubcomponent.Fake("..", ".."),
-          new PathSegmentSubcomponent.Fake("..", ".."),
-          new PathSegmentSubcomponent.Fake("ok%5B.txt", "ok[.txt")
+          new PathSegmentSubcomponent.NormalFake("%2F", "/"),
+          new PathSegmentSubcomponent.NormalFake("..", ".."),
+          new PathSegmentSubcomponent.NormalFake("..", ".."),
+          new PathSegmentSubcomponent.NormalFake("ok%5B.txt", "ok[.txt")
         )
       ).encoded(StandardCharsets.US_ASCII)
     );
@@ -55,8 +55,8 @@ class RelativePathTest {
       "x%3Ay%3Az/x:y:z",
       new RelativePath(
         List.of(
-          new PathSegmentSubcomponent.Fake("x:y:z", "x:y:z"),
-          new PathSegmentSubcomponent.Fake("x:y:z", "x:y:z")
+          new PathSegmentSubcomponent.NormalFake("x:y:z", "x:y:z"),
+          new PathSegmentSubcomponent.NormalFake("x:y:z", "x:y:z")
         )
       ).encoded(StandardCharsets.ISO_8859_1)
     );
@@ -68,8 +68,8 @@ class RelativePathTest {
       List.of(".", "segment:with:colon"),
       encoded(new RelativePath(
           List.of(
-            new PathSegmentSubcomponent.Fake(".", "."),
-            new PathSegmentSubcomponent.Fake("segment:with:colon", "segment:with:colon")
+            new PathSegmentSubcomponent.NormalFake(".", "."),
+            new PathSegmentSubcomponent.NormalFake("segment:with:colon", "segment:with:colon")
           )
         )
       )
@@ -86,13 +86,13 @@ class RelativePathTest {
   void testFirstSegmentEmpty() throws Throwable {
     assertAll(
       () -> assertIllegalZeroSegment(
-        () -> new RelativePath(List.of(new PathSegmentSubcomponent.Fake("", ""))).asString()
+        () -> new RelativePath(List.of(new PathSegmentSubcomponent.NormalFake("", ""))).asString()
       ),
       () -> assertIllegalZeroSegment(
-        () -> new RelativePath(List.of(new PathSegmentSubcomponent.Fake("", ""))).encoded(StandardCharsets.UTF_8)
+        () -> new RelativePath(List.of(new PathSegmentSubcomponent.NormalFake("", ""))).encoded(StandardCharsets.UTF_8)
       ),
       () -> assertIllegalZeroSegment(
-        () -> new RelativePath(List.of(new PathSegmentSubcomponent.Fake("", ""))).iterator().next().asString()
+        () -> new RelativePath(List.of(new PathSegmentSubcomponent.NormalFake("", ""))).iterator().next().asString()
       )
     );
   }
@@ -119,10 +119,10 @@ class RelativePathTest {
       ".///",
       new RelativePath(
         List.of(
-          new PathSegmentSubcomponent.Fake(".", "."),
-          new PathSegmentSubcomponent.Fake("", ""),
-          new PathSegmentSubcomponent.Fake("", ""),
-          new PathSegmentSubcomponent.Fake("", "")
+          new PathSegmentSubcomponent.NormalFake(".", "."),
+          new PathSegmentSubcomponent.NormalFake("", ""),
+          new PathSegmentSubcomponent.NormalFake("", ""),
+          new PathSegmentSubcomponent.NormalFake("", "")
         )
       ).encoded(StandardCharsets.US_ASCII)
     );
@@ -134,9 +134,9 @@ class RelativePathTest {
       () -> assertFalse(
         new RelativePath(
           List.of(
-            new PathSegmentSubcomponent.Fake("", ""),
-            new PathSegmentSubcomponent.Fake("", ""),
-            new PathSegmentSubcomponent.Fake("", "")
+            new PathSegmentSubcomponent.NormalFake("", ""),
+            new PathSegmentSubcomponent.NormalFake("", ""),
+            new PathSegmentSubcomponent.NormalFake("", "")
           )
         ).<Boolean>ifAbsoluteElse(x -> true, y -> false)
       ),

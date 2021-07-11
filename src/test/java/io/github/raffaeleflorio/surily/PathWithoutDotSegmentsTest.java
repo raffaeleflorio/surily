@@ -34,12 +34,12 @@ class PathWithoutDotSegmentsTest {
           "",
           "",
           List.of(
-            new PathSegmentSubcomponent.Fake("path", ""),
+            new PathSegmentSubcomponent.NormalFake("path", ""),
             new DoubleDotSegment(),
             new DoubleDotSegment(),
-            new PathSegmentSubcomponent.Fake("with", ""),
-            new PathSegmentSubcomponent.Fake("dot", ""),
-            new PathSegmentSubcomponent.Fake("segments", "")
+            new PathSegmentSubcomponent.NormalFake("with", ""),
+            new PathSegmentSubcomponent.NormalFake("dot", ""),
+            new PathSegmentSubcomponent.NormalFake("segments", "")
           )
         )
       ).encoded(StandardCharsets.UTF_8)
@@ -56,7 +56,7 @@ class PathWithoutDotSegmentsTest {
           "",
           List.of(
             new DotSegment(),
-            new PathSegmentSubcomponent.Fake("path", "path"),
+            new PathSegmentSubcomponent.NormalFake("path", "path"),
             new DotSegment(),
             new DotSegment()
           )
@@ -93,9 +93,9 @@ class PathWithoutDotSegmentsTest {
             "",
             "",
             List.of(
-              new PathSegmentSubcomponent.Fake("", "segment0"),
+              new PathSegmentSubcomponent.NormalFake("", "segment0"),
               new DotSegment(),
-              new PathSegmentSubcomponent.Fake("", "segment2")
+              new PathSegmentSubcomponent.NormalFake("", "segment2")
             )
           )
         )

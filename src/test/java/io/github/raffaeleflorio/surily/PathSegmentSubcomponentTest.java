@@ -20,18 +20,17 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 class PathSegmentSubcomponentTest {
   @Nested
-  class FakeTest {
+  class NormalFakeTest {
     @Test
     void testEncoded() throws Throwable {
       var expected = "the encoded representation";
       assertEquals(
         expected,
-        new PathSegmentSubcomponent.Fake(expected, "xyz").encoded(StandardCharsets.UTF_16BE)
+        new PathSegmentSubcomponent.NormalFake(expected, "xyz").encoded(StandardCharsets.UTF_16BE)
       );
     }
 
@@ -40,14 +39,89 @@ class PathSegmentSubcomponentTest {
       var expected = "the asString representation";
       assertEquals(
         expected,
-        new PathSegmentSubcomponent.Fake("any", expected).asString()
+        new PathSegmentSubcomponent.NormalFake("any", expected).asString()
       );
     }
 
     @Test
     void testIfDotElse() throws Throwable {
-      assertFalse(
-        new PathSegmentSubcomponent.Fake("", "").<Boolean>ifDotElse(x -> true, y -> true, z -> false)
+      assertAll(
+        () -> assertFalse(
+          new PathSegmentSubcomponent.NormalFake("", "").<Boolean>ifDotElse(x -> true, y -> true, z -> false)
+        ),
+        () -> assertFalse(
+          new PathSegmentSubcomponent.NormalFake("..", "..").<Boolean>ifDotElse(x -> true, y -> true, z -> false)
+        )
+      );
+    }
+  }
+
+  @Nested
+  class SingleDotFakeTest {
+    @Test
+    void assertEncoded() throws Throwable {
+      var expected = "encoded single dot";
+      assertEquals(
+        expected,
+        new PathSegmentSubcomponent.SingleDotFake(expected, "").encoded(StandardCharsets.US_ASCII)
+      );
+    }
+
+    @Test
+    void assertAsString() throws Throwable {
+      var expected = "asString representaiton";
+      assertEquals(
+        expected,
+        new PathSegmentSubcomponent.SingleDotFake("", expected).asString()
+      );
+    }
+
+    @Test
+    void testIfDotElse() throws Throwable {
+      var expected = "a single dot";
+      assertEquals(
+        expected,
+        new PathSegmentSubcomponent.SingleDotFake("", "")
+          .ifDotElse(
+            x -> expected,
+            y -> "not a double dot",
+            z -> "neither a normal segment"
+          )
+      );
+    }
+  }
+
+  @Nested
+  class DoubleDotFakeTest {
+    @Test
+    void assertEncoded() throws Throwable {
+      var expected = "encoded double dot";
+      assertEquals(
+        expected,
+        new PathSegmentSubcomponent.DoubleDotFake(expected, "").encoded(StandardCharsets.US_ASCII)
+      );
+    }
+
+    @Test
+    void assertAsString() throws Throwable {
+      var expected = "asString representaiton";
+      assertEquals(
+        expected,
+        new PathSegmentSubcomponent.DoubleDotFake("", expected).asString()
+      );
+    }
+
+    @Test
+    void testIfDotElse() throws Throwable {
+      var expected = "a double dot";
+      assertEquals(
+        expected,
+        new PathSegmentSubcomponent.DoubleDotFake("", "")
+          .ifDotElse(
+            x -> "not a single dot",
+            y -> expected,
+            z -> "not a normal segment"
+          )
       );
     }
   }

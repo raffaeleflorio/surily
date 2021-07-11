@@ -32,9 +32,9 @@ class AbsolutePathTest {
       "/%2F/%2F/S%20%23%CF%80.xml",
       new AbsolutePath(
         List.of(
-          new PathSegmentSubcomponent.Fake("%2F", "/"),
-          new PathSegmentSubcomponent.Fake("%2F", "/"),
-          new PathSegmentSubcomponent.Fake("S%20%23%CF%80.xml", "S #\u03C0.xml")
+          new PathSegmentSubcomponent.NormalFake("%2F", "/"),
+          new PathSegmentSubcomponent.NormalFake("%2F", "/"),
+          new PathSegmentSubcomponent.NormalFake("S%20%23%CF%80.xml", "S #\u03C0.xml")
         )
       ).encoded(StandardCharsets.UTF_8)
     );
@@ -51,7 +51,7 @@ class AbsolutePathTest {
       "/segment with ? \u03BB reserved characters[].json",
       new AbsolutePath(
         List.of(
-          new PathSegmentSubcomponent.Fake("encoded representation", "segment with ? \u03BB reserved characters[].json")
+          new PathSegmentSubcomponent.NormalFake("encoded representation", "segment with ? \u03BB reserved characters[].json")
         )
       ).asString()
     );
@@ -64,9 +64,9 @@ class AbsolutePathTest {
       asString(
         new AbsolutePath(
           List.of(
-            new PathSegmentSubcomponent.Fake("encoded", "segment 0"),
-            new PathSegmentSubcomponent.Fake("encoded", "segment 1"),
-            new PathSegmentSubcomponent.Fake("encoded", "segment 2")
+            new PathSegmentSubcomponent.NormalFake("encoded", "segment 0"),
+            new PathSegmentSubcomponent.NormalFake("encoded", "segment 1"),
+            new PathSegmentSubcomponent.NormalFake("encoded", "segment 2")
           )
         )
       )
@@ -83,13 +83,13 @@ class AbsolutePathTest {
   void testZeroSegmentAsFirstSegment() throws Throwable {
     assertAll(
       () -> assertIllegalZeroSegment(
-        () -> new AbsolutePath(List.of(new PathSegmentSubcomponent.Fake("", ""))).asString()
+        () -> new AbsolutePath(List.of(new PathSegmentSubcomponent.NormalFake("", ""))).asString()
       ),
       () -> assertIllegalZeroSegment(
-        () -> new AbsolutePath(List.of(new PathSegmentSubcomponent.Fake("", ""))).encoded(StandardCharsets.UTF_8)
+        () -> new AbsolutePath(List.of(new PathSegmentSubcomponent.NormalFake("", ""))).encoded(StandardCharsets.UTF_8)
       ),
       () -> assertIllegalZeroSegment(
-        () -> new AbsolutePath(List.of(new PathSegmentSubcomponent.Fake("", ""))).iterator().next().asString()
+        () -> new AbsolutePath(List.of(new PathSegmentSubcomponent.NormalFake("", ""))).iterator().next().asString()
       )
     );
   }
@@ -115,9 +115,9 @@ class AbsolutePathTest {
       "/first//",
       new AbsolutePath(
         List.of(
-          new PathSegmentSubcomponent.Fake("first", "first"),
-          new PathSegmentSubcomponent.Fake("", ""),
-          new PathSegmentSubcomponent.Fake("", "")
+          new PathSegmentSubcomponent.NormalFake("first", "first"),
+          new PathSegmentSubcomponent.NormalFake("", ""),
+          new PathSegmentSubcomponent.NormalFake("", "")
         )
       ).encoded(StandardCharsets.UTF_8)
     );
@@ -127,7 +127,7 @@ class AbsolutePathTest {
   void testIfAbsoluteElse() throws Throwable {
     assertAll(
       () -> assertTrue(
-        new AbsolutePath(List.of(new PathSegmentSubcomponent.Fake("x", "x")))
+        new AbsolutePath(List.of(new PathSegmentSubcomponent.NormalFake("x", "x")))
           .<Boolean>ifAbsoluteElse(x -> true, x -> false)
       ),
       () -> assertTrue(new AbsolutePath().<Boolean>ifAbsoluteElse(x -> true, x -> false))

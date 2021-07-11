@@ -42,12 +42,12 @@ public interface PathSegmentSubcomponent extends UriComponent {
   );
 
   /**
-   * A {@link PathSegmentSubcomponent} for testing purpose
+   * A normal {@link PathSegmentSubcomponent} for testing purpose
    *
    * @author Raffaele Florio (raffaeleflorio@protonmail.com)
    * @since 1.0.0
    */
-  final class Fake implements PathSegmentSubcomponent {
+  final class NormalFake implements PathSegmentSubcomponent {
     /**
      * Builds a fake for testing
      *
@@ -55,7 +55,7 @@ public interface PathSegmentSubcomponent extends UriComponent {
      * @param asString The asString representation
      * @since 1.0.0
      */
-    public Fake(final CharSequence encoded, final String asString) {
+    public NormalFake(final CharSequence encoded, final String asString) {
       this.encoded = encoded;
       this.asString = asString;
     }
@@ -77,6 +77,82 @@ public interface PathSegmentSubcomponent extends UriComponent {
       Function<PathSegmentSubcomponent, T> normalSegmentFn
     ) {
       return normalSegmentFn.apply(this);
+    }
+
+    private final CharSequence encoded;
+    private final String asString;
+  }
+
+  /**
+   * A single dot {@link PathSegmentSubcomponent} for testing purpose
+   *
+   * @author Raffaele Florio (raffaeleflorio@protonmail.com)
+   * @since 1.0.0
+   */
+  final class SingleDotFake implements PathSegmentSubcomponent {
+    /**
+     * Builds a fake
+     *
+     * @param encoded  The encoded representation
+     * @param asString The asString representation
+     * @since 1.0.0
+     */
+    public SingleDotFake(final CharSequence encoded, final String asString) {
+      this.encoded = encoded;
+      this.asString = asString;
+    }
+
+    @Override
+    public <T> T ifDotElse(final Function<PathSegmentSubcomponent, T> singleFn, final Function<PathSegmentSubcomponent, T> doubleFn, final Function<PathSegmentSubcomponent, T> normalSegmentFn) {
+      return singleFn.apply(this);
+    }
+
+    @Override
+    public CharSequence encoded(final Charset charset) {
+      return encoded;
+    }
+
+    @Override
+    public String asString() {
+      return asString;
+    }
+
+    private final CharSequence encoded;
+    private final String asString;
+  }
+
+  /**
+   * A double dot {@link PathSegmentSubcomponent} for testing purpose
+   *
+   * @author Raffaele Florio (raffaeleflorio@protonmail.com)
+   * @since 1.0.0
+   */
+  final class DoubleDotFake implements PathSegmentSubcomponent {
+    /**
+     * Builds a fake
+     *
+     * @param encoded  The encoded representation
+     * @param asString The asString representation
+     * @since 1.0.0
+     */
+    public DoubleDotFake(final CharSequence encoded, final String asString) {
+      this.encoded = encoded;
+      this.asString = asString;
+    }
+
+    @Override
+    public <T> T ifDotElse(final Function<PathSegmentSubcomponent, T> singleFn, final Function<PathSegmentSubcomponent, T> doubleFn, final Function<PathSegmentSubcomponent, T> normalSegmentFn) {
+      return doubleFn.apply(this);
+    }
+
+    @Override
+    public CharSequence encoded(final Charset charset) {
+      return encoded;
+    }
+
+    @Override
+    public String asString() {
+      return asString;
     }
 
     private final CharSequence encoded;
