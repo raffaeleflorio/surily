@@ -64,6 +64,24 @@ class Examples {
       ).encoded(StandardCharsets.US_ASCII)
     );
   }
+
+  void assertNormalizedPathTraversal() {
+    assertEquals(
+      "etc/passwd",
+      new PathWithoutDotSegments(
+        new RelativePath(
+          List.of(
+            new DoubleDotSegment(),
+            new DoubleDotSegment(),
+            new DoubleDotSegment(),
+            new DoubleDotSegment(),
+            new PathSegment("etc"),
+            new PathSegment("passwd")
+          )
+        )
+      ).encoded(StandardCharsets.US_ASCII)
+    );
+  }
   // WIP
 }
 ```
