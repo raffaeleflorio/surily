@@ -30,9 +30,9 @@ class PathComponentTest {
     @Test
     void testIterator() throws Throwable {
       var expected = List.<PathSegmentSubcomponent>of(
-        new PathSegmentSubcomponent.Fake("encoded", "asString"),
-        new PathSegmentSubcomponent.Fake("encoded1", "asString"),
-        new PathSegmentSubcomponent.Fake("encoded2", "asString")
+        new PathSegmentSubcomponent.NormalFake("encoded", "asString"),
+        new PathSegmentSubcomponent.NormalFake("encoded1", "asString"),
+        new PathSegmentSubcomponent.NormalFake("encoded2", "asString")
       );
       assertIterableEquals(
         expected,
@@ -73,9 +73,9 @@ class PathComponentTest {
     @Test
     void testIterator() throws Throwable {
       var expected = List.<PathSegmentSubcomponent>of(
-        new PathSegmentSubcomponent.Fake("encoded", "asString"),
-        new PathSegmentSubcomponent.Fake("encoded1", "asString"),
-        new PathSegmentSubcomponent.Fake("encoded2", "asString")
+        new PathSegmentSubcomponent.NormalFake("encoded", "asString"),
+        new PathSegmentSubcomponent.NormalFake("encoded1", "asString"),
+        new PathSegmentSubcomponent.NormalFake("encoded2", "asString")
       );
       assertIterableEquals(
         expected,
