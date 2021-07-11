@@ -55,7 +55,10 @@ public final class PathWithoutDotSegments implements PathComponent {
 
   @Override
   public <T> T ifAbsoluteElse(final Function<PathComponent, T> fn, final Function<PathComponent, T> relativeFn) {
-    return origin.ifAbsoluteElse(fn, relativeFn);
+    return origin.ifAbsoluteElse(
+      x -> fn.apply(this),
+      y -> relativeFn.apply(this)
+    );
   }
 
   @Override

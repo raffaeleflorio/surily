@@ -74,9 +74,36 @@ class PathWithoutDotSegmentsTest {
           .ifAbsoluteElse(x -> "absolute", y -> "relative")
       ),
       () -> assertEquals(
+        "segment",
+        new PathWithoutDotSegments(
+          new PathComponent.RelativeFake(
+            "",
+            "",
+            List.of(
+              new PathSegmentSubcomponent.SingleDotFake("", ""),
+              new PathSegmentSubcomponent.NormalFake("", "segment")
+            )
+          )
+        ).ifAbsoluteElse(x -> "absolute", UriComponent::asString)
+      ),
+      () -> assertEquals(
         "absolute",
         new PathWithoutDotSegments(new PathComponent.AbsoluteFake("", "", List.of()))
           .ifAbsoluteElse(x -> "absolute", y -> "relative")
+      ),
+      () -> assertEquals(
+        "/segment",
+        new PathWithoutDotSegments(
+          new PathComponent.AbsoluteFake(
+            "",
+            "",
+            List.of(
+              new PathSegmentSubcomponent.SingleDotFake("", ""),
+              new PathSegmentSubcomponent.NormalFake("", "segment")
+            )
+          )
+        ).ifAbsoluteElse(UriComponent::asString, y -> "relative")
+
       )
     );
   }
