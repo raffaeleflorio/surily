@@ -35,8 +35,8 @@ class PathWithoutDotSegmentsTest {
           "",
           List.of(
             new PathSegmentSubcomponent.NormalFake("path", ""),
-            new DoubleDotSegment(),
-            new DoubleDotSegment(),
+            new PathSegmentSubcomponent.DoubleDotFake("", ""),
+            new PathSegmentSubcomponent.DoubleDotFake("", ""),
             new PathSegmentSubcomponent.NormalFake("with", ""),
             new PathSegmentSubcomponent.NormalFake("dot", ""),
             new PathSegmentSubcomponent.NormalFake("segments", "")
@@ -55,10 +55,10 @@ class PathWithoutDotSegmentsTest {
           "",
           "",
           List.of(
-            new DotSegment(),
+            new PathSegmentSubcomponent.SingleDotFake(".", "."),
             new PathSegmentSubcomponent.NormalFake("path", "path"),
-            new DotSegment(),
-            new DotSegment()
+            new PathSegmentSubcomponent.SingleDotFake("xyz", "abc"),
+            new PathSegmentSubcomponent.SingleDotFake("any", "stuff")
           )
         )
       ).asString()
@@ -94,7 +94,7 @@ class PathWithoutDotSegmentsTest {
             "",
             List.of(
               new PathSegmentSubcomponent.NormalFake("", "segment0"),
-              new DotSegment(),
+              new PathSegmentSubcomponent.SingleDotFake("", ""),
               new PathSegmentSubcomponent.NormalFake("", "segment2")
             )
           )
