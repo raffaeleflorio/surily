@@ -68,7 +68,11 @@ public final class NonZeroPathSegment implements PathSegmentSubcomponent {
     Function<PathSegmentSubcomponent, T> doubleFn,
     Function<PathSegmentSubcomponent, T> normalSegmentFn
   ) {
-    return origin.ifDotElse(singleFn, doubleFn, normalSegmentFn);
+    return origin.ifDotElse(
+      x -> singleFn.apply(new NonZeroPathSegment(x)),
+      x -> doubleFn.apply(new NonZeroPathSegment(x)),
+      x -> normalSegmentFn.apply(new NonZeroPathSegment(x))
+    );
   }
 
   private final PathSegmentSubcomponent origin;

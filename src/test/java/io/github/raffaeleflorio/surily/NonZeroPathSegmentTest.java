@@ -56,4 +56,9 @@ class NonZeroPathSegmentTest {
       () -> assertTrue(new NonZeroPathSegment("any").<Boolean>ifDotElse(x -> false, y -> false, z -> true))
     );
   }
+
+  @Test
+  void testIfDotElseNonZeroConstraintPreserved() {
+    assertIllegalNonZeroSegment(() -> new NonZeroPathSegment("").ifDotElse(x -> "", x -> "", UriComponent::asString));
+  }
 }
