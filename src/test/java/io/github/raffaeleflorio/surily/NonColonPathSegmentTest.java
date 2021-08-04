@@ -46,4 +46,12 @@ class NonColonPathSegmentTest {
       () -> assertTrue(new NonColonPathSegment("./").<Boolean>ifDotElse(x -> false, y -> false, z -> true))
     );
   }
+
+  @Test
+  void testIfDotElseNonColonPreservation() {
+    assertEquals(
+      "%3A",
+      new NonColonPathSegment(":").ifDotElse(x -> "", x -> "", x -> x.encoded(StandardCharsets.ISO_8859_1))
+    );
+  }
 }

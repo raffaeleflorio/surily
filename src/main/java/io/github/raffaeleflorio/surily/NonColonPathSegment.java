@@ -81,7 +81,11 @@ public final class NonColonPathSegment implements PathSegmentSubcomponent {
     Function<PathSegmentSubcomponent, T> doubleFn,
     Function<PathSegmentSubcomponent, T> normalSegmentFn
   ) {
-    return origin.ifDotElse(singleFn, doubleFn, normalSegmentFn);
+    return origin.ifDotElse(
+      x -> singleFn.apply(new NonColonPathSegment(x)),
+      x -> doubleFn.apply(new NonColonPathSegment(x)),
+      x -> normalSegmentFn.apply(new NonColonPathSegment(x))
+    );
   }
 
   private final PathSegmentSubcomponent origin;
