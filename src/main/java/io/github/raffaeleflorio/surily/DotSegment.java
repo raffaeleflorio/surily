@@ -52,5 +52,5 @@ public final class DotSegment implements PathSegmentSubcomponent {
     return origin.ifDotElse(singleFn, doubleFn, normalSegmentFn);
   }
 
-  private final PathSegment origin;
+  private final PathSegmentSubcomponent origin;
 }
