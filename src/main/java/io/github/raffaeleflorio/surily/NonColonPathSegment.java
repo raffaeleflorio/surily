@@ -16,8 +16,6 @@
 package io.github.raffaeleflorio.surily;
 
 import java.nio.charset.Charset;
-import java.util.Set;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -44,35 +42,34 @@ public final class NonColonPathSegment implements PathSegmentSubcomponent {
    * @since 1.0.0
    */
   public NonColonPathSegment(final PathSegmentSubcomponent origin) {
-    this(
-      origin,
-      (segment, charset) -> segment
-        .encoded(charset)
-        .toString()
-        .replace(":", new PercentEncoded(":", charset, new DiffSet<>(new Pchar(), Set.of(':'))))
-    );
-  }
-
-  /**
-   * Builds a non-colon path segment
-   *
-   * @param origin     The segment to decorate
-   * @param encodingFn The encoding function
-   * @since 1.0.0
-   */
-  NonColonPathSegment(final PathSegmentSubcomponent origin, final BiFunction<PathSegmentSubcomponent, Charset, CharSequence> encodingFn) {
     this.origin = origin;
-    this.encodingFn = encodingFn;
   }
 
   @Override
   public CharSequence encoded(final Charset charset) {
-    return encodingFn.apply(origin, charset);
+    return nonColon(origin.encoded(charset));
+  }
+
+  private String nonColon(final CharSequence cs) {
+    var segment = cs.toString();
+    if (segment.contains(":")) {
+      throw illegalNonColonSegment(segment);
+    }
+    return segment;
+  }
+
+  private RuntimeException illegalNonColonSegment(final String segment) {
+    return new IllegalStateException(
+      String.format(
+        "Illegal non-colon segment: <%s>",
+        segment.length() > 4096 ? segment.substring(0, 4096).concat("...") : segment
+      )
+    );
   }
 
   @Override
   public String asString() {
-    return origin.asString();
+    return nonColon(origin.asString());
   }
 
   @Override
@@ -89,5 +86,4 @@ public final class NonColonPathSegment implements PathSegmentSubcomponent {
   }
 
   private final PathSegmentSubcomponent origin;
-  private final BiFunction<PathSegmentSubcomponent, Charset, CharSequence> encodingFn;
 }

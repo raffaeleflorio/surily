@@ -16,25 +16,36 @@
 package io.github.raffaeleflorio.surily;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import java.nio.charset.StandardCharsets;
+import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class NonColonPathSegmentTest {
   @Test
-  void testColonEncoded() throws Throwable {
+  void testEncoded() throws Throwable {
+    var illegal = "segment:with:colon";
+    assertIllegalNonColonSegment(
+      illegal,
+      () -> new NonColonPathSegment(illegal).encoded(StandardCharsets.ISO_8859_1)
+    );
+  }
+
+  private void assertIllegalNonColonSegment(final String illegal, final Executable executable) {
     assertEquals(
-      "segment%3Awith%3Acolon",
-      new NonColonPathSegment("segment:with:colon").encoded(StandardCharsets.ISO_8859_1)
+      String.format("Illegal non-colon segment: <%s>", illegal),
+      assertThrows(IllegalStateException.class, executable).getMessage()
     );
   }
 
   @Test
   void testAsString() throws Throwable {
-    assertEquals(
-      ":::",
-      new NonColonPathSegment(":::").asString()
+    var illegal = ":::";
+    assertIllegalNonColonSegment(
+      illegal,
+      () -> new NonColonPathSegment(illegal).asString()
     );
   }
 
@@ -49,9 +60,18 @@ class NonColonPathSegmentTest {
 
   @Test
   void testIfDotElseNonColonPreservation() {
-    assertEquals(
-      "%3A",
-      new NonColonPathSegment(":").ifDotElse(x -> "", x -> "", x -> x.encoded(StandardCharsets.ISO_8859_1))
+    var illegal = ":";
+    assertIllegalNonColonSegment(
+      illegal,
+      () -> new NonColonPathSegment(illegal).ifDotElse(x -> "", x -> "", x -> x.encoded(StandardCharsets.ISO_8859_1))
+    );
+  }
+
+  @Test
+  void testMaxLengthExceptionMessage() {
+    assertIllegalNonColonSegment(
+      ":".repeat(4096).concat("..."),
+      () -> new NonColonPathSegment(":".repeat(4097)).asString()
     );
   }
 }
