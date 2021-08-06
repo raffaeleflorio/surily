@@ -30,74 +30,32 @@ class AuthorityComponentTest {
       var expected = "the encoded authority";
       assertEquals(
         expected,
-        new AuthorityComponent.Fake(
-          expected,
-          "any",
-          new UserinfoSubComponent.Fake("", ""),
-          new HostSubcomponent.Fake("", ""),
-          new PortSubcomponent.Fake(1234)
-        ).encoded(StandardCharsets.UTF_16BE)
+        new AuthorityComponent.Fake(expected, "any").encoded(StandardCharsets.UTF_16BE)
       );
     }
 
     @Test
     void testAsString() throws Throwable {
       var expected = "the asString authority";
-      assertEquals(
-        expected,
-        new AuthorityComponent.Fake(
-          "any",
-          expected,
-          new UserinfoSubComponent.Fake("", ""),
-          new HostSubcomponent.Fake("", ""),
-          new PortSubcomponent.Fake(1234)
-        ).asString()
-      );
+      assertEquals(expected, new AuthorityComponent.Fake("any", expected).asString());
     }
 
     @Test
     void testUserinfo() throws Throwable {
       var expected = new UserinfoSubComponent.Fake("e", "a");
-      assertEquals(
-        expected,
-        new AuthorityComponent.Fake(
-          "any",
-          "stuff",
-          expected,
-          new HostSubcomponent.Fake("", ""),
-          new PortSubcomponent.Fake(1234)
-        ).userinfo()
-      );
+      assertEquals(expected, new AuthorityComponent.Fake(expected).userinfo());
     }
 
     @Test
     void testHost() throws Throwable {
       var expected = new HostSubcomponent.Fake("encoded", "asString");
-      assertEquals(
-        expected,
-        new AuthorityComponent.Fake(
-          "any",
-          "stuff",
-          new UserinfoSubComponent.Fake("", ""),
-          expected,
-          new PortSubcomponent.Fake(1234)
-        ).host()
-      );
+      assertEquals(expected, new AuthorityComponent.Fake(expected).host());
     }
 
     @Test
     void testPort() throws Throwable {
       var expected = new PortSubcomponent.Fake(234567890);
-      assertEquals(
-        expected,
-        new AuthorityComponent.Fake(
-          "any",
-          "stuff",
-          new UserinfoSubComponent.Fake("", ""),
-          new HostSubcomponent.Fake("", ""),
-          expected
-        ).port()
-      );
+      assertEquals(expected, new AuthorityComponent.Fake(expected).port());
     }
 
     @Test

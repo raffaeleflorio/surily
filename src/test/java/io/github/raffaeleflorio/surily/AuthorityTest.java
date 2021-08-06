@@ -60,7 +60,9 @@ class AuthorityTest {
   void testEncodedWithOnlyHost() throws Throwable {
     assertEquals(
       "[::1]",
-      new Authority(new HostSubcomponent.Fake("[::1]", "[::1]")).encoded(StandardCharsets.UTF_8)
+      new Authority(
+        new HostSubcomponent.Fake("[::1]", "[::1]")
+      ).encoded(StandardCharsets.UTF_8)
     );
   }
 
@@ -113,13 +115,19 @@ class AuthorityTest {
   void testHost() throws Throwable {
     assertEquals(
       "example%20.com",
-      new Authority(new HostSubcomponent.Fake("example%20.com", "example .com")).host().encoded(StandardCharsets.US_ASCII)
+      new Authority(
+        new HostSubcomponent.Fake("example%20.com", "example .com")
+      ).host().encoded(StandardCharsets.US_ASCII)
     );
   }
 
   @Test
   void testIfDefinedElse() throws Throwable {
-    assertTrue(new Authority(new HostSubcomponent.Fake("any", "stuff")).ifDefinedElse(x -> true, () -> false));
+    assertTrue(
+      new Authority(
+        new HostSubcomponent.Fake("any", "stuff")
+      ).ifDefinedElse(x -> true, () -> false)
+    );
   }
 
   @Test
@@ -142,14 +150,20 @@ class AuthorityTest {
         new Authority(
           new UserinfoSubComponent.Fake("user", "info"),
           new HostSubcomponent.Fake("any", "stuff")
-        ).port().ifDefinedElse(x -> "ops", () -> "undefined port")
+        ).port().ifDefinedElse(
+          x -> "ops",
+          () -> "undefined port"
+        )
       ),
       () -> assertEquals(
         "undefined userinfo",
         new Authority(
           new HostSubcomponent.Fake("any", "stuff"),
           new PortSubcomponent.Fake(1234)
-        ).userinfo().ifDefinedElse(x -> "ops", () -> "undefined userinfo")
+        ).userinfo().ifDefinedElse(
+          x -> "ops",
+          () -> "undefined userinfo"
+        )
       )
     );
   }

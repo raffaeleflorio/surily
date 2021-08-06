@@ -71,6 +71,71 @@ public interface AuthorityComponent extends UriComponent {
     /**
      * Builds a fake
      *
+     * @param port The port
+     * @since 1.0.0
+     */
+    public Fake(final PortSubcomponent port) {
+      this(
+        "",
+        "",
+        new UserinfoSubComponent.Fake("", ""),
+        new HostSubcomponent.Fake("", ""),
+        port
+      );
+    }
+
+    /**
+     * Builds a fake
+     *
+     * @param host The host
+     * @since 1.0.0
+     */
+    public Fake(final HostSubcomponent host) {
+      this(
+        "",
+        "",
+        new UserinfoSubComponent.Fake("", ""),
+        host,
+        new PortSubcomponent.Fake(0)
+      );
+    }
+
+    /**
+     * Builds a fake
+     *
+     * @param userinfo The user info
+     * @since 1.0.0
+     */
+    public Fake(final UserinfoSubComponent userinfo) {
+      this(
+        "",
+        "",
+        userinfo,
+        new HostSubcomponent.Fake("", ""),
+        new PortSubcomponent.Fake(0)
+      );
+    }
+
+    /**
+     * Builds a fake
+     *
+     * @param encoded  The encoded representation
+     * @param asString The asString representation
+     * @since 1.0.0
+     */
+    public Fake(final CharSequence encoded, final String asString) {
+      this(
+        encoded,
+        asString,
+        new UserinfoSubComponent.Fake("", ""),
+        new HostSubcomponent.Fake("", ""),
+        new PortSubcomponent.Fake(0)
+      );
+    }
+
+    /**
+     * Builds a fake
+     *
      * @param encoded  The encoded representation
      * @param asString The asString representation
      * @param userinfo The userinfo
