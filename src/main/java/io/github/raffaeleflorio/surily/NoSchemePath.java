@@ -24,28 +24,19 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
- * RFC3986 compliant relative {@link PathComponent} like: ../../../file.json
+ * RFC3986 compliant noscheme {@link PathComponent} like: ../../../file.json
  *
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)
  * @since 1.0.0
  */
-public final class RelativePath implements PathComponent {
-  /**
-   * Builds an empty path
-   *
-   * @since 1.0.0
-   */
-  public RelativePath() {
-    this(List.of());
-  }
-
+public final class NoSchemePath implements PathComponent {
   /**
    * Builds a path
    *
    * @param segments The segments
    * @since 1.0.0
    */
-  public RelativePath(final List<PathSegmentSubcomponent> segments) {
+  public NoSchemePath(final List<PathSegmentSubcomponent> segments) {
     this(segments, s -> new NonZeroPathSegment(new NonColonPathSegment(s)));
   }
 
@@ -56,7 +47,7 @@ public final class RelativePath implements PathComponent {
    * @param firstFn  The function to apply to the first segment
    * @since 1.0.0
    */
-  RelativePath(final List<PathSegmentSubcomponent> segments, final Function<PathSegmentSubcomponent, PathSegmentSubcomponent> firstFn) {
+  NoSchemePath(final List<PathSegmentSubcomponent> segments, final Function<PathSegmentSubcomponent, PathSegmentSubcomponent> firstFn) {
     this.segments = segments;
     this.firstFn = firstFn;
   }
@@ -83,8 +74,23 @@ public final class RelativePath implements PathComponent {
   }
 
   @Override
-  public <T> T ifAbsoluteElse(final Function<PathComponent, T> fn, final Function<PathComponent, T> relativeFn) {
-    return relativeFn.apply(this);
+  public UriComponent relativePart() {
+    return this;
+  }
+
+  @Override
+  public UriComponent relativePart(final AuthorityComponent authority) {
+    throw new IllegalStateException("Unable to build a relative-part with an authority");
+  }
+
+  @Override
+  public UriComponent hierPart() {
+    return this;
+  }
+
+  @Override
+  public UriComponent hierPart(final AuthorityComponent authority) {
+    throw new IllegalStateException("Unable to build a hier-part with an authority");
   }
 
   private final List<PathSegmentSubcomponent> segments;
