@@ -21,12 +21,11 @@ import org.junit.jupiter.api.Test;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class PathComponentTest {
   @Nested
-  class AbsoluteFakeTest {
+  class FakeTest {
     @Test
     void testIterator() throws Throwable {
       var expected = List.<PathSegmentSubcomponent>of(
@@ -34,10 +33,7 @@ class PathComponentTest {
         new PathSegmentSubcomponent.NormalFake("encoded1", "asString"),
         new PathSegmentSubcomponent.NormalFake("encoded2", "asString")
       );
-      assertIterableEquals(
-        expected,
-        new PathComponent.AbsoluteFake("x", "y", expected)
-      );
+      assertIterableEquals(expected, new PathComponent.Fake(expected));
     }
 
     @Test
@@ -45,68 +41,57 @@ class PathComponentTest {
       var expected = "this path is encoded";
       assertEquals(
         expected,
-        new PathComponent.AbsoluteFake(expected, "any stuff", List.of()).encoded(StandardCharsets.UTF_16BE)
+        new PathComponent.Fake(expected, "any stuff").encoded(StandardCharsets.UTF_16BE)
       );
     }
 
     @Test
     void testEncoded() throws Throwable {
       var expected = "this is asString";
-      assertEquals(
-        expected,
-        new PathComponent.AbsoluteFake("e", expected, List.of()).asString()
+      assertEquals(expected, new PathComponent.Fake("xyz", expected).asString());
+    }
+
+    @Test
+    void testRelativePart() {
+      assertAll(
+        () -> assertEquals(
+          "relative part",
+          new PathComponent.Fake(
+            new UriComponent.Fake("relative part", ""),
+            new UriComponent.Fake("hier", "part")
+          ).relativePart().encoded(StandardCharsets.UTF_8)
+        ),
+        () -> assertEquals(
+          "relative part",
+          new PathComponent.Fake(
+            new UriComponent.Fake("", "relative part"),
+            new UriComponent.Fake("hier", "part")
+          ).relativePart(
+            new AuthorityComponent.Fake("", "")
+          ).asString()
+        )
       );
     }
 
     @Test
-    void testIfAbsoluteElse() throws Throwable {
-      assertEquals(
-        "it's absolute, but fake",
-        new PathComponent.AbsoluteFake("", "", List.of())
-          .ifAbsoluteElse(x -> "it's absolute, but fake", x -> "ops")
-      );
-    }
-  }
-
-  @Nested
-  class RelativeFakeTest {
-    @Test
-    void testIterator() throws Throwable {
-      var expected = List.<PathSegmentSubcomponent>of(
-        new PathSegmentSubcomponent.NormalFake("encoded", "asString"),
-        new PathSegmentSubcomponent.NormalFake("encoded1", "asString"),
-        new PathSegmentSubcomponent.NormalFake("encoded2", "asString")
-      );
-      assertIterableEquals(
-        expected,
-        new PathComponent.RelativeFake("x", "y", expected)
-      );
-    }
-
-    @Test
-    void testAsString() throws Throwable {
-      var expected = "this path is encoded";
-      assertEquals(
-        expected,
-        new PathComponent.RelativeFake(expected, "any stuff", List.of()).encoded(StandardCharsets.UTF_16BE)
-      );
-    }
-
-    @Test
-    void testEncoded() throws Throwable {
-      var expected = "this is asString";
-      assertEquals(
-        expected,
-        new PathComponent.RelativeFake("e", expected, List.of()).asString()
-      );
-    }
-
-    @Test
-    void testIfAbsoluteElse() throws Throwable {
-      assertEquals(
-        "it's relative, but fake",
-        new PathComponent.RelativeFake("", "", List.of())
-          .ifAbsoluteElse(x -> "nope", x -> "it's relative, but fake")
+    void testHierPart() {
+      assertAll(
+        () -> assertEquals(
+          "hier part",
+          new PathComponent.Fake(
+            new UriComponent.Fake("relative", "part"),
+            new UriComponent.Fake("hier part", "")
+          ).hierPart().encoded(StandardCharsets.UTF_8)
+        ),
+        () -> assertEquals(
+          "hier part",
+          new PathComponent.Fake(
+            new UriComponent.Fake("relative", "part"),
+            new UriComponent.Fake("", "hier part")
+          ).hierPart(
+            new AuthorityComponent.Fake("", "")
+          ).asString()
+        )
       );
     }
   }

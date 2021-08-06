@@ -18,7 +18,6 @@ package io.github.raffaeleflorio.surily;
 import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * Path component of an URI
@@ -29,34 +28,116 @@ import java.util.function.Function;
  */
 public interface PathComponent extends UriComponent, Iterable<PathSegmentSubcomponent> {
   /**
-   * Uses a function if the path is absolute otherwise another one
+   * Builds a relative-part component
    *
-   * @param fn         The function used when the path is absolute
-   * @param relativeFn The function used when the path is relative
-   * @param <T>        The result type
-   * @return The result
+   * @return The relative-part
    */
-  <T> T ifAbsoluteElse(Function<PathComponent, T> fn, Function<PathComponent, T> relativeFn);
+  UriComponent relativePart();
 
   /**
-   * Absolute {@link PathComponent} for testing purpose
+   * Builds a relative-part component
+   *
+   * @param authority The authority
+   * @return The hier-part
+   */
+  UriComponent relativePart(AuthorityComponent authority);
+
+  /**
+   * Builds a hier-part component
+   *
+   * @return The hier-part
+   */
+  UriComponent hierPart();
+
+  /**
+   * Builds a hier-part component
+   *
+   * @param authority The authority
+   * @return The hier-part
+   */
+  UriComponent hierPart(AuthorityComponent authority);
+
+  /**
+   * {@link PathComponent} for testing purpose
    *
    * @author Raffaele Florio (raffaeleflorio@protonmail.com)
    * @since 1.0.0
    */
-  final class AbsoluteFake implements PathComponent {
+  final class Fake implements PathComponent {
+    /**
+     * Builds a fake
+     *
+     * @param segments The path segments
+     * @since 1.0.0
+     */
+    public Fake(final Iterable<PathSegmentSubcomponent> segments) {
+      this("", "", segments);
+    }
+
     /**
      * Builds a fake
      *
      * @param encoded  The encoded representation
      * @param asString The asString representation
-     * @param segments The path segments
      * @since 1.0.0
      */
-    public AbsoluteFake(final CharSequence encoded, final String asString, final List<PathSegmentSubcomponent> segments) {
+    public Fake(final CharSequence encoded, final String asString) {
+      this(encoded, asString, List.of());
+    }
+
+    /**
+     * Builds a fake
+     *
+     * @param encoded  The encoded representation
+     * @param asString The asString representation
+     * @param segments The segments
+     * @author Raffaele Florio (raffaeleflorio@protonmail.com)
+     * @since 1.0.0
+     */
+    public Fake(final CharSequence encoded, final String asString, final Iterable<PathSegmentSubcomponent> segments) {
+      this(
+        encoded,
+        asString,
+        segments,
+        new UriComponent.Fake("", ""),
+        new UriComponent.Fake("", "")
+      );
+    }
+
+    /**
+     * Builds a fake
+     *
+     * @param relativePart The relative-part
+     * @param hierPart     The hier-part
+     * @author Raffaele Florio (raffaeleflorio@protonmail.com)
+     * @since 1.0.0
+     */
+    public Fake(final UriComponent relativePart, final UriComponent hierPart) {
+      this("", "", List.of(), relativePart, hierPart);
+    }
+
+    /**
+     * Builds a fake
+     *
+     * @param encoded      The encoded representation
+     * @param asString     The asString representation
+     * @param segments     The path segments
+     * @param relativePart The relative-part
+     * @param hierPart     The hier-part
+     * @since 1.0.0
+     */
+    public Fake(
+      final CharSequence encoded,
+      final String asString,
+      final Iterable<PathSegmentSubcomponent> segments,
+      final UriComponent relativePart,
+      final UriComponent hierPart
+    ) {
       this.encoded = encoded;
       this.asString = asString;
       this.segments = segments;
+      this.relativePart = relativePart;
+      this.hierPart = hierPart;
     }
 
     @Override
@@ -75,58 +156,29 @@ public interface PathComponent extends UriComponent, Iterable<PathSegmentSubcomp
     }
 
     @Override
-    public <T> T ifAbsoluteElse(final Function<PathComponent, T> fn, final Function<PathComponent, T> relativeFn) {
-      return fn.apply(this);
+    public UriComponent relativePart() {
+      return relativePart;
+    }
+
+    @Override
+    public UriComponent relativePart(final AuthorityComponent authority) {
+      return relativePart;
+    }
+
+    @Override
+    public UriComponent hierPart() {
+      return hierPart;
+    }
+
+    @Override
+    public UriComponent hierPart(final AuthorityComponent authority) {
+      return hierPart;
     }
 
     private final CharSequence encoded;
     private final String asString;
-    private final List<PathSegmentSubcomponent> segments;
-  }
-
-  /**
-   * Relative {@link PathComponent} for testing purpose
-   *
-   * @author Raffaele Florio (raffaeleflorio@protonmail.com)
-   * @since 1.0.0
-   */
-  final class RelativeFake implements PathComponent {
-    /**
-     * Builds a fake
-     *
-     * @param encoded  The encoded representation
-     * @param asString The asString representation
-     * @param segments The path segments
-     * @since 1.0.0
-     */
-    public RelativeFake(final CharSequence encoded, final String asString, final List<PathSegmentSubcomponent> segments) {
-      this.encoded = encoded;
-      this.asString = asString;
-      this.segments = segments;
-    }
-
-    @Override
-    public CharSequence encoded(final Charset charset) {
-      return encoded;
-    }
-
-    @Override
-    public String asString() {
-      return asString;
-    }
-
-    @Override
-    public Iterator<PathSegmentSubcomponent> iterator() {
-      return segments.iterator();
-    }
-
-    @Override
-    public <T> T ifAbsoluteElse(final Function<PathComponent, T> fn, final Function<PathComponent, T> relativeFn) {
-      return relativeFn.apply(this);
-    }
-
-    private final CharSequence encoded;
-    private final String asString;
-    private final List<PathSegmentSubcomponent> segments;
+    private final Iterable<PathSegmentSubcomponent> segments;
+    private final UriComponent relativePart;
+    private final UriComponent hierPart;
   }
 }
