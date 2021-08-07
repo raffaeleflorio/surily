@@ -24,17 +24,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DotSegmentTest {
   @Test
-  void testEncoded() throws Throwable {
+  void testEncoded() {
     assertEquals(".", new DotSegment().encoded(StandardCharsets.UTF_8));
   }
 
   @Test
-  void testAsString() throws Throwable {
+  void testAsString() {
     assertEquals(".", new DotSegment().asString());
   }
 
   @Test
-  void testIfDotElse() throws Throwable {
+  void testIfDotElse() {
     assertTrue(new DotSegment().<Boolean>ifDotElse(x -> true, y -> false, z -> false));
   }
 }

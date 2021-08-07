@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UndefinedFragmentTest {
   @Test
-  void testEncoded() throws Throwable {
+  void testEncoded() {
     assertUndefinedComponentException(() -> new UndefinedFragment().encoded(StandardCharsets.US_ASCII));
   }
 
@@ -36,12 +36,12 @@ class UndefinedFragmentTest {
   }
 
   @Test
-  void testAsString() throws Throwable {
+  void testAsString() {
     assertUndefinedComponentException(() -> new UndefinedFragment().asString());
   }
 
   @Test
-  void testIfDefinedElse() throws Throwable {
+  void testIfDefinedElse() {
     assertTrue(new UndefinedFragment().ifDefinedElse(x -> false, () -> true));
   }
 }

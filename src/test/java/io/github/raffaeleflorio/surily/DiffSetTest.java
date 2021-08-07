@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DiffSetTest {
   @Test
-  void testDifference() throws Throwable {
+  void testDifference() {
     assertSetEquals(
       Set.of("42"),
       new DiffSet<>(Set.of("A", "B", "C", "D", "42"), Set.of("A", "B", "C", "D"))
@@ -38,7 +38,7 @@ class DiffSetTest {
   }
 
   @Test
-  void testSize() throws Throwable {
+  void testSize() {
     assertEquals(
       2,
       new DiffSet<>(Set.of("a string", "a number", "another string"), Set.of("a number")).size()

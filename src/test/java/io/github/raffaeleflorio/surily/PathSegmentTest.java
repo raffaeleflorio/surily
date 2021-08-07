@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PathSegmentTest {
   @Test
-  void testEncoded() throws Throwable {
+  void testEncoded() {
     assertEquals(
       "file%3F.png",
       new PathSegment("file?.png").encoded(StandardCharsets.US_ASCII)
@@ -32,7 +32,7 @@ class PathSegmentTest {
   }
 
   @Test
-  void testAsString() throws Throwable {
+  void testAsString() {
     assertEquals(
       "/actually/a/single/segment",
       new PathSegment("/actually/a/single/segment").asString()
@@ -40,7 +40,7 @@ class PathSegmentTest {
   }
 
   @Test
-  void testEmptySegment() throws Throwable {
+  void testEmptySegment() {
     assertAll(
       () -> assertEquals("", new PathSegment().encoded(StandardCharsets.UTF_8)),
       () -> assertEquals("", new PathSegment().asString())
@@ -48,7 +48,7 @@ class PathSegmentTest {
   }
 
   @Test
-  void testColonSegment() throws Throwable {
+  void testColonSegment() {
     assertAll(
       () -> assertEquals(
         "segment:with:colon",
@@ -62,7 +62,7 @@ class PathSegmentTest {
   }
 
   @Test
-  void testUnreservedCharacters() throws Throwable {
+  void testUnreservedCharacters() {
     var unreserved = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~!$&'()*+,;=:@";
     assertEquals(
       unreserved,
@@ -71,7 +71,7 @@ class PathSegmentTest {
   }
 
   @Test
-  void testIfDotElse() throws Throwable {
+  void testIfDotElse() {
     assertAll(
       () -> assertEquals(
         "double",

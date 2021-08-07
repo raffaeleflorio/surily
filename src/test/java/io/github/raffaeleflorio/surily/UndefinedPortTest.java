@@ -24,12 +24,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UndefinedPortTest {
   @Test
-  void testIfDefinedElse() throws Throwable {
+  void testIfDefinedElse() {
     assertTrue(new UndefinedPort().ifDefinedElse(x -> false, () -> true));
   }
 
   @Test
-  void testUndefinedPortException() throws Throwable {
+  void testUndefinedPortException() {
     assertAll(
       () -> assertUndefinedPort(() -> new UndefinedPort().asString()),
       () -> assertUndefinedPort(() -> new UndefinedPort().encoded(StandardCharsets.UTF_16LE))

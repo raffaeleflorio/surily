@@ -27,7 +27,7 @@ class PathComponentTest {
   @Nested
   class FakeTest {
     @Test
-    void testIterator() throws Throwable {
+    void testIterator() {
       var expected = List.<PathSegmentSubcomponent>of(
         new PathSegmentSubcomponent.NormalFake("encoded", "asString"),
         new PathSegmentSubcomponent.NormalFake("encoded1", "asString"),
@@ -37,7 +37,7 @@ class PathComponentTest {
     }
 
     @Test
-    void testAsString() throws Throwable {
+    void testAsString() {
       var expected = "this path is encoded";
       assertEquals(
         expected,
@@ -46,7 +46,7 @@ class PathComponentTest {
     }
 
     @Test
-    void testEncoded() throws Throwable {
+    void testEncoded() {
       var expected = "this is asString";
       assertEquals(expected, new PathComponent.Fake("xyz", expected).asString());
     }

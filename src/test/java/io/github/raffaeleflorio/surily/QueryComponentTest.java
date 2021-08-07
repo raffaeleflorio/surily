@@ -27,7 +27,7 @@ class QueryComponentTest {
   @Nested
   class FakeTest {
     @Test
-    void testEncoded() throws Throwable {
+    void testEncoded() {
       var expected = "encoded representation";
       assertEquals(
         expected,
@@ -36,7 +36,7 @@ class QueryComponentTest {
     }
 
     @Test
-    void testAsString() throws Throwable {
+    void testAsString() {
       var expected = "asString representation";
       assertEquals(
         expected,
@@ -45,7 +45,7 @@ class QueryComponentTest {
     }
 
     @Test
-    void testIfDefinedElse() throws Throwable {
+    void testIfDefinedElse() {
       assertTrue(new QueryComponent.Fake("any", "stuff").ifDefinedElse(x -> true, () -> false));
     }
   }

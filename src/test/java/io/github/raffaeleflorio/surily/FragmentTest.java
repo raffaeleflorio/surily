@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FragmentTest {
   @Test
-  void testUnreservedCharacters() throws Throwable {
+  void testUnreservedCharacters() {
     var unreserved = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~!$&'()*+,;=:@";
     assertEquals(
       unreserved,
@@ -33,7 +33,7 @@ class FragmentTest {
   }
 
   @Test
-  void testReservedCharacters() throws Throwable {
+  void testReservedCharacters() {
     assertEquals(
       "%23%5B%5D",
       new Fragment("#[]").encoded(StandardCharsets.UTF_8)
@@ -41,7 +41,7 @@ class FragmentTest {
   }
 
   @Test
-  void testAsString() throws Throwable {
+  void testAsString() {
     var expected = "the unencoded fragment #[]";
     assertEquals(
       expected,
@@ -50,12 +50,12 @@ class FragmentTest {
   }
 
   @Test
-  void testEmptyFragment() throws Throwable {
+  void testEmptyFragment() {
     assertEquals("", new Fragment().encoded(StandardCharsets.ISO_8859_1));
   }
 
   @Test
-  void testIfDefinedElse() throws Throwable {
+  void testIfDefinedElse() {
     assertTrue(new Fragment().ifDefinedElse(x -> true, () -> false));
   }
 }

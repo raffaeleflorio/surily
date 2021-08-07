@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AuthorityTest {
   @Test
-  void testEncoded() throws Throwable {
+  void testEncoded() {
     assertEquals(
       "userinfo@host:1234",
       new Authority(
@@ -35,7 +35,7 @@ class AuthorityTest {
   }
 
   @Test
-  void testEncodedWithoutUserinfo() throws Throwable {
+  void testEncodedWithoutUserinfo() {
     assertEquals(
       "host:1234",
       new Authority(
@@ -46,7 +46,7 @@ class AuthorityTest {
   }
 
   @Test
-  void testEncodedWithoutPort() throws Throwable {
+  void testEncodedWithoutPort() {
     assertEquals(
       "userinfo@host",
       new Authority(
@@ -57,7 +57,7 @@ class AuthorityTest {
   }
 
   @Test
-  void testEncodedWithOnlyHost() throws Throwable {
+  void testEncodedWithOnlyHost() {
     assertEquals(
       "[::1]",
       new Authority(
@@ -67,7 +67,7 @@ class AuthorityTest {
   }
 
   @Test
-  void testAsString() throws Throwable {
+  void testAsString() {
     assertEquals(
       "userinfo@host:54901",
       new Authority(
@@ -79,7 +79,7 @@ class AuthorityTest {
   }
 
   @Test
-  void testAsStringWithoutPort() throws Throwable {
+  void testAsStringWithoutPort() {
     assertEquals(
       "userinfo@host",
       new Authority(
@@ -91,7 +91,7 @@ class AuthorityTest {
 
 
   @Test
-  void testAsStringWithoutUserInfo() throws Throwable {
+  void testAsStringWithoutUserInfo() {
     assertEquals(
       "host:65432",
       new Authority(
@@ -102,7 +102,7 @@ class AuthorityTest {
   }
 
   @Test
-  void testAsStringWithOnlyHost() throws Throwable {
+  void testAsStringWithOnlyHost() {
     assertEquals(
       "127.0.0.1",
       new Authority(
@@ -112,7 +112,7 @@ class AuthorityTest {
   }
 
   @Test
-  void testHost() throws Throwable {
+  void testHost() {
     assertEquals(
       "example%20.com",
       new Authority(
@@ -122,7 +122,7 @@ class AuthorityTest {
   }
 
   @Test
-  void testIfDefinedElse() throws Throwable {
+  void testIfDefinedElse() {
     assertTrue(
       new Authority(
         new HostSubcomponent.Fake("any", "stuff")
@@ -131,7 +131,7 @@ class AuthorityTest {
   }
 
   @Test
-  void testUndefinedComponents() throws Throwable {
+  void testUndefinedComponents() {
     assertAll(
       () -> assertEquals(
         "undefined port",

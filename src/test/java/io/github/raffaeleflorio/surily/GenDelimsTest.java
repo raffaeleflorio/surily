@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GenDelimsTest {
   @Test
-  void testIterator() throws Throwable {
+  void testIterator() {
     assertSetEquals(
       Set.of(':', '/', '?', '#', '[', ']', '@'),
       new GenDelims()
@@ -38,7 +38,7 @@ class GenDelimsTest {
   }
 
   @Test
-  void testSize() throws Throwable {
+  void testSize() {
     assertEquals(
       7,
       new GenDelims().size()

@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UserinfoTest {
   @Test
-  void testEncoded() throws Throwable {
+  void testEncoded() {
     assertEquals(
       "user%40%23%5B%5D:info",
       new Userinfo("user@#[]:info").encoded(StandardCharsets.UTF_8)
@@ -32,7 +32,7 @@ class UserinfoTest {
   }
 
   @Test
-  void testAsString() throws Throwable {
+  void testAsString() {
     assertEquals(
       "user[info]",
       new Userinfo("user[info]").asString()
@@ -40,7 +40,7 @@ class UserinfoTest {
   }
 
   @Test
-  void testUnreservedCharacters() throws Throwable {
+  void testUnreservedCharacters() {
     var unreserved = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~!$&'()*+,;=:";
     assertEquals(
       unreserved,
@@ -49,7 +49,7 @@ class UserinfoTest {
   }
 
   @Test
-  void testEmptyUserinfo() throws Throwable {
+  void testEmptyUserinfo() {
     assertAll(
       () -> assertEquals("", new Userinfo().encoded(StandardCharsets.UTF_8)),
       () -> assertEquals("", new Userinfo().asString())
@@ -57,7 +57,7 @@ class UserinfoTest {
   }
 
   @Test
-  void testIfDefinedElse() throws Throwable {
+  void testIfDefinedElse() {
     assertEquals(
       "defined",
       new Userinfo().ifDefinedElse(x -> "defined", () -> "undefined")

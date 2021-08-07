@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PairQueryTest {
   @Test
-  void testUnreservedKeyCharacters() throws Throwable {
+  void testUnreservedKeyCharacters() {
     var unreserved = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~!$&'()*+,;:@";
     assertEquals(
       unreserved.concat("=any"),
@@ -33,7 +33,7 @@ class PairQueryTest {
   }
 
   @Test
-  void testUnreservedValueCharacters() throws Throwable {
+  void testUnreservedValueCharacters() {
     var unreserved = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~!$&'()*+,;=:@";
     assertEquals(
       "any=".concat(unreserved),
@@ -42,7 +42,7 @@ class PairQueryTest {
   }
 
   @Test
-  void testReservedKeyCharacters() throws Throwable {
+  void testReservedKeyCharacters() {
     assertEquals(
       "%23%5B%5D%3D=any",
       new PairQuery("#[]=", "any").encoded(StandardCharsets.US_ASCII)
@@ -50,7 +50,7 @@ class PairQueryTest {
   }
 
   @Test
-  void testReservedValueCharacters() throws Throwable {
+  void testReservedValueCharacters() {
     assertEquals(
       "any=%23%5B%5D",
       new PairQuery("any", "#[]").encoded(StandardCharsets.US_ASCII)
@@ -58,7 +58,7 @@ class PairQueryTest {
   }
 
   @Test
-  void testDefaultDelimiter() throws Throwable {
+  void testDefaultDelimiter() {
     assertEquals(
       "%3D%3D====",
       new PairQuery("==", "===").encoded(StandardCharsets.ISO_8859_1)
@@ -66,7 +66,7 @@ class PairQueryTest {
   }
 
   @Test
-  void testDelimiterFromUnreservedCharactersSet() throws Throwable {
+  void testDelimiterFromUnreservedCharactersSet() {
     assertEquals(
       "the%20key%20with%20%40@the%20value%20with%20@",
       new PairQuery("the key with @", "the value with @", '@').encoded(StandardCharsets.UTF_8)
@@ -74,7 +74,7 @@ class PairQueryTest {
   }
 
   @Test
-  void testAsString() throws Throwable {
+  void testAsString() {
     assertEquals(
       "key?=value with multiple\nwhitespaces",
       new PairQuery("key?", "value with multiple\nwhitespaces").asString()
@@ -82,7 +82,7 @@ class PairQueryTest {
   }
 
   @Test
-  void testDisallowedDelimiters() throws Throwable {
+  void testDisallowedDelimiters() {
     assertAll(
       () -> assertThrowsWithMessage(
         IllegalStateException.class,
@@ -114,7 +114,7 @@ class PairQueryTest {
   }
 
   @Test
-  void testEmptyKeyValue() throws Throwable {
+  void testEmptyKeyValue() {
     assertEquals(
       "=",
       new PairQuery("", "").encoded(StandardCharsets.US_ASCII)
@@ -122,7 +122,7 @@ class PairQueryTest {
   }
 
   @Test
-  void testIfDefinedElse() throws Throwable {
+  void testIfDefinedElse() {
     assertTrue(new PairQuery("k", "v").ifDefinedElse(x -> true, () -> false));
   }
 }

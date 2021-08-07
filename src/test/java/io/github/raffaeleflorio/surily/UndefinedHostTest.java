@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UndefinedHostTest {
   @Test
-  void testRepresentationsException() throws Throwable {
+  void testRepresentationsException() {
     assertAll(
       () -> assertUndefinedHostException(() -> new UndefinedHost().encoded(StandardCharsets.US_ASCII)),
       () -> assertUndefinedHostException(() -> new UndefinedHost().asString())
@@ -39,7 +39,7 @@ class UndefinedHostTest {
   }
 
   @Test
-  void testIfDefinedElse() throws Throwable {
+  void testIfDefinedElse() {
     assertFalse(new UndefinedHost().ifDefinedElse(x -> true, () -> false));
   }
 }

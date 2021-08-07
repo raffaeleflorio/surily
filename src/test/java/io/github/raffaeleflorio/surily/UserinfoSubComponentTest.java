@@ -27,7 +27,7 @@ class UserinfoSubComponentTest {
   @Nested
   class FakeTest {
     @Test
-    void testEncoded() throws Throwable {
+    void testEncoded() {
       var expected = "";
       assertEquals(
         expected,
@@ -36,7 +36,7 @@ class UserinfoSubComponentTest {
     }
 
     @Test
-    void testAsString() throws Throwable {
+    void testAsString() {
       var expected = "";
       assertEquals(
         expected,
@@ -45,7 +45,7 @@ class UserinfoSubComponentTest {
     }
 
     @Test
-    void testIfDefinedElse() throws Throwable {
+    void testIfDefinedElse() {
       assertTrue(new UserinfoSubComponent.Fake("any", "stuff").ifDefinedElse(x -> true, () -> false));
     }
   }

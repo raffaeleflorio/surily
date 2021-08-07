@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AbsolutePathTest {
   @Test
-  void testEncoded() throws Throwable {
+  void testEncoded() {
     assertEquals(
       "/%2F/%2F/S%20%23%CF%80.xml",
       new AbsolutePath(
@@ -41,12 +41,12 @@ class AbsolutePathTest {
   }
 
   @Test
-  void testRootPath() throws Throwable {
+  void testRootPath() {
     assertEquals("/", new AbsolutePath().encoded(StandardCharsets.US_ASCII));
   }
 
   @Test
-  void testAsString() throws Throwable {
+  void testAsString() {
     assertEquals(
       "/segment with ? \u03BB reserved characters[].json",
       new AbsolutePath(
@@ -58,7 +58,7 @@ class AbsolutePathTest {
   }
 
   @Test
-  void testIterator() throws Throwable {
+  void testIterator() {
     assertIterableEquals(
       List.of("segment 0", "segment 1", "segment 2"),
       asString(
@@ -80,7 +80,7 @@ class AbsolutePathTest {
   }
 
   @Test
-  void testZeroSegmentAsFirstSegment() throws Throwable {
+  void testZeroSegmentAsFirstSegment() {
     assertAll(
       () -> assertIllegalZeroSegment(
         () -> new AbsolutePath(List.of(new PathSegmentSubcomponent.NormalFake("", ""))).asString()
@@ -110,7 +110,7 @@ class AbsolutePathTest {
   }
 
   @Test
-  void testZeroSegmentsExceptFirstOne() throws Throwable {
+  void testZeroSegmentsExceptFirstOne() {
     assertEquals(
       "/first//",
       new AbsolutePath(

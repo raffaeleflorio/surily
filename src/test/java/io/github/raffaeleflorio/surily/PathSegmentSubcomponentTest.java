@@ -26,7 +26,7 @@ class PathSegmentSubcomponentTest {
   @Nested
   class NormalFakeTest {
     @Test
-    void testEncoded() throws Throwable {
+    void testEncoded() {
       var expected = "the encoded representation";
       assertEquals(
         expected,
@@ -35,7 +35,7 @@ class PathSegmentSubcomponentTest {
     }
 
     @Test
-    void testAsString() throws Throwable {
+    void testAsString() {
       var expected = "the asString representation";
       assertEquals(
         expected,
@@ -44,7 +44,7 @@ class PathSegmentSubcomponentTest {
     }
 
     @Test
-    void testIfDotElse() throws Throwable {
+    void testIfDotElse() {
       assertAll(
         () -> assertFalse(
           new PathSegmentSubcomponent.NormalFake("", "").<Boolean>ifDotElse(x -> true, y -> true, z -> false)
@@ -59,7 +59,7 @@ class PathSegmentSubcomponentTest {
   @Nested
   class SingleDotFakeTest {
     @Test
-    void assertEncoded() throws Throwable {
+    void assertEncoded() {
       var expected = "encoded single dot";
       assertEquals(
         expected,
@@ -68,7 +68,7 @@ class PathSegmentSubcomponentTest {
     }
 
     @Test
-    void assertAsString() throws Throwable {
+    void assertAsString() {
       var expected = "asString representaiton";
       assertEquals(
         expected,
@@ -77,7 +77,7 @@ class PathSegmentSubcomponentTest {
     }
 
     @Test
-    void testIfDotElse() throws Throwable {
+    void testIfDotElse() {
       var expected = "a single dot";
       assertEquals(
         expected,
@@ -94,7 +94,7 @@ class PathSegmentSubcomponentTest {
   @Nested
   class DoubleDotFakeTest {
     @Test
-    void assertEncoded() throws Throwable {
+    void assertEncoded() {
       var expected = "encoded double dot";
       assertEquals(
         expected,
@@ -103,7 +103,7 @@ class PathSegmentSubcomponentTest {
     }
 
     @Test
-    void assertAsString() throws Throwable {
+    void assertAsString() {
       var expected = "asString representaiton";
       assertEquals(
         expected,
@@ -112,7 +112,7 @@ class PathSegmentSubcomponentTest {
     }
 
     @Test
-    void testIfDotElse() throws Throwable {
+    void testIfDotElse() {
       var expected = "a double dot";
       assertEquals(
         expected,

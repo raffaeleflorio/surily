@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SchemeTest {
   @Test
-  void testLowerCaseEncoded() throws Throwable {
+  void testLowerCaseEncoded() {
     assertEquals(
       "https",
       new Scheme("HTTPS").encoded(StandardCharsets.UTF_8)
@@ -32,7 +32,7 @@ class SchemeTest {
   }
 
   @Test
-  void testAsString() throws Throwable {
+  void testAsString() {
     assertEquals(
       "HTTP",
       new Scheme("HTTP").asString()
@@ -40,7 +40,7 @@ class SchemeTest {
   }
 
   @Test
-  void testDisallowedFirstCharacter() throws Throwable {
+  void testDisallowedFirstCharacter() {
     assertAll(
       () -> assertIllegalScheme(() -> new Scheme("1abcd").encoded(StandardCharsets.US_ASCII), "1abcd"),
       () -> assertIllegalScheme(() -> new Scheme("+xyz").asString(), "+xyz"),
@@ -65,12 +65,12 @@ class SchemeTest {
   }
 
   @Test
-  void testEmptyScheme() throws Throwable {
+  void testEmptyScheme() {
     assertIllegalScheme(() -> new Scheme("").asString(), "");
   }
 
   @Test
-  void testDisallowedCharacters() throws Throwable {
+  void testDisallowedCharacters() {
     assertAll(
       () -> assertIllegalScheme(() -> new Scheme("ht%ps").encoded(StandardCharsets.UTF_8), "ht%ps"),
       () -> assertIllegalScheme(() -> new Scheme("ft\b").encoded(StandardCharsets.ISO_8859_1), "ft\b"),
@@ -80,7 +80,7 @@ class SchemeTest {
   }
 
   @Test
-  void testExceptionMaxLength() throws Throwable {
+  void testExceptionMaxLength() {
     assertThrowsWithMessage(
       IllegalStateException.class,
       () -> new Scheme("1".repeat(4097)).asString(),
@@ -89,7 +89,7 @@ class SchemeTest {
   }
 
   @Test
-  void testIfDefinedElse() throws Throwable {
+  void testIfDefinedElse() {
     assertTrue(new Scheme("ssh").ifDefinedElse(x -> true, () -> false));
   }
 }

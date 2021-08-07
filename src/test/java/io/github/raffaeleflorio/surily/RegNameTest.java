@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RegNameTest {
   @Test
-  void testEmptyRegName() throws Throwable {
+  void testEmptyRegName() {
     assertAll(
       () -> assertEquals("", new RegName().encoded(StandardCharsets.UTF_8)),
       () -> assertEquals("", new RegName().asString())
@@ -31,7 +31,7 @@ class RegNameTest {
   }
 
   @Test
-  void testUnreservedCharacters() throws Throwable {
+  void testUnreservedCharacters() {
     var unreserved = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~!$&'()*+,;=";
     assertEquals(
       unreserved,
@@ -40,7 +40,7 @@ class RegNameTest {
   }
 
   @Test
-  void testEncoded() throws Throwable {
+  void testEncoded() {
     assertEquals(
       "%E2%96%9F%23%3F",
       new RegName("\u259F#?").encoded(StandardCharsets.UTF_8)
@@ -48,7 +48,7 @@ class RegNameTest {
   }
 
   @Test
-  void testAsString() throws Throwable {
+  void testAsString() {
     assertEquals(
       "@/?#][",
       new RegName("@/?#][").asString()
@@ -56,7 +56,7 @@ class RegNameTest {
   }
 
   @Test
-  void testIfDefinedElse() throws Throwable {
+  void testIfDefinedElse() {
     assertTrue(new RegName("localhost").ifDefinedElse(x -> true, () -> false));
   }
 }

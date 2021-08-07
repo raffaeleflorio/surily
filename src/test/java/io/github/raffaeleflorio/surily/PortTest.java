@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PortTest {
   @Test
-  void testEncoded() throws Throwable {
+  void testEncoded() {
     assertEquals(
       "80",
       new Port(80).encoded(StandardCharsets.UTF_8)
@@ -32,7 +32,7 @@ class PortTest {
   }
 
   @Test
-  void testAsString() throws Throwable {
+  void testAsString() {
     assertEquals(
       "1234",
       new Port(1234).asString()
@@ -40,7 +40,7 @@ class PortTest {
   }
 
   @Test
-  void testIllegalPorts() throws Throwable {
+  void testIllegalPorts() {
     assertAll(
       () -> assertIllegalPort(() -> new Port(-5678).asString(), "-5678"),
       () -> assertIllegalPort(() -> new Port(65537).encoded(StandardCharsets.US_ASCII), "65537"),
@@ -63,7 +63,7 @@ class PortTest {
   }
 
   @Test
-  void testExceptionMaxLength() throws Throwable {
+  void testExceptionMaxLength() {
     assertIllegalPort(
       () -> new Port("A".repeat(4097)).encoded(StandardCharsets.UTF_16),
       "A".repeat(4096).concat("...")
@@ -71,7 +71,7 @@ class PortTest {
   }
 
   @Test
-  void testEmptyPort() throws Throwable {
+  void testEmptyPort() {
     assertAll(
       () -> assertEquals("", new Port().asString()),
       () -> assertEquals("", new Port().encoded(StandardCharsets.US_ASCII))
@@ -79,7 +79,7 @@ class PortTest {
   }
 
   @Test
-  void testIfDefinedElse() throws Throwable {
+  void testIfDefinedElse() {
     assertEquals(
       "it's defined",
       new Port().ifDefinedElse(x -> "it's defined", () -> "undefined")

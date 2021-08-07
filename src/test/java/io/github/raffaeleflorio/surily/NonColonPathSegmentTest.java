@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class NonColonPathSegmentTest {
   @Test
-  void testEncoded() throws Throwable {
+  void testEncoded() {
     var illegal = "segment:with:colon";
     assertIllegalNonColonSegment(
       illegal,
@@ -41,7 +41,7 @@ class NonColonPathSegmentTest {
   }
 
   @Test
-  void testAsString() throws Throwable {
+  void testAsString() {
     var illegal = ":::";
     assertIllegalNonColonSegment(
       illegal,
@@ -50,7 +50,7 @@ class NonColonPathSegmentTest {
   }
 
   @Test
-  void testIfDotElse() throws Throwable {
+  void testIfDotElse() {
     assertAll(
       () -> assertTrue(new NonColonPathSegment(".").<Boolean>ifDotElse(x -> true, y -> false, z -> false)),
       () -> assertTrue(new NonColonPathSegment("..").<Boolean>ifDotElse(x -> false, y -> true, z -> false)),

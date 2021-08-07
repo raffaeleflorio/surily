@@ -24,12 +24,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UndefinedAuthorityTest {
   @Test
-  void testIfDefinedElse() throws Throwable {
+  void testIfDefinedElse() {
     assertTrue(new UndefinedAuthority().ifDefinedElse(x -> false, () -> true));
   }
 
   @Test
-  void testRepresentationsException() throws Throwable {
+  void testRepresentationsException() {
     assertAll(
       () -> assertUndefinedAuthorityException(() -> new UndefinedAuthority().asString()),
       () -> assertUndefinedAuthorityException(() -> new UndefinedAuthority().encoded(StandardCharsets.UTF_16LE))
@@ -44,7 +44,7 @@ class UndefinedAuthorityTest {
   }
 
   @Test
-  void testUserinfo() throws Throwable {
+  void testUserinfo() {
     assertEquals(
       "userinfo is undefined",
       new UndefinedAuthority().userinfo().ifDefinedElse(x -> "not really...", () -> "userinfo is undefined")
@@ -52,7 +52,7 @@ class UndefinedAuthorityTest {
   }
 
   @Test
-  void testHost() throws Throwable {
+  void testHost() {
     assertEquals(
       "host is undefined",
       new UndefinedAuthority().host().ifDefinedElse(x -> "ops", () -> "host is undefined")
@@ -60,7 +60,7 @@ class UndefinedAuthorityTest {
   }
 
   @Test
-  void testPort() throws Throwable {
+  void testPort() {
     assertEquals(
       "port is undefined",
       new UndefinedAuthority().port().ifDefinedElse(x -> "42", () -> "port is undefined")

@@ -26,7 +26,7 @@ class AuthorityComponentTest {
   @Nested
   class FakeTest {
     @Test
-    void testEncoded() throws Throwable {
+    void testEncoded() {
       var expected = "the encoded authority";
       assertEquals(
         expected,
@@ -35,31 +35,31 @@ class AuthorityComponentTest {
     }
 
     @Test
-    void testAsString() throws Throwable {
+    void testAsString() {
       var expected = "the asString authority";
       assertEquals(expected, new AuthorityComponent.Fake("any", expected).asString());
     }
 
     @Test
-    void testUserinfo() throws Throwable {
+    void testUserinfo() {
       var expected = new UserinfoSubComponent.Fake("e", "a");
       assertEquals(expected, new AuthorityComponent.Fake(expected).userinfo());
     }
 
     @Test
-    void testHost() throws Throwable {
+    void testHost() {
       var expected = new HostSubcomponent.Fake("encoded", "asString");
       assertEquals(expected, new AuthorityComponent.Fake(expected).host());
     }
 
     @Test
-    void testPort() throws Throwable {
+    void testPort() {
       var expected = new PortSubcomponent.Fake(234567890);
       assertEquals(expected, new AuthorityComponent.Fake(expected).port());
     }
 
     @Test
-    void testIfDefinedElse() throws Throwable {
+    void testIfDefinedElse() {
       assertEquals(
         "fake, but defined",
         new AuthorityComponent.Fake(

@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class NonZeroPathSegmentTest {
   @Test
-  void testEncoded() throws Throwable {
+  void testEncoded() {
     assertIllegalNonZeroSegment(() -> new NonZeroPathSegment("").encoded(StandardCharsets.US_ASCII));
   }
 
@@ -36,12 +36,12 @@ class NonZeroPathSegmentTest {
   }
 
   @Test
-  void testAsString() throws Throwable {
+  void testAsString() {
     assertIllegalNonZeroSegment(() -> new NonZeroPathSegment("").asString());
   }
 
   @Test
-  void testWithNonZeroSegment() throws Throwable {
+  void testWithNonZeroSegment() {
     assertAll(
       () -> assertDoesNotThrow(() -> new NonZeroPathSegment("ok")).encoded(StandardCharsets.UTF_16BE),
       () -> assertDoesNotThrow(() -> new NonZeroPathSegment(" ")).asString()
@@ -49,7 +49,7 @@ class NonZeroPathSegmentTest {
   }
 
   @Test
-  void testIfDotElse() throws Throwable {
+  void testIfDotElse() {
     assertAll(
       () -> assertTrue(new NonZeroPathSegment(".").<Boolean>ifDotElse(x -> true, y -> false, z -> false)),
       () -> assertTrue(new NonZeroPathSegment("..").<Boolean>ifDotElse(x -> false, y -> true, z -> false)),

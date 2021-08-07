@@ -26,7 +26,7 @@ class UriComponentTest {
   @Nested
   class FakeTest {
     @Test
-    void testEncoded() throws Throwable {
+    void testEncoded() {
       var expected = "the encoded representation";
       assertEquals(
         expected,
@@ -35,7 +35,7 @@ class UriComponentTest {
     }
 
     @Test
-    void testAsString() throws Throwable {
+    void testAsString() {
       var expected = "the asString representation";
       assertEquals(
         expected,

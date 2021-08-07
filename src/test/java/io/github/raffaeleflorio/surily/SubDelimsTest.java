@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SubDelimsTest {
   @Test
-  void testIterator() throws Throwable {
+  void testIterator() {
     assertSetEquals(
       Set.of('!', '$', '&', '\'', '(', ')', '*', '+', ',', ';', '='),
       new SubDelims()
@@ -38,7 +38,7 @@ class SubDelimsTest {
   }
 
   @Test
-  void testSize() throws Throwable {
+  void testSize() {
     assertEquals(
       11,
       new SubDelims().size()

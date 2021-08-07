@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UndefinedSchemeTest {
   @Test
-  void testIfDefinedElse() throws Throwable {
+  void testIfDefinedElse() {
     assertEquals(
       "this is undefined",
       new UndefinedScheme().ifDefinedElse(x -> "", () -> "this is undefined")
@@ -32,7 +32,7 @@ class UndefinedSchemeTest {
   }
 
   @Test
-  void testRepresentationsException() throws Throwable {
+  void testRepresentationsException() {
     assertAll(
       () -> assertUndefinedSchemeException(() -> new UndefinedScheme().encoded(StandardCharsets.UTF_8)),
       () -> assertUndefinedSchemeException(() -> new UndefinedScheme().asString())

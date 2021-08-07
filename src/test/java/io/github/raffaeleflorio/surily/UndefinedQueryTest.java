@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UndefinedQueryTest {
   @Test
-  void testIfDefinedElse() throws Throwable {
+  void testIfDefinedElse() {
     assertEquals(
       "this is undefined",
       new UndefinedQuery().ifDefinedElse(x -> "ops...", () -> "this is undefined")
@@ -32,7 +32,7 @@ class UndefinedQueryTest {
   }
 
   @Test
-  void testRepresentationsException() throws Throwable {
+  void testRepresentationsException() {
     assertAll(
       () -> assertUndefinedQueryException(() -> new UndefinedQuery().encoded(StandardCharsets.UTF_8)),
       () -> assertUndefinedQueryException(() -> new UndefinedQuery().asString())

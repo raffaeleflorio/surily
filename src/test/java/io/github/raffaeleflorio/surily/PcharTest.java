@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PcharTest {
   @Test
-  void testIterator() throws Throwable {
+  void testIterator() {
     assertSetEquals(
       Set.of(
         'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
@@ -44,7 +44,7 @@ class PcharTest {
   }
 
   @Test
-  void testSize() throws Throwable {
+  void testSize() {
     assertEquals(
       80,
       new Pchar().size()

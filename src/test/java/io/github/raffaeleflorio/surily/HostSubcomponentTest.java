@@ -26,7 +26,7 @@ class HostSubcomponentTest {
   @Nested
   class FakeTest {
     @Test
-    void testEncoded() throws Throwable {
+    void testEncoded() {
       var expected = "";
       assertEquals(
         expected,
@@ -35,7 +35,7 @@ class HostSubcomponentTest {
     }
 
     @Test
-    void testAsString() throws Throwable {
+    void testAsString() {
       var expected = "";
       assertEquals(
         expected,
@@ -44,7 +44,7 @@ class HostSubcomponentTest {
     }
 
     @Test
-    void testIfDefinedElse() throws Throwable {
+    void testIfDefinedElse() {
       assertEquals(
         "ok",
         new HostSubcomponent.Fake("0", "1").ifDefinedElse(x -> "ok", () -> "nok")

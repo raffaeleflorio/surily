@@ -27,7 +27,7 @@ class FragmentComponentTest {
   @Nested
   class FakeTest {
     @Test
-    void testEncoded() throws Throwable {
+    void testEncoded() {
       var expected = "encoded";
       assertEquals(
         expected,
@@ -36,7 +36,7 @@ class FragmentComponentTest {
     }
 
     @Test
-    void testAsString() throws Throwable {
+    void testAsString() {
       var expected = "asString representation";
       assertEquals(
         expected,
@@ -45,7 +45,7 @@ class FragmentComponentTest {
     }
 
     @Test
-    void testIfDefinedElse() throws Throwable {
+    void testIfDefinedElse() {
       assertTrue(new FragmentComponent.Fake("x", "y").ifDefinedElse(x -> true, () -> false));
     }
   }

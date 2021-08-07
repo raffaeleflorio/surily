@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class IPv6AddressTest {
   @Test
-  void testEncoded() throws Throwable {
+  void testEncoded() {
     assertEquals(
       "[::1]",
       new IPv6Address("::1").encoded(StandardCharsets.US_ASCII)
@@ -33,7 +33,7 @@ class IPv6AddressTest {
   }
 
   @Test
-  void testAsString() throws Throwable {
+  void testAsString() {
     assertEquals(
       "[2001:0db8:0000:0000:0000:ff00:0042:8329]",
       new IPv6Address("2001:0db8:0000:0000:0000:ff00:0042:8329").asString()
@@ -41,7 +41,7 @@ class IPv6AddressTest {
   }
 
   @Test
-  void testIPv4Mapped() throws Throwable {
+  void testIPv4Mapped() {
     assertEquals(
       "[::ffff:127.0.0.1]",
       new IPv6Address("::ffff:127.0.0.1").encoded(StandardCharsets.ISO_8859_1)
@@ -49,7 +49,7 @@ class IPv6AddressTest {
   }
 
   @Test
-  void testLegalAddresses() throws Throwable {
+  void testLegalAddresses() {
     assertAll(
       () -> assertDoesNotThrow(() -> new IPv6Address("a::b").encoded(StandardCharsets.UTF_8)),
       () -> assertDoesNotThrow(() -> new IPv6Address("AAAA:BBBB:C::0.0.0.0").asString()),
@@ -71,7 +71,7 @@ class IPv6AddressTest {
   }
 
   @Test
-  void testIllegalIPv6Addresses() throws Throwable {
+  void testIllegalIPv6Addresses() {
     assertAll(
       () -> assertIllegalAddress(
         () -> new IPv6Address(":").asString(),
@@ -141,7 +141,7 @@ class IPv6AddressTest {
   }
 
   @Test
-  void testExceptionMaxLength() throws Throwable {
+  void testExceptionMaxLength() {
     assertIllegalAddress(
       () -> new IPv6Address("A".repeat(4097)).asString(),
       "A".repeat(4096).concat("...")
@@ -149,7 +149,7 @@ class IPv6AddressTest {
   }
 
   @Test
-  void testIfDefinedElse() throws Throwable {
+  void testIfDefinedElse() {
     assertTrue(new IPv6Address("::1").ifDefinedElse(x -> true, () -> false));
   }
 }

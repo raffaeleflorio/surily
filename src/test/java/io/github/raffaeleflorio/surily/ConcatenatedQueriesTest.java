@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ConcatenatedQueriesTest {
   @Test
-  void testEncoded() throws Throwable {
+  void testEncoded() {
     assertEquals(
       "first%20query&second%20query&third%20query",
       new ConcatenatedQueries(
@@ -39,7 +39,7 @@ class ConcatenatedQueriesTest {
   }
 
   @Test
-  void testAsString() throws Throwable {
+  void testAsString() {
     assertEquals(
       "first query&second query&third query",
       new ConcatenatedQueries(
@@ -53,7 +53,7 @@ class ConcatenatedQueriesTest {
   }
 
   @Test
-  void testCustomDelimiter() throws Throwable {
+  void testCustomDelimiter() {
     assertEquals(
       "first%20query%3B;second%20query;third%20qu%3Bery",
       new ConcatenatedQueries(
@@ -68,7 +68,7 @@ class ConcatenatedQueriesTest {
   }
 
   @Test
-  void testDisallowedDelimiter() throws Throwable {
+  void testDisallowedDelimiter() {
     assertAll(
       () -> assertThrowsWithMessage(
         IllegalStateException.class,
@@ -105,7 +105,7 @@ class ConcatenatedQueriesTest {
   }
 
   @Test
-  void testIfDefinedElse() throws Throwable {
+  void testIfDefinedElse() {
     assertTrue(new ConcatenatedQueries(List.of()).ifDefinedElse(x -> true, () -> false));
   }
 }

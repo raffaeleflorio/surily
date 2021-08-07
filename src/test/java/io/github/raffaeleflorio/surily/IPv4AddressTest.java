@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class IPv4AddressTest {
   @Test
-  void testEncoded() throws Throwable {
+  void testEncoded() {
     assertEquals(
       "127.0.0.1",
       new IPv4Address(127, 0, 0, 1).encoded(StandardCharsets.UTF_8)
@@ -33,7 +33,7 @@ class IPv4AddressTest {
   }
 
   @Test
-  void testAsString() throws Throwable {
+  void testAsString() {
     assertEquals(
       "255.255.255.0",
       new IPv4Address(255, 255, 255, 0).asString()
@@ -41,7 +41,7 @@ class IPv4AddressTest {
   }
 
   @Test
-  void testIllegalIPv4Addresses() throws Throwable {
+  void testIllegalIPv4Addresses() {
     assertAll(
       () -> assertIllegalIPv4Address(
         () -> new IPv4Address(256, 0, 0, 1).asString(),
@@ -114,7 +114,7 @@ class IPv4AddressTest {
   }
 
   @Test
-  void testExceptionMaxLength() throws Throwable {
+  void testExceptionMaxLength() {
     assertIllegalIPv4Address(
       () -> new IPv4Address("A".repeat(4097)).asString(),
       "A".repeat(4096).concat("...")
@@ -122,7 +122,7 @@ class IPv4AddressTest {
   }
 
   @Test
-  void testIfDefinedElse() throws Throwable {
+  void testIfDefinedElse() {
     assertTrue(new IPv4Address("31.32.33.255").ifDefinedElse(x -> true, () -> false));
   }
 }

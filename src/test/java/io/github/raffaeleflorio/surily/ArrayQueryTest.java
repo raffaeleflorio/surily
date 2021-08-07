@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ArrayQueryTest {
   @Test
-  void testEncoded() throws Throwable {
+  void testEncoded() {
     assertEquals(
       "key=value&key=value1&key=another%20one",
       new ArrayQuery("key", List.of("value", "value1", "another one")).encoded(StandardCharsets.US_ASCII)
@@ -33,7 +33,7 @@ class ArrayQueryTest {
   }
 
   @Test
-  void testAsString() throws Throwable {
+  void testAsString() {
     assertEquals(
       "key[]=3&key[]=2",
       new ArrayQuery("key[]", List.of("3", "2")).asString()
@@ -41,7 +41,7 @@ class ArrayQueryTest {
   }
 
   @Test
-  void testWithEmptyValues() throws Throwable {
+  void testWithEmptyValues() {
     assertEquals(
       "",
       new ArrayQuery("name", List.of()).encoded(StandardCharsets.ISO_8859_1)
@@ -49,7 +49,7 @@ class ArrayQueryTest {
   }
 
   @Test
-  void testCustomKeyValueDelimiter() throws Throwable {
+  void testCustomKeyValueDelimiter() {
     assertEquals(
       "name~1&name~2",
       new ArrayQuery("name", List.of("1", "2"), '~').encoded(StandardCharsets.ISO_8859_1)
@@ -57,7 +57,7 @@ class ArrayQueryTest {
   }
 
   @Test
-  void testCustomPairsDelimiter() throws Throwable {
+  void testCustomPairsDelimiter() {
     assertEquals(
       "name=1;name=2",
       new ArrayQuery("name", List.of("1", "2"), '=', ';').encoded(StandardCharsets.ISO_8859_1)
@@ -65,7 +65,7 @@ class ArrayQueryTest {
   }
 
   @Test
-  void testIfDefinedElse() throws Throwable {
+  void testIfDefinedElse() {
     assertTrue(new ArrayQuery("k", List.of()).ifDefinedElse(x -> true, () -> false));
   }
 }

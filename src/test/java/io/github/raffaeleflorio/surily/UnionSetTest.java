@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UnionSetTest {
   @Test
-  void testUnion() throws Throwable {
+  void testUnion() {
     assertSetEquals(
       Set.of(1, 2, 3, 9, 8, 7),
       new UnionSet<>(Set.of(1, 2, 3), Set.of(9, 8, 7))
@@ -38,7 +38,7 @@ class UnionSetTest {
   }
 
   @Test
-  void testSize() throws Throwable {
+  void testSize() {
     assertEquals(
       5,
       new UnionSet<>(Set.of(1, 2, 3), Set.of(42, 43)).size()
@@ -46,7 +46,7 @@ class UnionSetTest {
   }
 
   @Test
-  void testNoDuplicates() throws Throwable {
+  void testNoDuplicates() {
     assertAll(
       () -> assertEquals(
         5,

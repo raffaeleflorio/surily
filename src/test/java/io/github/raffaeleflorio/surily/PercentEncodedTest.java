@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 class PercentEncodedTest {
   @Test
-  void testReservedRFC3986Characters() throws Throwable {
+  void testReservedRFC3986Characters() {
     assertEquals(
       "%3A%2F%3F%23%5B%5D%40%21%24%26%27%28%29%2A%2B%2C%3B%3D",
       new PercentEncoded(":/?#[]@!$&'()*+,;=").toString()
@@ -35,7 +35,7 @@ class PercentEncodedTest {
   }
 
   @Test
-  void testUnreservedRFC3986Characters() throws Throwable {
+  void testUnreservedRFC3986Characters() {
     var unreserved = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~";
     assertEquals(
       unreserved,
@@ -44,7 +44,7 @@ class PercentEncodedTest {
   }
 
   @Test
-  void testNonPrintableASCIICharacters() throws Throwable {
+  void testNonPrintableASCIICharacters() {
     assertEquals(
       "%00",
       new PercentEncoded("\u0000").toString()
@@ -52,7 +52,7 @@ class PercentEncodedTest {
   }
 
   @Test
-  void testASCIIWhitespaces() throws Throwable {
+  void testASCIIWhitespaces() {
     assertEquals(
       "%08%09%0A%0C%0D%20",
       new PercentEncoded("\b\t\n\f\r ").toString()
@@ -60,7 +60,7 @@ class PercentEncodedTest {
   }
 
   @Test
-  void testPercent() throws Throwable {
+  void testPercent() {
     assertEquals(
       "%25%25",
       new PercentEncoded("%%").toString()
@@ -68,7 +68,7 @@ class PercentEncodedTest {
   }
 
   @Test
-  void testLength() throws Throwable {
+  void testLength() {
     assertEquals(
       6,
       new PercentEncoded("è", StandardCharsets.UTF_8).length()
@@ -76,7 +76,7 @@ class PercentEncodedTest {
   }
 
   @Test
-  void testSubsequence() throws Throwable {
+  void testSubsequence() {
     assertEquals(
       "A8",
       new PercentEncoded("\u00e8\00e9\u00f7", StandardCharsets.UTF_8).subSequence(4, 6).toString()
@@ -84,7 +84,7 @@ class PercentEncodedTest {
   }
 
   @Test
-  void testCharAtWithISO_8859_1() throws Throwable {
+  void testCharAtWithISO_8859_1() {
     assertEquals(
       'D',
       new PercentEncoded("\u00DC", StandardCharsets.ISO_8859_1).charAt(1)
@@ -92,7 +92,7 @@ class PercentEncodedTest {
   }
 
   @Test
-  void testSurrogatePair() throws Throwable {
+  void testSurrogatePair() {
     assertEquals(
       "%F0%90%B9%AD",
       new PercentEncoded("\uD803\uDE6D").toString()
@@ -100,7 +100,7 @@ class PercentEncodedTest {
   }
 
   @Test
-  void testASCIIEncodingWithSurrogatePair() throws Throwable {
+  void testASCIIEncodingWithSurrogatePair() {
     assertEquals(
       "%3F",
       new PercentEncoded("\uD83C\uDF09", StandardCharsets.US_ASCII).toString()
@@ -108,7 +108,7 @@ class PercentEncodedTest {
   }
 
   @Test
-  void testChars() throws Throwable {
+  void testChars() {
     assertIterableEquals(
       List.of(0x25, 0x43, 0x33, 0x25, 0x42, 0x38),
       new PercentEncoded("\u00F8", StandardCharsets.UTF_8).chars().boxed().collect(Collectors.toUnmodifiableList())
@@ -116,7 +116,7 @@ class PercentEncodedTest {
   }
 
   @Test
-  void testCodePoints() throws Throwable {
+  void testCodePoints() {
     assertIterableEquals(
       List.of(0x25, 0x43, 0x33, 0x25, 0x39, 0x37),
       new PercentEncoded("\u00D7", StandardCharsets.UTF_8).codePoints().boxed().collect(Collectors.toUnmodifiableList())
@@ -124,7 +124,7 @@ class PercentEncodedTest {
   }
 
   @Test
-  void testPercentAlwaysEncoded() throws Throwable {
+  void testPercentAlwaysEncoded() {
     assertEquals(
       "%25",
       new PercentEncoded("%", StandardCharsets.ISO_8859_1, Set.of('%')).toString()
@@ -132,7 +132,7 @@ class PercentEncodedTest {
   }
 
   @Test
-  void testWhitespacesAlwaysEncoded() throws Throwable {
+  void testWhitespacesAlwaysEncoded() {
     assertEquals(
       "%08%09%0A%0C%0D%20",
       new PercentEncoded("\b\t\n\f\r ", StandardCharsets.US_ASCII, Set.of(' ', '\b', '\t', '\n', '\f', '\r')).toString()

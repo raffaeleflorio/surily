@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class EnglishUpperCaseAlphabetTest {
   @Test
-  void testIterator() throws Throwable {
+  void testIterator() {
     assertSetEquals(
       Set.of('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'),
       new EnglishUpperCaseAlphabet()
@@ -39,7 +39,7 @@ class EnglishUpperCaseAlphabetTest {
   }
 
   @Test
-  void testSize() throws Throwable {
+  void testSize() {
     assertEquals(
       26,
       new EnglishUpperCaseAlphabet().size()
@@ -49,7 +49,7 @@ class EnglishUpperCaseAlphabetTest {
   @Nested
   class ImmutabilityTest {
     @Test
-    void testAdd() throws Throwable {
+    void testAdd() {
       assertThrows(
         UnsupportedOperationException.class,
         () -> new EnglishUpperCaseAlphabet().add('~')
@@ -57,7 +57,7 @@ class EnglishUpperCaseAlphabetTest {
     }
 
     @Test
-    void testRemove() throws Throwable {
+    void testRemove() {
       assertThrows(
         UnsupportedOperationException.class,
         () -> new EnglishUpperCaseAlphabet().remove('A')

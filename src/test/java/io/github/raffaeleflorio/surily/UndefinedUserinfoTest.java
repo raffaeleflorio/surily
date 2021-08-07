@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UndefinedUserinfoTest {
   @Test
-  void testUndefinedUserinfoException() throws Throwable {
+  void testUndefinedUserinfoException() {
     assertAll(
       () -> assertUndefinedUserinfoException(() -> new UndefinedUserinfo().encoded(StandardCharsets.UTF_16)),
       () -> assertUndefinedUserinfoException(() -> new UndefinedUserinfo().asString())
@@ -39,7 +39,7 @@ class UndefinedUserinfoTest {
   }
 
   @Test
-  void testIfDefinedElse() throws Throwable {
+  void testIfDefinedElse() {
     assertFalse(new UndefinedUserinfo().ifDefinedElse(x -> true, () -> false));
   }
 }

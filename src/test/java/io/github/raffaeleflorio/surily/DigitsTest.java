@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DigitsTest {
   @Test
-  void testIterator() throws Throwable {
+  void testIterator() {
     assertSetEquals(
       Set.of('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'),
       new Digits()
@@ -38,7 +38,7 @@ class DigitsTest {
   }
 
   @Test
-  void testSize() throws Throwable {
+  void testSize() {
     assertEquals(
       10,
       new Digits().size()

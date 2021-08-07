@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class NoSchemePathTest {
   @Test
-  void testEncoded() throws Throwable {
+  void testEncoded() {
     assertEquals(
       "%2F/../../ok%5B.txt",
       new NoSchemePath(
@@ -42,7 +42,7 @@ class NoSchemePathTest {
   }
 
   @Test
-  void testFirstSegmentWithColon() throws Throwable {
+  void testFirstSegmentWithColon() {
     var illegal = "x:y:z";
     assertIllegalNonColonSegment(
       illegal,
@@ -64,7 +64,7 @@ class NoSchemePathTest {
   }
 
   @Test
-  void testIterator() throws Throwable {
+  void testIterator() {
     assertIterableEquals(
       List.of(".", "segment:with:colon"),
       encoded(new NoSchemePath(
@@ -84,7 +84,7 @@ class NoSchemePathTest {
   }
 
   @Test
-  void testFirstSegmentEmpty() throws Throwable {
+  void testFirstSegmentEmpty() {
     assertAll(
       () -> assertIllegalNonZeroSegment(
         () -> new NoSchemePath(List.of(new PathSegmentSubcomponent.NormalFake("", ""))).asString()
@@ -115,7 +115,7 @@ class NoSchemePathTest {
   }
 
   @Test
-  void testZeroSegmentsExceptFirstOne() throws Throwable {
+  void testZeroSegmentsExceptFirstOne() {
     assertEquals(
       ".///",
       new NoSchemePath(
@@ -130,7 +130,7 @@ class NoSchemePathTest {
   }
 
   @Test
-  void testColonSegmentsExceptFirstOne() throws Throwable {
+  void testColonSegmentsExceptFirstOne() {
     assertEquals(
       "any/:/:::x:::/::",
       new NoSchemePath(

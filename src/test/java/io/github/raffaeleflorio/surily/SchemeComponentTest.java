@@ -27,7 +27,7 @@ class SchemeComponentTest {
   @Nested
   class FakeTest {
     @Test
-    void testEncoded() throws Throwable {
+    void testEncoded() {
       var expected = "the encoded representation";
       assertEquals(
         expected,
@@ -36,7 +36,7 @@ class SchemeComponentTest {
     }
 
     @Test
-    void testAsString() throws Throwable {
+    void testAsString() {
       var expected = "the asString representation";
       assertEquals(
         expected,
@@ -45,7 +45,7 @@ class SchemeComponentTest {
     }
 
     @Test
-    void testIfDefinedElse() throws Throwable {
+    void testIfDefinedElse() {
       assertTrue(new SchemeComponent.Fake("x", "y").ifDefinedElse(x -> true, () -> false));
     }
   }

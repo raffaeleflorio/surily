@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class IntersectionSetTest {
   @Test
-  void testIterator() throws Throwable {
+  void testIterator() {
     assertSetEquals(
       Set.of("common", "another common element"),
       new IntersectionSet<>(
@@ -41,7 +41,7 @@ class IntersectionSetTest {
   }
 
   @Test
-  void testSize() throws Throwable {
+  void testSize() {
     assertEquals(
       1,
       new IntersectionSet<>(
@@ -52,7 +52,7 @@ class IntersectionSetTest {
   }
 
   @Test
-  void testEmptyIntersection() throws Throwable {
+  void testEmptyIntersection() {
     assertEquals(0, new IntersectionSet<>(Set.of("the question"), Set.of()).size());
   }
 }

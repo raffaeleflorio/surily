@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SameDocumentReferenceTest {
   @Test
-  void testUndefinedScheme() throws Throwable {
+  void testUndefinedScheme() {
     assertTrue(
       new SameDocumentReference(new FragmentComponent.Fake("any", "value"))
         .scheme()
@@ -32,7 +32,7 @@ class SameDocumentReferenceTest {
   }
 
   @Test
-  void testUndefinedAuthority() throws Throwable {
+  void testUndefinedAuthority() {
     assertTrue(
       new SameDocumentReference(new FragmentComponent.Fake("any", "value"))
         .authority()
@@ -41,7 +41,7 @@ class SameDocumentReferenceTest {
   }
 
   @Test
-  void testEmptyPath() throws Throwable {
+  void testEmptyPath() {
     assertAll(
       () -> assertEquals(
         0,
@@ -60,7 +60,7 @@ class SameDocumentReferenceTest {
   }
 
   @Test
-  void testUndefinedQuery() throws Throwable {
+  void testUndefinedQuery() {
     assertTrue(
       new SameDocumentReference(new FragmentComponent.Fake("any", "value"))
         .query()
@@ -69,13 +69,13 @@ class SameDocumentReferenceTest {
   }
 
   @Test
-  void testFragment() throws Throwable {
+  void testFragment() {
     var expected = new FragmentComponent.Fake("encoded", "asString");
     assertEquals(expected, new SameDocumentReference(expected).fragment());
   }
 
   @Test
-  void testEncoded() throws Throwable {
+  void testEncoded() {
     assertEquals(
       "#encoded%20fragment",
       new SameDocumentReference(new FragmentComponent.Fake("encoded%20fragment", ""))
@@ -84,7 +84,7 @@ class SameDocumentReferenceTest {
   }
 
   @Test
-  void testAsString() throws Throwable {
+  void testAsString() {
     assertEquals(
       "#as string representation",
       new SameDocumentReference(new FragmentComponent.Fake("", "as string representation")).asString()
