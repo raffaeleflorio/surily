@@ -173,11 +173,7 @@ public final class RelativeRef implements UriReference {
   }
 
   private List<UriComponent> formattedComponents() {
-    return Stream.of(
-        relativePart(),
-        formattedQuery(),
-        formattedFragment()
-      )
+    return Stream.of(relativePart(), formattedQuery(), formattedFragment())
       .flatMap(Function.identity())
       .collect(Collectors.toUnmodifiableList());
   }

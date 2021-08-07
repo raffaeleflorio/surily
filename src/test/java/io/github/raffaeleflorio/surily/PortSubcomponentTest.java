@@ -27,7 +27,7 @@ class PortSubcomponentTest {
   @Nested
   class FakeTest {
     @Test
-    void testEncoded() throws Throwable {
+    void testEncoded() {
       assertEquals(
         "1234",
         new PortSubcomponent.Fake(1234).encoded(StandardCharsets.UTF_16BE)
@@ -35,7 +35,7 @@ class PortSubcomponentTest {
     }
 
     @Test
-    void testAsString() throws Throwable {
+    void testAsString() {
       assertEquals(
         "-42",
         new PortSubcomponent.Fake(-42).asString()
@@ -43,7 +43,7 @@ class PortSubcomponentTest {
     }
 
     @Test
-    void testIfDefinedElse() throws Throwable {
+    void testIfDefinedElse() {
       assertTrue(
         new PortSubcomponent.Fake(123).ifDefinedElse(x -> true, () -> false)
       );
