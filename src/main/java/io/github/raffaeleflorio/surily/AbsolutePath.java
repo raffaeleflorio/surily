@@ -20,7 +20,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -48,7 +47,7 @@ public final class AbsolutePath implements PathComponent {
    * @since 1.0.0
    */
   public AbsolutePath(final List<PathSegmentSubcomponent> segments) {
-    this(segments, NonZeroPathSegment::new, FormattedComponents::new);
+    this(segments, NonZeroPathSegment::new, FormattedComponents::new, JoinedComponents::new);
   }
 
   /**
@@ -57,22 +56,30 @@ public final class AbsolutePath implements PathComponent {
    * @param segments      The segments
    * @param zeroSegmentFn The function to build non-zero segments
    * @param formattedFn   The function to format components
+   * @param joinedFn      The function to join components
    * @since 1.0.0
    */
   AbsolutePath(
     final List<PathSegmentSubcomponent> segments,
     final Function<PathSegmentSubcomponent, PathSegmentSubcomponent> zeroSegmentFn,
-    final BiFunction<String, List<UriComponent>, UriComponent> formattedFn
+    final BiFunction<String, List<UriComponent>, UriComponent> formattedFn,
+    final BiFunction<List<UriComponent>, String, UriComponent> joinedFn
   ) {
     this.segments = segments;
     this.zeroSegmentFn = zeroSegmentFn;
     this.formattedFn = formattedFn;
+    this.joinedFn = joinedFn;
   }
 
   @Override
   public CharSequence encoded(final Charset charset) {
-    return "/".concat(
-      segments().map(segment -> segment.encoded(charset)).collect(segmentsCollector())
+    return formattedSegments().encoded(charset);
+  }
+
+  private UriComponent formattedSegments() {
+    return formattedFn.apply(
+      "/%s",
+      List.of(joinedFn.apply(segments().collect(Collectors.toUnmodifiableList()), "/"))
     );
   }
 
@@ -81,15 +88,9 @@ public final class AbsolutePath implements PathComponent {
       .mapToObj(i -> i == 0 ? zeroSegmentFn.apply(segments.get(0)) : segments.get(i));
   }
 
-  private Collector<CharSequence, ?, String> segmentsCollector() {
-    return Collectors.joining("/");
-  }
-
   @Override
   public String asString() {
-    return "/".concat(
-      segments().map(PathSegmentSubcomponent::asString).collect(segmentsCollector())
-    );
+    return formattedSegments().asString();
   }
 
   @Override
@@ -104,10 +105,10 @@ public final class AbsolutePath implements PathComponent {
 
   @Override
   public UriComponent relativePart(final AuthorityComponent authority) {
-    return partFn(authority, this);
+    return part(authority, this);
   }
 
-  private UriComponent partFn(final AuthorityComponent authority, final PathComponent path) {
+  private UriComponent part(final AuthorityComponent authority, final PathComponent path) {
     return formattedFn.apply("//%s%s", List.of(authority, this));
   }
 
@@ -118,10 +119,11 @@ public final class AbsolutePath implements PathComponent {
 
   @Override
   public UriComponent hierPart(final AuthorityComponent authority) {
-    return partFn(authority, this);
+    return part(authority, this);
   }
 
   private final List<PathSegmentSubcomponent> segments;
   private final Function<PathSegmentSubcomponent, PathSegmentSubcomponent> zeroSegmentFn;
   private final BiFunction<String, List<UriComponent>, UriComponent> formattedFn;
+  private final BiFunction<List<UriComponent>, String, UriComponent> joinedFn;
 }
