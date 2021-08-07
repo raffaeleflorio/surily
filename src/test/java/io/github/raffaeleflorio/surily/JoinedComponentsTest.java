@@ -22,14 +22,17 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ConcatenatedComponentsTest {
+class JoinedComponentsTest {
   @Test
   void testEncoded() {
     assertEquals(
-      "concatenatedcomponent",
-      new ConcatenatedComponents(
-        new UriComponent.Fake("concatenated", ""),
-        new UriComponent.Fake("component", "")
+      "concatenated:component",
+      new JoinedComponents(
+        List.of(
+          new UriComponent.Fake("concatenated", ""),
+          new UriComponent.Fake("component", "")
+        ),
+        ":"
       ).encoded(StandardCharsets.UTF_8)
     );
   }
@@ -38,7 +41,7 @@ class ConcatenatedComponentsTest {
   void testAsString() {
     assertEquals(
       "firstsecondthird",
-      new ConcatenatedComponents(
+      new JoinedComponents(
         List.of(
           new UriComponent.Fake("", "first"),
           new UriComponent.Fake("", "second"),

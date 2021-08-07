@@ -21,18 +21,32 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * Concatenated {@link UriComponent}
+ * Joined {@link UriComponent} with a separator
  *
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)
  * @since 1.0.0
  */
-public final class ConcatenatedComponents implements UriComponent {
-  public ConcatenatedComponents(final UriComponent first, final UriComponent second) {
-    this(List.of(first, second));
+public final class JoinedComponents implements UriComponent {
+  /**
+   * Builds concatenated components
+   *
+   * @param components The components to join
+   * @since 1.0.0
+   */
+  public JoinedComponents(final List<UriComponent> components) {
+    this(components, "");
   }
 
-  public ConcatenatedComponents(final List<UriComponent> components) {
+  /**
+   * Builds joined components
+   *
+   * @param components The components to join
+   * @param separator  The separator
+   * @since 1.0.0
+   */
+  public JoinedComponents(final List<UriComponent> components, final String separator) {
     this.components = components;
+    this.separator = separator;
   }
 
   @Override
@@ -41,7 +55,7 @@ public final class ConcatenatedComponents implements UriComponent {
   }
 
   private String concatenated(final Function<UriComponent, CharSequence> fn) {
-    return components.stream().map(fn).collect(Collectors.joining());
+    return components.stream().map(fn).collect(Collectors.joining(separator));
   }
 
   @Override
@@ -50,4 +64,5 @@ public final class ConcatenatedComponents implements UriComponent {
   }
 
   private final List<UriComponent> components;
+  private final String separator;
 }
