@@ -19,108 +19,95 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class AbsoluteUriTest {
   @Test
-  void testUndefinedFragment() throws Throwable {
+  void testUndefinedFragment() {
     assertEquals(
       "the fragment is always undefined",
       new AbsoluteUri(
         new SchemeComponent.Fake("any", "value"),
-        new AuthorityComponent.Fake(
-          "123",
-          "456",
-          new UserinfoSubComponent.Fake("x", "y"),
-          new HostSubcomponent.Fake("alpha", "beta"),
-          new PortSubcomponent.Fake(0)
-        ),
-        new PathComponent.AbsoluteFake("abcd", "efg", List.of()),
-        new QueryComponent.Fake("query", "query")
-      ).fragment().ifDefinedElse(x -> "...", () -> "the fragment is always undefined")
+        new AuthorityComponent.Fake("any", "value"),
+        new PathComponent.Fake("any", "value"),
+        new QueryComponent.Fake("any", "value")
+      ).fragment().ifDefinedElse(
+        x -> "...",
+        () -> "the fragment is always undefined"
+      )
     );
   }
 
   @Test
-  void testUndefinedQuery() throws Throwable {
+  void testUndefinedQuery() {
     assertAll(
       () -> assertTrue(
         new AbsoluteUri(
           new SchemeComponent.Fake("http", "http"),
-          new PathComponent.AbsoluteFake("any", "path", List.of())
-        ).query().ifDefinedElse(x -> false, () -> true)
+          new PathComponent.Fake("any", "path")
+        ).query().ifDefinedElse(
+          x -> false,
+          () -> true
+        )
       ),
       () -> assertTrue(
         new AbsoluteUri(
           new SchemeComponent.Fake("any", "value"),
-          new AuthorityComponent.Fake(
-            "123",
-            "456",
-            new UserinfoSubComponent.Fake("x", "y"),
-            new HostSubcomponent.Fake("alpha", "beta"),
-            new PortSubcomponent.Fake(0)
-          )
-        ).query().ifDefinedElse(x -> false, () -> true)
+          new AuthorityComponent.Fake("any", "value")
+        ).query().ifDefinedElse(
+          x -> false,
+          () -> true
+        )
       ),
       () -> assertTrue(
         new AbsoluteUri(
           new SchemeComponent.Fake("any", "value"),
-          new AuthorityComponent.Fake(
-            "123",
-            "456",
-            new UserinfoSubComponent.Fake("x", "y"),
-            new HostSubcomponent.Fake("alpha", "beta"),
-            new PortSubcomponent.Fake(0)
-          ),
-          new PathComponent.AbsoluteFake("abcd", "efg", List.of())
-        ).query().ifDefinedElse(x -> false, () -> true)
+          new AuthorityComponent.Fake("any", "value"),
+          new PathComponent.Fake("any", "value")
+        ).query().ifDefinedElse(
+          x -> false,
+          () -> true
+        )
       ),
       () -> assertEquals(
         "http:",
         new AbsoluteUri(
           new SchemeComponent.Fake("", "http"),
-          new PathComponent.AbsoluteFake("", "", List.of())
+          new PathComponent.Fake(
+            new UriComponent.Fake("", ""),
+            new UriComponent.Fake("", "")
+          )
         ).asString()
       ),
       () -> assertEquals(
         "http:a/path",
         new AbsoluteUri(
           new SchemeComponent.Fake("http", ""),
-          new PathComponent.AbsoluteFake("a/path", "", List.of())
+          new PathComponent.Fake(
+            new UriComponent.Fake("", ""),
+            new UriComponent.Fake("a/path", "")
+          )
         ).encoded(StandardCharsets.US_ASCII)
       )
     );
   }
 
   @Test
-  void testEmptyPath() throws Throwable {
+  void testEmptyPath() {
     {
       assertAll(
         () -> assertTrue(
           new AbsoluteUri(
             new SchemeComponent.Fake("any", "value"),
-            new AuthorityComponent.Fake(
-              "123",
-              "456",
-              new UserinfoSubComponent.Fake("x", "y"),
-              new HostSubcomponent.Fake("alpha", "beta"),
-              new PortSubcomponent.Fake(0)
-            )
+            new AuthorityComponent.Fake("any", "value")
           ).path().asString().isEmpty()
         ),
         () -> assertEquals(
           0,
           new AbsoluteUri(
             new SchemeComponent.Fake("any", "value"),
-            new AuthorityComponent.Fake(
-              "123",
-              "456",
-              new UserinfoSubComponent.Fake("x", "y"),
-              new HostSubcomponent.Fake("alpha", "beta"),
-              new PortSubcomponent.Fake(0)
-            ),
+            new AuthorityComponent.Fake("123", "456"),
             new QueryComponent.Fake("a query", "string")
           ).path().encoded(StandardCharsets.UTF_8).length()
         ),
@@ -135,16 +122,19 @@ class AbsoluteUriTest {
   }
 
   @Test
-  void testScheme() throws Throwable {
+  void testScheme() {
     var expected = new SchemeComponent.Fake("https", "https");
     assertEquals(
       expected,
-      new AbsoluteUri(expected, new PathComponent.AbsoluteFake("", "", List.of())).scheme()
+      new AbsoluteUri(
+        expected,
+        new PathComponent.Fake("", "")
+      ).scheme()
     );
   }
 
   @Test
-  void testAuthority() throws Throwable {
+  void testAuthority() {
     var expected = new AuthorityComponent.Fake(
       "encoded representation",
       "asString",
@@ -154,79 +144,51 @@ class AbsoluteUriTest {
     );
     assertEquals(
       expected,
-      new AbsoluteUri(new SchemeComponent.Fake("any", "stuff"), expected).authority()
+      new AbsoluteUri(
+        new SchemeComponent.Fake("any", "stuff"),
+        expected
+      ).authority()
     );
   }
 
   @Test
-  void testAsString() throws Throwable {
+  void testAsStringWithAllComponents() {
     assertEquals(
       "scheme://authority/path?query",
       new AbsoluteUri(
         new SchemeComponent.Fake("", "scheme"),
-        new AuthorityComponent.Fake(
-          "",
-          "authority",
-          new UserinfoSubComponent.Fake("", "userinfo"),
-          new HostSubcomponent.Fake("", "example.com"),
-          new PortSubcomponent.Fake(80)
+        new AuthorityComponent.Fake("", "authority"),
+        new PathComponent.Fake(
+          new UriComponent.Fake("", ""),
+          new UriComponent.Fake("", "//authority/path")
         ),
-        new PathComponent.AbsoluteFake("", "/path", List.of()),
         new QueryComponent.Fake("", "query")
       ).asString()
     );
   }
 
   @Test
-  void testEncoded() throws Throwable {
+  void testEncodedWithAllComponents() {
     assertEquals(
       "scheme://authority/path?query",
       new AbsoluteUri(
         new SchemeComponent.Fake("scheme", ""),
-        new AuthorityComponent.Fake(
-          "authority",
-          "",
-          new UserinfoSubComponent.Fake("userinfo", ""),
-          new HostSubcomponent.Fake("example.com", ""),
-          new PortSubcomponent.Fake(80)
+        new AuthorityComponent.Fake("authority", ""),
+        new PathComponent.Fake(
+          new UriComponent.Fake("", ""),
+          new UriComponent.Fake("//authority/path", "")
         ),
-        new PathComponent.AbsoluteFake("/path", "", List.of()),
         new QueryComponent.Fake("query", "")
       ).encoded(StandardCharsets.UTF_8)
     );
   }
 
   @Test
-  void testIllegalPath() throws Throwable {
-    assertIllegalPathException(
-      () -> new AbsoluteUri(
-        new SchemeComponent.Fake("", ""),
-        new AuthorityComponent.Fake(
-          "",
-          "",
-          new UserinfoSubComponent.Fake("", ""),
-          new HostSubcomponent.Fake("", ""),
-          new PortSubcomponent.Fake(80)
-        ),
-        new PathComponent.RelativeFake("", "", List.of())
-      ).asString(),
-      ""
-    );
-  }
-
-  private void assertIllegalPathException(final Executable executable, final String path) {
-    assertEquals(
-      String.format("Illegal path in hier-part component: <%s>", path),
-      assertThrows(IllegalStateException.class, executable).getMessage()
-    );
-  }
-
-  @Test
-  void testUndefinedScheme() throws Throwable {
+  void testUndefinedScheme() {
     assertUndefinedSchemeException(
       () -> new AbsoluteUri(
         new UndefinedScheme(),
-        new PathComponent.RelativeFake("", "", List.of())
+        new PathComponent.Fake("", "")
       ).asString()
     );
   }

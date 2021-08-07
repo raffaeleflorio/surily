@@ -16,7 +16,11 @@
 package io.github.raffaeleflorio.surily;
 
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * RFC3986 compliant absolute {@link UriReference}
@@ -34,7 +38,7 @@ public final class AbsoluteUri implements UriReference {
    * @since 1.0.0
    */
   public AbsoluteUri(final SchemeComponent scheme, final AuthorityComponent authority) {
-    this(scheme, authority, new RelativePath());
+    this(scheme, authority, new EmptyPath());
   }
 
   /**
@@ -61,7 +65,7 @@ public final class AbsoluteUri implements UriReference {
   }
 
   /**
-   * Builds an absolute URI with an empty query
+   * Builds an absolute URI with an empty path
    *
    * @param scheme    The scheme
    * @param authority The authority
@@ -69,7 +73,7 @@ public final class AbsoluteUri implements UriReference {
    * @since 1.0.0
    */
   public AbsoluteUri(final SchemeComponent scheme, final AuthorityComponent authority, final QueryComponent query) {
-    this(scheme, authority, new RelativePath(), query);
+    this(scheme, authority, new EmptyPath(), query);
   }
 
   /**
@@ -80,7 +84,7 @@ public final class AbsoluteUri implements UriReference {
    * @since 1.0.0
    */
   public AbsoluteUri(final SchemeComponent scheme, final QueryComponent query) {
-    this(scheme, new UndefinedAuthority(), new RelativePath(), query);
+    this(scheme, new UndefinedAuthority(), new EmptyPath(), query);
   }
 
   /**
@@ -92,18 +96,24 @@ public final class AbsoluteUri implements UriReference {
    * @param query     The query
    * @since 1.0.0
    */
-  public AbsoluteUri(final SchemeComponent scheme, final AuthorityComponent authority, final PathComponent path, final QueryComponent query) {
-    this(scheme, authority, path, query, HierPart::new);
+  public AbsoluteUri(
+    final SchemeComponent scheme,
+    final AuthorityComponent authority,
+    final PathComponent path,
+    final QueryComponent query
+  ) {
+    this(scheme, authority, path, query, FormattedComponents::new, JoinedComponents::new);
   }
 
   /**
    * Builds an absolute URI
    *
-   * @param scheme     The scheme
-   * @param authority  The authority
-   * @param path       The path
-   * @param query      The query
-   * @param hierPartFn The function to build a hier-part
+   * @param scheme      The scheme
+   * @param authority   The authority
+   * @param path        The path
+   * @param query       The query
+   * @param formattedFn The function to format components
+   * @param joinedFn    The function to join components
    * @since 1.0.0
    */
   AbsoluteUri(
@@ -111,39 +121,52 @@ public final class AbsoluteUri implements UriReference {
     final AuthorityComponent authority,
     final PathComponent path,
     final QueryComponent query,
-    final BiFunction<AuthorityComponent, PathComponent, UriComponent> hierPartFn
+    final BiFunction<String, List<UriComponent>, UriComponent> formattedFn,
+    final BiFunction<List<UriComponent>, String, UriComponent> joinedFn
   ) {
     this.scheme = scheme;
     this.authority = authority;
     this.path = path;
     this.query = query;
-    this.hierPartFn = hierPartFn;
+    this.formattedFn = formattedFn;
+    this.joinedFn = joinedFn;
   }
 
   @Override
   public CharSequence encoded(final Charset charset) {
-    return concatenated(
-      scheme.encoded(charset),
-      hierPartFn.apply(authority, path).encoded(charset),
-      query.ifDefinedElse(x -> query.encoded(charset), () -> "")
+    return joinedComponents().encoded(charset);
+  }
+
+  private UriComponent joinedComponents() {
+    return joinedFn.apply(formattedComponents(), "");
+  }
+
+  private List<UriComponent> formattedComponents() {
+    return Stream.of(formattedScheme(), hierPart(), formattedQuery())
+      .flatMap(Function.identity())
+      .collect(Collectors.toUnmodifiableList());
+  }
+
+  private Stream<UriComponent> formattedScheme() {
+    return Stream.of(formattedFn.apply("%s:", List.of(scheme)));
+  }
+
+  private Stream<UriComponent> hierPart() {
+    return Stream.of(
+      authority.<UriComponent>ifDefinedElse(path::hierPart, path::hierPart)
     );
   }
 
-  private String concatenated(final CharSequence scheme, final CharSequence hierPart, final CharSequence query) {
-    return String.format("%s:%s%s",
-      scheme,
-      hierPart,
-      query.length() == 0 ? "" : "?".concat(query.toString())
+  private Stream<UriComponent> formattedQuery() {
+    return query.ifDefinedElse(
+      x -> Stream.of(formattedFn.apply("?%s", List.of(x))),
+      Stream::empty
     );
   }
 
   @Override
   public String asString() {
-    return concatenated(
-      scheme.asString(),
-      hierPartFn.apply(authority, path).asString(),
-      query.ifDefinedElse(QueryComponent::asString, () -> "")
-    );
+    return joinedComponents().asString();
   }
 
   @Override
@@ -175,5 +198,6 @@ public final class AbsoluteUri implements UriReference {
   private final AuthorityComponent authority;
   private final PathComponent path;
   private final QueryComponent query;
-  private final BiFunction<AuthorityComponent, PathComponent, UriComponent> hierPartFn;
+  private final BiFunction<String, List<UriComponent>, UriComponent> formattedFn;
+  private final BiFunction<List<UriComponent>, String, UriComponent> joinedFn;
 }
