@@ -18,6 +18,7 @@ package io.github.raffaeleflorio.surily;
 import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -37,7 +38,7 @@ public final class NoSchemePath implements PathComponent {
    * @since 1.0.0
    */
   public NoSchemePath(final List<PathSegmentSubcomponent> segments) {
-    this(segments, s -> new NonZeroPathSegment(new NonColonPathSegment(s)));
+    this(segments, s -> new NonZeroPathSegment(new NonColonPathSegment(s)), JoinedComponents::new);
   }
 
   /**
@@ -45,27 +46,36 @@ public final class NoSchemePath implements PathComponent {
    *
    * @param segments The segments
    * @param firstFn  The function to apply to the first segment
+   * @param joinedFn The function to build joined components
    * @since 1.0.0
    */
-  NoSchemePath(final List<PathSegmentSubcomponent> segments, final Function<PathSegmentSubcomponent, PathSegmentSubcomponent> firstFn) {
+  NoSchemePath(
+    final List<PathSegmentSubcomponent> segments,
+    final Function<PathSegmentSubcomponent, PathSegmentSubcomponent> firstFn,
+    final BiFunction<List<UriComponent>, String, UriComponent> joinedFn
+  ) {
     this.segments = segments;
     this.firstFn = firstFn;
+    this.joinedFn = joinedFn;
   }
 
   @Override
   public CharSequence encoded(final Charset charset) {
-    return segments()
-      .map(segment -> segment.encoded(charset))
-      .collect(Collectors.joining("/"));
+    return formattedSegments().encoded(charset);
+  }
+
+  private UriComponent formattedSegments() {
+    return joinedFn.apply(segments().collect(Collectors.toUnmodifiableList()), "/");
   }
 
   private Stream<PathSegmentSubcomponent> segments() {
-    return IntStream.range(0, segments.size()).mapToObj(i -> i == 0 ? firstFn.apply(segments.get(0)) : segments.get(i));
+    return IntStream.range(0, segments.size())
+      .mapToObj(i -> i == 0 ? firstFn.apply(segments.get(0)) : segments.get(i));
   }
 
   @Override
   public String asString() {
-    return segments().map(PathSegmentSubcomponent::asString).collect(Collectors.joining("/"));
+    return formattedSegments().asString();
   }
 
   @Override
@@ -95,4 +105,5 @@ public final class NoSchemePath implements PathComponent {
 
   private final List<PathSegmentSubcomponent> segments;
   private final Function<PathSegmentSubcomponent, PathSegmentSubcomponent> firstFn;
+  private final BiFunction<List<UriComponent>, String, UriComponent> joinedFn;
 }
