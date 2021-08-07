@@ -16,16 +16,14 @@
 package io.github.raffaeleflorio.surily;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class RelativeRefTest {
   @Test
-  void testUndefinedScheme() throws Throwable {
+  void testUndefinedScheme() {
     assertEquals(
       "always undefined",
       new RelativeRef().scheme().ifDefinedElse(x -> "mhn...", () -> "always undefined")
@@ -33,18 +31,15 @@ class RelativeRefTest {
   }
 
   @Test
-  void testEncodedWithAllComponents() throws Throwable {
+  void testEncodedWithAllComponents() {
     assertEquals(
       "//authority/an/absolute/path?query#fragment",
       new RelativeRef(
-        new AuthorityComponent.Fake(
-          "authority",
-          "",
-          new UserinfoSubComponent.Fake("", ""),
-          new HostSubcomponent.Fake("", ""),
-          new PortSubcomponent.Fake(42)
+        new AuthorityComponent.Fake("", "authority"),
+        new PathComponent.Fake(
+          new UriComponent.Fake("//authority/an/absolute/path", ""),
+          new UriComponent.Fake("", "")
         ),
-        new PathComponent.AbsoluteFake("/an/absolute/path", "", List.of()),
         new QueryComponent.Fake("query", ""),
         new FragmentComponent.Fake("fragment", "")
       ).encoded(StandardCharsets.US_ASCII)
@@ -52,26 +47,23 @@ class RelativeRefTest {
   }
 
   @Test
-  void testAsStringWithAllComponents() throws Throwable {
+  void testAsStringWithAllComponents() {
     assertEquals(
       "//authority/an/absolute/path?query#fragment",
       new RelativeRef(
-        new AuthorityComponent.Fake(
-          "authority",
-          "",
-          new UserinfoSubComponent.Fake("", ""),
-          new HostSubcomponent.Fake("", ""),
-          new PortSubcomponent.Fake(42)
+        new AuthorityComponent.Fake("", "authority"),
+        new PathComponent.Fake(
+          new UriComponent.Fake("", "//authority/an/absolute/path"),
+          new UriComponent.Fake("", "")
         ),
-        new PathComponent.AbsoluteFake("/an/absolute/path", "", List.of()),
-        new QueryComponent.Fake("query", ""),
-        new FragmentComponent.Fake("fragment", "")
-      ).encoded(StandardCharsets.US_ASCII)
+        new QueryComponent.Fake("", "query"),
+        new FragmentComponent.Fake("", "fragment")
+      ).asString()
     );
   }
 
   @Test
-  void testEmptyRef() throws Throwable {
+  void testEmptyRef() {
     assertAll(
       () -> assertEquals(0, new RelativeRef().encoded(StandardCharsets.UTF_8).length()),
       () -> assertTrue(new RelativeRef().asString().isEmpty())
@@ -79,11 +71,14 @@ class RelativeRefTest {
   }
 
   @Test
-  void testEncodedWithoutAuthority() throws Throwable {
+  void testEncodedWithoutAuthority() {
     assertEquals(
       "/an/absolute/path?query#fragment",
       new RelativeRef(
-        new PathComponent.AbsoluteFake("/an/absolute/path", "", List.of()),
+        new PathComponent.Fake(
+          new UriComponent.Fake("/an/absolute/path", ""),
+          new UriComponent.Fake("", "")
+        ),
         new QueryComponent.Fake("query", ""),
         new FragmentComponent.Fake("fragment", "")
       ).encoded(StandardCharsets.ISO_8859_1)
@@ -91,46 +86,7 @@ class RelativeRefTest {
   }
 
   @Test
-  void testIllegalPathException() throws Throwable {
-    assertAll(
-      () -> assertIllegalPathException(
-        () -> new RelativeRef(
-          new AuthorityComponent.Fake(
-            "any",
-            "",
-            new UserinfoSubComponent.Fake("", ""),
-            new HostSubcomponent.Fake("", ""),
-            new PortSubcomponent.Fake(2)
-          ),
-          new PathComponent.RelativeFake("any relative path", "any relative path", List.of())
-        ).encoded(StandardCharsets.US_ASCII),
-        "any relative path"
-      ),
-      () -> assertIllegalPathException(
-        () -> new RelativeRef(
-          new AuthorityComponent.Fake(
-            "any",
-            "",
-            new UserinfoSubComponent.Fake("", ""),
-            new HostSubcomponent.Fake("", ""),
-            new PortSubcomponent.Fake(2)
-          ),
-          new PathComponent.RelativeFake("any relative path", "any relative path", List.of())
-        ).asString(),
-        "any relative path"
-      )
-    );
-  }
-
-  private void assertIllegalPathException(final Executable executable, final String illegalPath) {
-    assertEquals(
-      String.format("Illegal path in relative-part component: <%s>", illegalPath),
-      assertThrows(IllegalStateException.class, executable).getMessage()
-    );
-  }
-
-  @Test
-  void testFragment() throws Throwable {
+  void testFragment() {
     assertEquals(
       "the fragment",
       new RelativeRef(new FragmentComponent.Fake("the fragment", ""))
@@ -140,7 +96,7 @@ class RelativeRefTest {
   }
 
   @Test
-  void testQuery() throws Throwable {
+  void testQuery() {
     assertEquals(
       "the query",
       new RelativeRef(new QueryComponent.Fake("", "the query"))
@@ -150,108 +106,116 @@ class RelativeRefTest {
   }
 
   @Test
-  void testPath() throws Throwable {
+  void testPath() {
     assertEquals(
       "the path",
-      new RelativeRef(new PathComponent.AbsoluteFake("the path", "", List.of()))
+      new RelativeRef(new PathComponent.Fake("the path", ""))
         .path()
         .encoded(StandardCharsets.UTF_16LE)
     );
   }
 
   @Test
-  void testAuthority() throws Throwable {
+  void testAuthority() {
     assertEquals(
       "the authority",
       new RelativeRef(
-        new AuthorityComponent.Fake(
-          "",
-          "the authority",
-          new UserinfoSubComponent.Fake("", ""),
-          new HostSubcomponent.Fake("", ""),
-          new PortSubcomponent.Fake(1)
-        )
+        new AuthorityComponent.Fake("", "the authority")
       ).authority().asString()
     );
   }
 
   @Test
-  void testRepresentationsWithOnlyQuery() throws Throwable {
+  void testRepresentationsWithOnlyQuery() {
     assertAll(
       () -> assertEquals(
         "?1=1",
-        new RelativeRef(new QueryComponent.Fake("", "1=1")).asString()
+        new RelativeRef(
+          new QueryComponent.Fake("", "1=1")
+        ).asString()
       ),
       () -> assertEquals(
         "?1=1",
-        new RelativeRef(new QueryComponent.Fake("1=1", "")).encoded(StandardCharsets.US_ASCII)
+        new RelativeRef(
+          new QueryComponent.Fake("1=1", "")
+        ).encoded(StandardCharsets.US_ASCII)
       )
     );
   }
 
   @Test
-  void testRepresentationsWithOnlyFragment() throws Throwable {
+  void testRepresentationsWithOnlyFragment() {
     assertAll(
       () -> assertEquals(
         "#reference",
-        new RelativeRef(new FragmentComponent.Fake("reference", "")).encoded(StandardCharsets.UTF_16LE)
+        new RelativeRef(
+          new FragmentComponent.Fake("reference", "")
+        ).encoded(StandardCharsets.UTF_16LE)
       ),
       () -> assertEquals(
         "#a reference",
-        new RelativeRef(new FragmentComponent.Fake("", "a reference")).asString()
+        new RelativeRef(
+          new FragmentComponent.Fake("", "a reference")
+        ).asString()
       )
     );
   }
 
   @Test
-  void testRepresentatonsWithOnlyPath() throws Throwable {
+  void testRepresentatonsWithOnlyPath() {
     assertAll(
       () -> assertEquals(
         "a relative path",
-        new RelativeRef(new PathComponent.RelativeFake("a relative path", "", List.of()))
-          .encoded(StandardCharsets.ISO_8859_1)
+        new RelativeRef(
+          new PathComponent.Fake(
+            new UriComponent.Fake("a relative path", ""),
+            new UriComponent.Fake("", "")
+          )
+        ).encoded(StandardCharsets.ISO_8859_1)
       ),
       () -> assertEquals(
         "./relative:path",
-        new RelativeRef(new PathComponent.RelativeFake("", "./relative:path", List.of())).asString()
+        new RelativeRef(
+          new PathComponent.Fake(
+            new UriComponent.Fake("", "./relative:path"),
+            new UriComponent.Fake("", "")
+          )
+        ).asString()
       ),
       () -> assertEquals(
         "/an/absolute/path",
-        new RelativeRef(new PathComponent.RelativeFake("/an/absolute/path", "", List.of()))
-          .encoded(StandardCharsets.UTF_8)
+        new RelativeRef(
+          new PathComponent.Fake(
+            new UriComponent.Fake("/an/absolute/path", ""),
+            new UriComponent.Fake("", "")
+          )
+        ).encoded(StandardCharsets.UTF_8)
       ),
       () -> assertEquals(
         "/an/absolute/path",
-        new RelativeRef(new PathComponent.RelativeFake("", "/an/absolute/path", List.of())).asString()
+        new RelativeRef(
+          new PathComponent.Fake(
+            new UriComponent.Fake("", "/an/absolute/path"),
+            new UriComponent.Fake("", "")
+          )
+        ).asString()
       )
     );
   }
 
   @Test
-  void testRepresentationsWithOnlyAuthority() throws Throwable {
+  void testRepresentationsWithOnlyAuthority() {
     assertAll(
       () -> assertEquals(
-        "//authority/",
+        "//authority",
         new RelativeRef(
-          new AuthorityComponent.Fake(
-            "authority",
-            "",
-            new UserinfoSubComponent.Fake("", ""),
-            new HostSubcomponent.Fake("", ""),
-            new PortSubcomponent.Fake(42)
-          )
+          new AuthorityComponent.Fake("authority", "")
         ).encoded(StandardCharsets.UTF_16)
       ),
       () -> assertEquals(
-        "//an authority component/",
+        "//an authority component",
         new RelativeRef(
-          new AuthorityComponent.Fake(
-            "",
-            "an authority component",
-            new UserinfoSubComponent.Fake("", ""),
-            new HostSubcomponent.Fake("", ""),
-            new PortSubcomponent.Fake(42)
-          )
+          new AuthorityComponent.Fake("", "an authority component")
         ).asString()
       )
     );

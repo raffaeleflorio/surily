@@ -16,7 +16,11 @@
 package io.github.raffaeleflorio.surily;
 
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * RFC3986 compliant relative-ref {@link UriReference}
@@ -32,7 +36,7 @@ public final class RelativeRef implements UriReference {
    * @since 1.0.0
    */
   public RelativeRef() {
-    this(new RelativePath());
+    this(new EmptyPath());
   }
 
   /**
@@ -52,7 +56,7 @@ public final class RelativeRef implements UriReference {
    * @since 1.0.0
    */
   public RelativeRef(final AuthorityComponent authority) {
-    this(authority, new AbsolutePath());
+    this(authority, new EmptyPath());
   }
 
   /**
@@ -81,24 +85,6 @@ public final class RelativeRef implements UriReference {
   /**
    * Builds a relative-ref
    *
-   * @param authority The authority
-   * @param path      The path
-   * @param query     The query
-   * @param fragment  The fragment
-   * @since 1.0.0
-   */
-  public RelativeRef(
-    final AuthorityComponent authority,
-    final PathComponent path,
-    final QueryComponent query,
-    final FragmentComponent fragment
-  ) {
-    this(authority, path, query, fragment, RelativePart::new);
-  }
-
-  /**
-   * Builds a relative-ref
-   *
    * @param path     The path
    * @param query    The query
    * @param fragment The fragment
@@ -119,7 +105,7 @@ public final class RelativeRef implements UriReference {
    * @since 1.0.0
    */
   public RelativeRef(final FragmentComponent fragment) {
-    this(new UndefinedAuthority(), new RelativePath(), new UndefinedQuery(), fragment);
+    this(new UndefinedAuthority(), new EmptyPath(), new UndefinedQuery(), fragment);
   }
 
   /**
@@ -129,18 +115,36 @@ public final class RelativeRef implements UriReference {
    * @since 1.0.0
    */
   public RelativeRef(final QueryComponent query) {
-    this(new UndefinedAuthority(), new RelativePath(), query, new UndefinedFragment());
+    this(new UndefinedAuthority(), new EmptyPath(), query, new UndefinedFragment());
   }
-
 
   /**
    * Builds a relative-ref
    *
-   * @param authority      The authority
-   * @param path           The path
-   * @param query          The query
-   * @param fragment       The fragment
-   * @param relativePartFn The function to build a relative-part
+   * @param authority The authority
+   * @param path      The path
+   * @param query     The query
+   * @param fragment  The fragment
+   * @since 1.0.0
+   */
+  public RelativeRef(
+    final AuthorityComponent authority,
+    final PathComponent path,
+    final QueryComponent query,
+    final FragmentComponent fragment
+  ) {
+    this(authority, path, query, fragment, FormattedComponents::new, JoinedComponents::new);
+  }
+
+  /**
+   * Builds a relative-ref
+   *
+   * @param authority   The authority
+   * @param path        The path
+   * @param query       The query
+   * @param fragment    The fragment
+   * @param formattedFn The function to build formatted components
+   * @param joinedFn    The function to build joined components
    * @since 1.0.0
    */
   RelativeRef(
@@ -148,40 +152,57 @@ public final class RelativeRef implements UriReference {
     final PathComponent path,
     final QueryComponent query,
     final FragmentComponent fragment,
-    final BiFunction<AuthorityComponent, PathComponent, UriComponent> relativePartFn
+    final BiFunction<String, List<UriComponent>, UriComponent> formattedFn,
+    final BiFunction<List<UriComponent>, String, UriComponent> joinedFn
   ) {
     this.authority = authority;
     this.path = path;
     this.query = query;
     this.fragment = fragment;
-    this.relativePartFn = relativePartFn;
+    this.formattedFn = formattedFn;
+    this.joinedFn = joinedFn;
   }
 
   @Override
   public CharSequence encoded(final Charset charset) {
-    return concatenated(
-      relativePartFn.apply(authority, path).encoded(charset),
-      query.ifDefinedElse(x -> x.encoded(charset), () -> ""),
-      fragment.ifDefinedElse(x -> x.encoded(charset), () -> "")
+    return joinedComponents().encoded(charset);
+  }
+
+  private UriComponent joinedComponents() {
+    return joinedFn.apply(formattedComponents(), "");
+  }
+
+  private List<UriComponent> formattedComponents() {
+    return Stream.of(
+        relativePart(),
+        formattedQuery(),
+        formattedFragment()
+      )
+      .flatMap(Function.identity())
+      .collect(Collectors.toUnmodifiableList());
+  }
+
+  private Stream<UriComponent> relativePart() {
+    return Stream.of(authority.<UriComponent>ifDefinedElse(path::relativePart, path::relativePart));
+  }
+
+  private Stream<UriComponent> formattedQuery() {
+    return query.ifDefinedElse(
+      x -> Stream.of(formattedFn.apply("?%s", List.of(x))),
+      Stream::empty
     );
   }
 
-  private String concatenated(final CharSequence relativePart, final CharSequence query, final CharSequence fragment) {
-    return String.format(
-      "%s%s%s",
-      relativePart,
-      query.length() == 0 ? "" : "?".concat(query.toString()),
-      fragment.length() == 0 ? "" : "#".concat(fragment.toString())
+  private Stream<UriComponent> formattedFragment() {
+    return fragment.ifDefinedElse(
+      x -> Stream.of(formattedFn.apply("#%s", List.of(x))),
+      Stream::of
     );
   }
 
   @Override
   public String asString() {
-    return concatenated(
-      relativePartFn.apply(authority, path).asString(),
-      query.ifDefinedElse(QueryComponent::asString, () -> ""),
-      fragment.ifDefinedElse(FragmentComponent::asString, () -> "")
-    );
+    return joinedComponents().asString();
   }
 
   @Override
@@ -213,5 +234,6 @@ public final class RelativeRef implements UriReference {
   private final PathComponent path;
   private final QueryComponent query;
   private final FragmentComponent fragment;
-  private final BiFunction<AuthorityComponent, PathComponent, UriComponent> relativePartFn;
+  private final BiFunction<String, List<UriComponent>, UriComponent> formattedFn;
+  private final BiFunction<List<UriComponent>, String, UriComponent> joinedFn;
 }
