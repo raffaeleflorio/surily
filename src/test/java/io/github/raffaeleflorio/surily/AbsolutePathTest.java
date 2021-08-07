@@ -124,13 +124,58 @@ class AbsolutePathTest {
   }
 
   @Test
-  void testIfAbsoluteElse() throws Throwable {
-    assertAll(
-      () -> assertTrue(
-        new AbsolutePath(List.of(new PathSegmentSubcomponent.NormalFake("x", "x")))
-          .<Boolean>ifAbsoluteElse(x -> true, x -> false)
-      ),
-      () -> assertTrue(new AbsolutePath().<Boolean>ifAbsoluteElse(x -> true, x -> false))
+  void testRelativePartWithoutAuthority() {
+    assertEquals(
+      "/absolute/path",
+      new AbsolutePath(
+        List.of(
+          new PathSegmentSubcomponent.NormalFake("absolute", ""),
+          new PathSegmentSubcomponent.NormalFake("path", "")
+        )
+      ).relativePart().encoded(StandardCharsets.UTF_8)
+    );
+  }
+
+  @Test
+  void testHierPartWithoutAuthority() {
+    assertEquals(
+      "/absolute/path",
+      new AbsolutePath(
+        List.of(
+          new PathSegmentSubcomponent.NormalFake("", "absolute"),
+          new PathSegmentSubcomponent.NormalFake("", "path")
+        )
+      ).hierPart().asString()
+    );
+  }
+
+  @Test
+  void testRelativePartWithAuthority() {
+    assertEquals(
+      "//authority/absolute/path",
+      new AbsolutePath(
+        List.of(
+          new PathSegmentSubcomponent.NormalFake("absolute", ""),
+          new PathSegmentSubcomponent.NormalFake("path", "")
+        )
+      ).relativePart(
+        new AuthorityComponent.Fake("authority", "")
+      ).encoded(StandardCharsets.UTF_8)
+    );
+  }
+
+  @Test
+  void testHierPartWithAuthority() {
+    assertEquals(
+      "//authority/absolute/path",
+      new AbsolutePath(
+        List.of(
+          new PathSegmentSubcomponent.NormalFake("", "absolute"),
+          new PathSegmentSubcomponent.NormalFake("", "path")
+        )
+      ).hierPart(
+        new AuthorityComponent.Fake("", "authority")
+      ).asString()
     );
   }
 }

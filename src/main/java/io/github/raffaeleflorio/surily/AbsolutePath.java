@@ -18,6 +18,7 @@ package io.github.raffaeleflorio.surily;
 import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -47,7 +48,7 @@ public final class AbsolutePath implements PathComponent {
    * @since 1.0.0
    */
   public AbsolutePath(final List<PathSegmentSubcomponent> segments) {
-    this(segments, NonZeroPathSegment::new);
+    this(segments, NonZeroPathSegment::new, FormattedComponents::new);
   }
 
   /**
@@ -55,11 +56,17 @@ public final class AbsolutePath implements PathComponent {
    *
    * @param segments      The segments
    * @param zeroSegmentFn The function to build non-zero segments
+   * @param formattedFn   The function to format components
    * @since 1.0.0
    */
-  AbsolutePath(final List<PathSegmentSubcomponent> segments, final Function<PathSegmentSubcomponent, PathSegmentSubcomponent> zeroSegmentFn) {
+  AbsolutePath(
+    final List<PathSegmentSubcomponent> segments,
+    final Function<PathSegmentSubcomponent, PathSegmentSubcomponent> zeroSegmentFn,
+    final BiFunction<String, List<UriComponent>, UriComponent> formattedFn
+  ) {
     this.segments = segments;
     this.zeroSegmentFn = zeroSegmentFn;
+    this.formattedFn = formattedFn;
   }
 
   @Override
@@ -91,10 +98,30 @@ public final class AbsolutePath implements PathComponent {
   }
 
   @Override
-  public <T> T ifAbsoluteElse(final Function<PathComponent, T> fn, final Function<PathComponent, T> relativeFn) {
-    return fn.apply(this);
+  public UriComponent relativePart() {
+    return this;
+  }
+
+  @Override
+  public UriComponent relativePart(final AuthorityComponent authority) {
+    return partFn(authority, this);
+  }
+
+  private UriComponent partFn(final AuthorityComponent authority, final PathComponent path) {
+    return formattedFn.apply("//%s%s", List.of(authority, this));
+  }
+
+  @Override
+  public UriComponent hierPart() {
+    return this;
+  }
+
+  @Override
+  public UriComponent hierPart(final AuthorityComponent authority) {
+    return partFn(authority, this);
   }
 
   private final List<PathSegmentSubcomponent> segments;
   private final Function<PathSegmentSubcomponent, PathSegmentSubcomponent> zeroSegmentFn;
+  private final BiFunction<String, List<UriComponent>, UriComponent> formattedFn;
 }
