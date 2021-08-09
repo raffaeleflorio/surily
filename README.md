@@ -19,70 +19,52 @@ import io.github.raffaeleflorio.surily.*;
 import java.nio.charset.StandardCharsets;
 
 class Examples {
-    void assertDogFactUri() {
-        assertEquals(
-                "https://dog-facts-api.herokuapp.com/api/v1/resources/dogs?number=1",
-                new AbsoluteUri(
-                        new Scheme("https"),
-                        new Authority(
-                                new RegName("dog-facts-api.herokuapp.com")
-                        ),
-                        new AbsolutePath(
-                                List.of(
-                                        new PathSegment("api"),
-                                        new PathSegment("v1"),
-                                        new PathSegment("resources"),
-                                        new PathSegment("dogs")
-                                )
-                        ),
-                        new PairQuery("number", "1")
-                ).asString()
-        );
-    }
+  void assertDogFactUri() {
+    assertEquals(
+      "https://dog-facts-api.herokuapp.com/api/v1/resources/dogs?number=1",
+      new AbsoluteUri(
+        new Scheme("https"),
+        new Authority(
+          new RegName("dog-facts-api.herokuapp.com")
+        ),
+        new AbsolutePath(
+          List.of(
+            new PathSegment("api"),
+            new PathSegment("v1"),
+            new PathSegment("resources"),
+            new PathSegment("dogs")
+          )
+        ),
+        new PairQuery("number", "1")
+      ).asString()
+    );
+  }
 
-    void assertSameDocumentReference() {
-        assertEquals(
-                "#a%20reference%20in%20a%20document",
-                new SameDocumentReference(
-                        new Fragment("a reference in a document")
-                ).encoded(StandardCharsets.UTF_8)
-        );
-    }
+  void assertSameDocumentReference() {
+    assertEquals(
+      "#a%20reference%20in%20a%20document",
+      new SameDocumentReference(
+        new Fragment("a reference in a document")
+      ).encoded(StandardCharsets.UTF_8)
+    );
+  }
 
-    void assertPathTraversal() {
-        assertEquals(
-                "../../../../etc/passwd",
-                new NoSchemePath(
-                        List.of(
-                                new DoubleDotSegment(),
-                                new DoubleDotSegment(),
-                                new DoubleDotSegment(),
-                                new DoubleDotSegment(),
-                                new PathSegment("etc"),
-                                new PathSegment("passwd")
-                        )
-                ).encoded(StandardCharsets.US_ASCII)
-        );
-    }
-
-    void assertNormalizedPathTraversal() {
-        assertEquals(
-                "etc/passwd",
-                new PathWithoutDotSegments(
-                        new NoSchemePath(
-                                List.of(
-                                        new DoubleDotSegment(),
-                                        new DoubleDotSegment(),
-                                        new DoubleDotSegment(),
-                                        new DoubleDotSegment(),
-                                        new PathSegment("etc"),
-                                        new PathSegment("passwd")
-                                )
-                        )
-                ).encoded(StandardCharsets.US_ASCII)
-        );
-    }
-    // WIP
+  void assertPathTraversal() {
+    assertEquals(
+      "../../../../etc/passwd",
+      new NoSchemePath(
+        List.of(
+          new DoubleDotSegment(),
+          new DoubleDotSegment(),
+          new DoubleDotSegment(),
+          new DoubleDotSegment(),
+          new PathSegment("etc"),
+          new PathSegment("passwd")
+        )
+      ).encoded(StandardCharsets.US_ASCII)
+    );
+  }
+  // WIP
 }
 ```
 
@@ -92,7 +74,6 @@ Surily will be distributed through the [Maven Central Repository](https://search
 with:
 
 ```xml
-
 <dependency>
   <groupId>io.github.raffaeleflorio</groupId>
   <artifactId>surily</artifactId>
