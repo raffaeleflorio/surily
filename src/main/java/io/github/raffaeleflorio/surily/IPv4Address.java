@@ -17,6 +17,7 @@ package io.github.raffaeleflorio.surily;
 
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
@@ -55,7 +56,18 @@ public final class IPv4Address implements HostSubcomponent {
    * @param address The address
    */
   public IPv4Address(final CharSequence address) {
+    this(address, Pattern::matches);
+  }
+
+  /**
+   * Builds an IPv4 address
+   *
+   * @param address The address
+   * @param matchFn The function used to match a string against a regexp
+   */
+  IPv4Address(final CharSequence address, final BiFunction<String, CharSequence, Boolean> matchFn) {
     this.address = address;
+    this.matchFn = matchFn;
   }
 
   @Override
@@ -82,7 +94,7 @@ public final class IPv4Address implements HostSubcomponent {
 
    */
   private Boolean legalAddress() {
-    return Pattern.matches(
+    return matchFn.apply(
       "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$",
       address
     );
@@ -107,4 +119,5 @@ public final class IPv4Address implements HostSubcomponent {
   }
 
   private final CharSequence address;
+  private final BiFunction<String, CharSequence, Boolean> matchFn;
 }
