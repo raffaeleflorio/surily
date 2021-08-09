@@ -16,8 +16,12 @@
 package io.github.raffaeleflorio.surily;
 
 import java.nio.charset.Charset;
+import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * RFC3986 compliant authority {@link AuthorityComponent} like: userinfo@host:port
@@ -67,9 +71,25 @@ public final class Authority implements AuthorityComponent {
    * @since 1.0.0
    */
   public Authority(final UserinfoSubComponent userinfo, final HostSubcomponent host, final PortSubcomponent port) {
+    this(userinfo, host, port, FormattedComponents::new, JoinedComponents::new);
+  }
+
+  /**
+   * Builds an authority with all of its subcomponents
+   *
+   * @param userinfo    The userinfo
+   * @param host        The host
+   * @param port        The port
+   * @param formattedFn The function used to format components
+   * @param joinedFn    The function used to join components
+   * @since 1.0.0
+   */
+  Authority(final UserinfoSubComponent userinfo, final HostSubcomponent host, final PortSubcomponent port, final BiFunction<String, List<UriComponent>, UriComponent> formattedFn, final BiFunction<List<UriComponent>, String, UriComponent> joinedFn) {
     this.userinfo = userinfo;
     this.host = host;
     this.port = port;
+    this.formattedFn = formattedFn;
+    this.joinedFn = joinedFn;
   }
 
   @Override
@@ -89,29 +109,40 @@ public final class Authority implements AuthorityComponent {
 
   @Override
   public CharSequence encoded(final Charset charset) {
-    return concatenated(
-      userinfo.ifDefinedElse(u -> u.encoded(charset), () -> ""),
-      host.encoded(charset),
-      port.ifDefinedElse(p -> p.encoded(charset), () -> "")
+    return concatenatedComponents(formattedComponents()).encoded(charset);
+  }
+
+  private UriComponent concatenatedComponents(final List<UriComponent> components) {
+    return joinedFn.apply(components, "");
+  }
+
+  private List<UriComponent> formattedComponents() {
+    return Stream.of(formattedUserInfo(), formattedHost(), formattedPort())
+      .flatMap(Function.identity())
+      .collect(Collectors.toUnmodifiableList());
+  }
+
+  private Stream<UriComponent> formattedUserInfo() {
+    return userinfo.ifDefinedElse(
+      x -> Stream.of(formattedFn.apply("%s@", List.of(x))),
+      Stream::empty
     );
   }
 
-  private String concatenated(final CharSequence userinfo, final CharSequence host, final CharSequence port) {
-    return String.format(
-      "%s%s%s",
-      userinfo.toString().concat(userinfo.length() == 0 ? "" : "@"),
-      host,
-      port.length() == 0 ? "" : ":".concat(port.toString())
+  private Stream<UriComponent> formattedHost() {
+    return Stream.of(host);
+  }
+
+  private Stream<UriComponent> formattedPort() {
+    return port.ifDefinedElse(
+      x -> Stream.of(formattedFn.apply(":%s", List.of(x))),
+      Stream::empty
     );
   }
 
   @Override
   public String asString() {
-    return concatenated(
-      userinfo.ifDefinedElse(UserinfoSubComponent::asString, () -> ""),
-      host.asString(),
-      port.ifDefinedElse(PortSubcomponent::asString, () -> "")
-    );
+    return concatenatedComponents(formattedComponents()).asString();
   }
 
   @Override
@@ -122,4 +153,6 @@ public final class Authority implements AuthorityComponent {
   private final UserinfoSubComponent userinfo;
   private final HostSubcomponent host;
   private final PortSubcomponent port;
+  private final BiFunction<String, List<UriComponent>, UriComponent> formattedFn;
+  private final BiFunction<List<UriComponent>, String, UriComponent> joinedFn;
 }
