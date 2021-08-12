@@ -15,6 +15,17 @@
  */
 package io.github.raffaeleflorio.surily;
 
+import io.github.raffaeleflorio.surily.authority.AuthorityComponent;
+import io.github.raffaeleflorio.surily.authority.UndefinedAuthority;
+import io.github.raffaeleflorio.surily.fragment.FragmentComponent;
+import io.github.raffaeleflorio.surily.fragment.UndefinedFragment;
+import io.github.raffaeleflorio.surily.path.EmptyPath;
+import io.github.raffaeleflorio.surily.path.PathComponent;
+import io.github.raffaeleflorio.surily.query.QueryComponent;
+import io.github.raffaeleflorio.surily.query.UndefinedQuery;
+import io.github.raffaeleflorio.surily.scheme.SchemeComponent;
+import io.github.raffaeleflorio.surily.scheme.UndefinedScheme;
+
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.function.BiFunction;

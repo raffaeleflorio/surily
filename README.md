@@ -15,6 +15,15 @@ Here you are some examples:
 
 ```java
 import io.github.raffaeleflorio.surily.*;
+import io.github.raffaeleflorio.surily.authority.Authority;
+import io.github.raffaeleflorio.surily.authority.RegName;
+import io.github.raffaeleflorio.surily.fragment.Fragment;
+import io.github.raffaeleflorio.surily.path.AbsolutePath;
+import io.github.raffaeleflorio.surily.path.DoubleDotSegment;
+import io.github.raffaeleflorio.surily.path.NoSchemePath;
+import io.github.raffaeleflorio.surily.path.PathSegment;
+import io.github.raffaeleflorio.surily.query.PairQuery;
+import io.github.raffaeleflorio.surily.scheme.Scheme;
 
 import java.nio.charset.StandardCharsets;
 

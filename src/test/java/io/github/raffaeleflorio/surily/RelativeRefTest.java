@@ -15,6 +15,10 @@
  */
 package io.github.raffaeleflorio.surily;
 
+import io.github.raffaeleflorio.surily.authority.AuthorityComponent;
+import io.github.raffaeleflorio.surily.fragment.FragmentComponent;
+import io.github.raffaeleflorio.surily.path.PathComponent;
+import io.github.raffaeleflorio.surily.query.QueryComponent;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;

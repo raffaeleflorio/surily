@@ -15,6 +15,7 @@
  */
 package io.github.raffaeleflorio.surily;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
@@ -28,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 class PercentEncodedTest {
   @Test
   void testReservedRFC3986Characters() {
-    assertEquals(
+    Assertions.assertEquals(
       "%3A%2F%3F%23%5B%5D%40%21%24%26%27%28%29%2A%2B%2C%3B%3D",
       new PercentEncoded(":/?#[]@!$&'()*+,;=").toString()
     );

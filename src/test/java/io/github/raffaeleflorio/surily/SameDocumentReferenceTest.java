@@ -15,6 +15,7 @@
  */
 package io.github.raffaeleflorio.surily;
 
+import io.github.raffaeleflorio.surily.fragment.FragmentComponent;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;

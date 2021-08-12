@@ -15,6 +15,14 @@
  */
 package io.github.raffaeleflorio.surily;
 
+import io.github.raffaeleflorio.surily.authority.AuthorityComponent;
+import io.github.raffaeleflorio.surily.authority.HostSubcomponent;
+import io.github.raffaeleflorio.surily.authority.PortSubcomponent;
+import io.github.raffaeleflorio.surily.authority.UserinfoSubComponent;
+import io.github.raffaeleflorio.surily.path.PathComponent;
+import io.github.raffaeleflorio.surily.query.QueryComponent;
+import io.github.raffaeleflorio.surily.scheme.SchemeComponent;
+import io.github.raffaeleflorio.surily.scheme.UndefinedScheme;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
