@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package io.github.raffaeleflorio.surily.set;
+package io.github.raffaeleflorio.surily.characters;
 
 import org.junit.jupiter.api.Test;
 
@@ -21,16 +21,19 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DiffSetTest {
+class ReservedCharactersTest {
   @Test
-  void testDifference() {
+  void testIterator() {
     assertSetEquals(
-      Set.of("42"),
-      new DiffSet<>(Set.of("A", "B", "C", "D", "42"), Set.of("A", "B", "C", "D"))
+      Set.of(
+        ':', '/', '?', '#', '[', ']', '@',
+        '!', '$', '&', '\'', '(', ')', '*', '+', ',', ';', '='
+      ),
+      new ReservedCharacters()
     );
   }
 
-  private void assertSetEquals(final Set<String> expected, final Set<String> actual) {
+  private void assertSetEquals(final Set<Character> expected, final Set<Character> actual) {
     assertAll(
       () -> assertEquals(expected.size(), actual.size()),
       () -> assertTrue(expected.containsAll(actual))
@@ -40,8 +43,8 @@ class DiffSetTest {
   @Test
   void testSize() {
     assertEquals(
-      2,
-      new DiffSet<>(Set.of("a string", "a number", "another string"), Set.of("a number")).size()
+      18,
+      new ReservedCharacters().size()
     );
   }
 }

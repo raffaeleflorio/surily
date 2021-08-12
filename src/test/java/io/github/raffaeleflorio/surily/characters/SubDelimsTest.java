@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package io.github.raffaeleflorio.surily.set;
+package io.github.raffaeleflorio.surily.characters;
 
 import org.junit.jupiter.api.Test;
 
@@ -21,12 +21,12 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class GenDelimsTest {
+class SubDelimsTest {
   @Test
   void testIterator() {
     assertSetEquals(
-      Set.of(':', '/', '?', '#', '[', ']', '@'),
-      new GenDelims()
+      Set.of('!', '$', '&', '\'', '(', ')', '*', '+', ',', ';', '='),
+      new SubDelims()
     );
   }
 
@@ -40,8 +40,8 @@ class GenDelimsTest {
   @Test
   void testSize() {
     assertEquals(
-      7,
-      new GenDelims().size()
+      11,
+      new SubDelims().size()
     );
   }
 }

@@ -13,43 +13,49 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package io.github.raffaeleflorio.surily.set;
+package io.github.raffaeleflorio.surily.characters;
 
 import java.util.AbstractSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 /**
- * English upper-case alphabet (i.e. A-Z)
+ * Difference set
  *
+ * @param <T> The elements type
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)
  * @since 1.0.0
  */
-public final class EnglishUpperCaseAlphabet extends AbstractSet<Character> {
+public final class DiffSet<T> extends AbstractSet<T> {
   /**
-   * Builds the alphabet set
+   * Builds the difference
    *
+   * @param one A set
+   * @param two Another set
    * @since 1.0.0
    */
-  public EnglishUpperCaseAlphabet() {
-    this(
-      Set.of('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z')
-    );
-  }
-
-  private EnglishUpperCaseAlphabet(final Set<Character> alphabet) {
-    this.alphabet = alphabet;
+  public DiffSet(final Set<T> one, final Set<T> two) {
+    this.one = one;
+    this.two = two;
   }
 
   @Override
-  public Iterator<Character> iterator() {
-    return alphabet.iterator();
+  public Iterator<T> iterator() {
+    return stream().iterator();
+  }
+
+  @Override
+  public Stream<T> stream() {
+    return one.stream().filter(Predicate.not(two::contains));
   }
 
   @Override
   public int size() {
-    return alphabet.size();
+    return Long.valueOf(stream().count()).intValue();
   }
 
-  private final Set<Character> alphabet;
+  private final Set<T> one;
+  private final Set<T> two;
 }

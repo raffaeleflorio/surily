@@ -13,46 +13,49 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package io.github.raffaeleflorio.surily.set;
+package io.github.raffaeleflorio.surily.characters;
 
 import java.util.AbstractSet;
 import java.util.Iterator;
 import java.util.Set;
 
 /**
- * RFC3986 query characters (i.e. pchar / "/" / "?")
+ * RFC3986 pchar characters (i.e. unreserved / pct-encoded / sub-delims / ":" / "@")
  *
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)
  * @since 1.0.0
  */
-public final class QueryCharacters extends AbstractSet<Character> {
+public final class Pchar extends AbstractSet<Character> {
   /**
-   * Builds the characters sets
+   * Builds the pchar set
    *
    * @since 1.0.0
    */
-  public QueryCharacters() {
+  public Pchar() {
     this(
       new UnionSet<>(
-        new Pchar(),
-        Set.of('/', '?')
+        new UnionSet<>(
+          new UnreservedCharacters(),
+          new SubDelims()
+        ),
+        Set.of(':', '@', '%')
       )
     );
   }
 
-  private QueryCharacters(final Set<Character> queryCharacters) {
-    this.queryCharacters = queryCharacters;
+  private Pchar(final Set<Character> pchar) {
+    this.pchar = pchar;
   }
 
   @Override
   public Iterator<Character> iterator() {
-    return queryCharacters.iterator();
+    return pchar.iterator();
   }
 
   @Override
   public int size() {
-    return queryCharacters.size();
+    return pchar.size();
   }
 
-  private final Set<Character> queryCharacters;
+  private final Set<Character> pchar;
 }

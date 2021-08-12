@@ -16,9 +16,9 @@
 package io.github.raffaeleflorio.surily.authority;
 
 import io.github.raffaeleflorio.surily.PercentEncoded;
-import io.github.raffaeleflorio.surily.set.SubDelims;
-import io.github.raffaeleflorio.surily.set.UnionSet;
-import io.github.raffaeleflorio.surily.set.UnreservedCharacters;
+import io.github.raffaeleflorio.surily.characters.SubDelims;
+import io.github.raffaeleflorio.surily.characters.UnionSet;
+import io.github.raffaeleflorio.surily.characters.UnreservedCharacters;
 
 import java.nio.charset.Charset;
 import java.util.function.BiFunction;

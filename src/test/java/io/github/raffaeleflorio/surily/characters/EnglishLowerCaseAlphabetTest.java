@@ -13,24 +13,25 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package io.github.raffaeleflorio.surily.set;
+package io.github.raffaeleflorio.surily.characters;
 
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UnionSetTest {
+class EnglishLowerCaseAlphabetTest {
   @Test
-  void testUnion() {
+  void testIterator() {
     assertSetEquals(
-      Set.of(1, 2, 3, 9, 8, 7),
-      new UnionSet<>(Set.of(1, 2, 3), Set.of(9, 8, 7))
+      Set.of('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'),
+      new EnglishLowerCaseAlphabet()
     );
   }
 
-  private void assertSetEquals(final Set<Integer> expected, final Set<Integer> actual) {
+  private void assertSetEquals(final Set<Character> expected, final Set<Character> actual) {
     assertAll(
       () -> assertEquals(expected.size(), actual.size()),
       () -> assertTrue(expected.containsAll(actual))
@@ -40,22 +41,28 @@ class UnionSetTest {
   @Test
   void testSize() {
     assertEquals(
-      5,
-      new UnionSet<>(Set.of(1, 2, 3), Set.of(42, 43)).size()
+      26,
+      new EnglishLowerCaseAlphabet().size()
     );
   }
 
-  @Test
-  void testNoDuplicates() {
-    assertAll(
-      () -> assertEquals(
-        5,
-        new UnionSet<>(Set.of(1, 2, 3), Set.of(3, 42, 43)).size()
-      ),
-      () -> assertSetEquals(
-        Set.of(1, 2, 3, 42, 43),
-        new UnionSet<>(Set.of(1, 2, 3), Set.of(3, 42, 43))
-      )
-    );
+
+  @Nested
+  class ImmutabilityTest {
+    @Test
+    void testAdd() {
+      assertThrows(
+        UnsupportedOperationException.class,
+        () -> new EnglishLowerCaseAlphabet().add('~')
+      );
+    }
+
+    @Test
+    void testRemove() {
+      assertThrows(
+        UnsupportedOperationException.class,
+        () -> new EnglishLowerCaseAlphabet().remove('z')
+      );
+    }
   }
 }

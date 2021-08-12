@@ -13,43 +13,11 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package io.github.raffaeleflorio.surily.set;
-
-import java.util.AbstractSet;
-import java.util.Iterator;
-import java.util.Set;
-
 /**
- * Digits set (i.e. 0-9)
+ * Objects about RFC3986 common characters set
  *
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)
+ * @see <a href="https://datatracker.ietf.org/doc/html/rfc3986#appendix-A">RFC3986 appendix A</a>
  * @since 1.0.0
  */
-public final class Digits extends AbstractSet<Character> {
-  /**
-   * Builds the digits set
-   *
-   * @since 1.0.0
-   */
-  public Digits() {
-    this(
-      Set.of('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
-    );
-  }
-
-  private Digits(final Set<Character> digits) {
-    this.digits = digits;
-  }
-
-  @Override
-  public Iterator<Character> iterator() {
-    return digits.iterator();
-  }
-
-  @Override
-  public int size() {
-    return digits.size();
-  }
-
-  private final Set<Character> digits;
-}
+package io.github.raffaeleflorio.surily.characters;

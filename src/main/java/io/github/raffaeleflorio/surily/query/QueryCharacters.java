@@ -13,42 +13,49 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package io.github.raffaeleflorio.surily.set;
+package io.github.raffaeleflorio.surily.query;
+
+import io.github.raffaeleflorio.surily.characters.Pchar;
+import io.github.raffaeleflorio.surily.characters.UnionSet;
 
 import java.util.AbstractSet;
 import java.util.Iterator;
 import java.util.Set;
 
 /**
- * RFC3986 gen-delims characters (i.e. ":" / "/" / "?" / "#" / "[" / "]" / "@")
+ * RFC3986 query characters (i.e. pchar / "/" / "?")
  *
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)
  * @since 1.0.0
  */
-public final class GenDelims extends AbstractSet<Character> {
+final class QueryCharacters extends AbstractSet<Character> {
   /**
-   * Builds the gen-delims set
+   * Builds the characters sets
    *
-   * @author Raffaele Florio (raffaeleflorio@protonmail.com)
    * @since 1.0.0
    */
-  public GenDelims() {
-    this(Set.of(':', '/', '?', '#', '[', ']', '@'));
+  QueryCharacters() {
+    this(
+      new UnionSet<>(
+        new Pchar(),
+        Set.of('/', '?')
+      )
+    );
   }
 
-  private GenDelims(final Set<Character> genDelims) {
-    this.genDelims = genDelims;
+  private QueryCharacters(final Set<Character> queryCharacters) {
+    this.queryCharacters = queryCharacters;
   }
 
   @Override
   public Iterator<Character> iterator() {
-    return genDelims.iterator();
+    return queryCharacters.iterator();
   }
 
   @Override
   public int size() {
-    return genDelims.size();
+    return queryCharacters.size();
   }
 
-  private final Set<Character> genDelims;
+  private final Set<Character> queryCharacters;
 }

@@ -13,42 +13,42 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package io.github.raffaeleflorio.surily.set;
+package io.github.raffaeleflorio.surily.characters;
 
 import java.util.AbstractSet;
 import java.util.Iterator;
 import java.util.Set;
 
 /**
- * RFC3986 reserved characters (i.e. gen-delims / sub-delims)
+ * RFC3986 gen-delims characters (i.e. ":" / "/" / "?" / "#" / "[" / "]" / "@")
  *
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)
  * @since 1.0.0
  */
-public final class ReservedCharacters extends AbstractSet<Character> {
+public final class GenDelims extends AbstractSet<Character> {
   /**
-   * Builds the reserved set
+   * Builds the gen-delims set
    *
    * @author Raffaele Florio (raffaeleflorio@protonmail.com)
    * @since 1.0.0
    */
-  public ReservedCharacters() {
-    this(new UnionSet<>(new GenDelims(), new SubDelims()));
+  public GenDelims() {
+    this(Set.of(':', '/', '?', '#', '[', ']', '@'));
   }
 
-  private ReservedCharacters(final Set<Character> reserved) {
-    this.reserved = reserved;
+  private GenDelims(final Set<Character> genDelims) {
+    this.genDelims = genDelims;
   }
 
   @Override
   public Iterator<Character> iterator() {
-    return reserved.iterator();
+    return genDelims.iterator();
   }
 
   @Override
   public int size() {
-    return reserved.size();
+    return genDelims.size();
   }
 
-  private final Set<Character> reserved;
+  private final Set<Character> genDelims;
 }

@@ -13,27 +13,21 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package io.github.raffaeleflorio.surily.set;
+package io.github.raffaeleflorio.surily.characters;
 
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class QueryCharactersTest {
+class EnglishUpperCaseAlphabetTest {
   @Test
   void testIterator() {
     assertSetEquals(
-      Set.of(
-        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-        '-', '.', '_', '~', '!', '$', '&', '\'', '(', ')', '*', '+', ',', ';', '=',
-        ':', '@', '%',
-        '/', '?'
-      ),
-      new QueryCharacters()
+      Set.of('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'),
+      new EnglishUpperCaseAlphabet()
     );
   }
 
@@ -47,8 +41,27 @@ class QueryCharactersTest {
   @Test
   void testSize() {
     assertEquals(
-      82,
-      new QueryCharacters().size()
+      26,
+      new EnglishUpperCaseAlphabet().size()
     );
+  }
+
+  @Nested
+  class ImmutabilityTest {
+    @Test
+    void testAdd() {
+      assertThrows(
+        UnsupportedOperationException.class,
+        () -> new EnglishUpperCaseAlphabet().add('~')
+      );
+    }
+
+    @Test
+    void testRemove() {
+      assertThrows(
+        UnsupportedOperationException.class,
+        () -> new EnglishUpperCaseAlphabet().remove('A')
+      );
+    }
   }
 }

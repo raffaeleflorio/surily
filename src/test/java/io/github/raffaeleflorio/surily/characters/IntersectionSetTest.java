@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package io.github.raffaeleflorio.surily.set;
+package io.github.raffaeleflorio.surily.characters;
 
 import org.junit.jupiter.api.Test;
 
@@ -21,16 +21,19 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DigitsTest {
+class IntersectionSetTest {
   @Test
   void testIterator() {
     assertSetEquals(
-      Set.of('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'),
-      new Digits()
+      Set.of("common", "another common element"),
+      new IntersectionSet<>(
+        Set.of("common", "uncommon", "another common element", "nope"),
+        Set.of("not really common", "xyz", "common", "another common element")
+      )
     );
   }
 
-  private void assertSetEquals(final Set<Character> expected, final Set<Character> actual) {
+  private void assertSetEquals(final Set<String> expected, final Set<String> actual) {
     assertAll(
       () -> assertEquals(expected.size(), actual.size()),
       () -> assertTrue(expected.containsAll(actual))
@@ -40,8 +43,16 @@ class DigitsTest {
   @Test
   void testSize() {
     assertEquals(
-      10,
-      new Digits().size()
+      1,
+      new IntersectionSet<>(
+        Set.of(1),
+        Set.of(1, 2, 3)
+      ).size()
     );
+  }
+
+  @Test
+  void testEmptyIntersection() {
+    assertEquals(0, new IntersectionSet<>(Set.of("the question"), Set.of()).size());
   }
 }

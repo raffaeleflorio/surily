@@ -13,42 +13,42 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package io.github.raffaeleflorio.surily.set;
+package io.github.raffaeleflorio.surily.characters;
 
 import java.util.AbstractSet;
 import java.util.Iterator;
 import java.util.Set;
 
 /**
- * RFC3986 sub-delims characters (i.e. "!" / "$" / "&" / "'" / "(" / ")" / "*" / "+" / "," / ";" / "=")
+ * RFC3986 reserved characters (i.e. gen-delims / sub-delims)
  *
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)
  * @since 1.0.0
  */
-public final class SubDelims extends AbstractSet<Character> {
+public final class ReservedCharacters extends AbstractSet<Character> {
   /**
-   * Builds the sub-delims set
+   * Builds the reserved set
    *
    * @author Raffaele Florio (raffaeleflorio@protonmail.com)
    * @since 1.0.0
    */
-  public SubDelims() {
-    this(Set.of('!', '$', '&', '\'', '(', ')', '*', '+', ',', ';', '='));
+  public ReservedCharacters() {
+    this(new UnionSet<>(new GenDelims(), new SubDelims()));
   }
 
-  private SubDelims(final Set<Character> subDelims) {
-    this.subDelims = subDelims;
+  private ReservedCharacters(final Set<Character> reserved) {
+    this.reserved = reserved;
   }
 
   @Override
   public Iterator<Character> iterator() {
-    return subDelims.iterator();
+    return reserved.iterator();
   }
 
   @Override
   public int size() {
-    return subDelims.size();
+    return reserved.size();
   }
 
-  private final Set<Character> subDelims;
+  private final Set<Character> reserved;
 }

@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package io.github.raffaeleflorio.surily.set;
+package io.github.raffaeleflorio.surily.characters;
 
 import org.junit.jupiter.api.Test;
 
@@ -21,15 +21,12 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class IntersectionSetTest {
+class DiffSetTest {
   @Test
-  void testIterator() {
+  void testDifference() {
     assertSetEquals(
-      Set.of("common", "another common element"),
-      new IntersectionSet<>(
-        Set.of("common", "uncommon", "another common element", "nope"),
-        Set.of("not really common", "xyz", "common", "another common element")
-      )
+      Set.of("42"),
+      new DiffSet<>(Set.of("A", "B", "C", "D", "42"), Set.of("A", "B", "C", "D"))
     );
   }
 
@@ -43,16 +40,8 @@ class IntersectionSetTest {
   @Test
   void testSize() {
     assertEquals(
-      1,
-      new IntersectionSet<>(
-        Set.of(1),
-        Set.of(1, 2, 3)
-      ).size()
+      2,
+      new DiffSet<>(Set.of("a string", "a number", "another string"), Set.of("a number")).size()
     );
-  }
-
-  @Test
-  void testEmptyIntersection() {
-    assertEquals(0, new IntersectionSet<>(Set.of("the question"), Set.of()).size());
   }
 }

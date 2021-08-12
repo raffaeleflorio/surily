@@ -13,49 +13,43 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package io.github.raffaeleflorio.surily.set;
+package io.github.raffaeleflorio.surily.characters;
 
 import java.util.AbstractSet;
 import java.util.Iterator;
 import java.util.Set;
 
 /**
- * RFC3986 pchar characters (i.e. unreserved / pct-encoded / sub-delims / ":" / "@")
+ * English upper-case alphabet (i.e. A-Z)
  *
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)
  * @since 1.0.0
  */
-public final class Pchar extends AbstractSet<Character> {
+public final class EnglishUpperCaseAlphabet extends AbstractSet<Character> {
   /**
-   * Builds the pchar set
+   * Builds the alphabet set
    *
    * @since 1.0.0
    */
-  public Pchar() {
+  public EnglishUpperCaseAlphabet() {
     this(
-      new UnionSet<>(
-        new UnionSet<>(
-          new UnreservedCharacters(),
-          new SubDelims()
-        ),
-        Set.of(':', '@', '%')
-      )
+      Set.of('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z')
     );
   }
 
-  private Pchar(final Set<Character> pchar) {
-    this.pchar = pchar;
+  private EnglishUpperCaseAlphabet(final Set<Character> alphabet) {
+    this.alphabet = alphabet;
   }
 
   @Override
   public Iterator<Character> iterator() {
-    return pchar.iterator();
+    return alphabet.iterator();
   }
 
   @Override
   public int size() {
-    return pchar.size();
+    return alphabet.size();
   }
 
-  private final Set<Character> pchar;
+  private final Set<Character> alphabet;
 }

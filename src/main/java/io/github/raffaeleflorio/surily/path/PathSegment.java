@@ -16,7 +16,7 @@
 package io.github.raffaeleflorio.surily.path;
 
 import io.github.raffaeleflorio.surily.PercentEncoded;
-import io.github.raffaeleflorio.surily.set.Pchar;
+import io.github.raffaeleflorio.surily.characters.Pchar;
 
 import java.nio.charset.Charset;
 import java.util.Map;

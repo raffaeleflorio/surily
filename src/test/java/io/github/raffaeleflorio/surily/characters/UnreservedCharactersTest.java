@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package io.github.raffaeleflorio.surily.set;
+package io.github.raffaeleflorio.surily.characters;
 
 import org.junit.jupiter.api.Test;
 
@@ -21,15 +21,17 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ReservedCharactersTest {
+class UnreservedCharactersTest {
   @Test
   void testIterator() {
     assertSetEquals(
       Set.of(
-        ':', '/', '?', '#', '[', ']', '@',
-        '!', '$', '&', '\'', '(', ')', '*', '+', ',', ';', '='
+        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+        '-', '.', '_', '~'
       ),
-      new ReservedCharacters()
+      new UnreservedCharacters()
     );
   }
 
@@ -43,8 +45,8 @@ class ReservedCharactersTest {
   @Test
   void testSize() {
     assertEquals(
-      18,
-      new ReservedCharacters().size()
+      66,
+      new UnreservedCharacters().size()
     );
   }
 }

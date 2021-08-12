@@ -13,21 +13,20 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package io.github.raffaeleflorio.surily.set;
+package io.github.raffaeleflorio.surily.characters;
 
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class EnglishUpperCaseAlphabetTest {
+class DigitsTest {
   @Test
   void testIterator() {
     assertSetEquals(
-      Set.of('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'),
-      new EnglishUpperCaseAlphabet()
+      Set.of('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'),
+      new Digits()
     );
   }
 
@@ -41,27 +40,8 @@ class EnglishUpperCaseAlphabetTest {
   @Test
   void testSize() {
     assertEquals(
-      26,
-      new EnglishUpperCaseAlphabet().size()
+      10,
+      new Digits().size()
     );
-  }
-
-  @Nested
-  class ImmutabilityTest {
-    @Test
-    void testAdd() {
-      assertThrows(
-        UnsupportedOperationException.class,
-        () -> new EnglishUpperCaseAlphabet().add('~')
-      );
-    }
-
-    @Test
-    void testRemove() {
-      assertThrows(
-        UnsupportedOperationException.class,
-        () -> new EnglishUpperCaseAlphabet().remove('A')
-      );
-    }
   }
 }

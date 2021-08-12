@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package io.github.raffaeleflorio.surily.set;
+package io.github.raffaeleflorio.surily.characters;
 
 import org.junit.jupiter.api.Test;
 
@@ -21,22 +21,16 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PcharTest {
+class UnionSetTest {
   @Test
-  void testIterator() {
+  void testUnion() {
     assertSetEquals(
-      Set.of(
-        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-        '-', '.', '_', '~', '!', '$', '&', '\'', '(', ')', '*', '+', ',', ';', '=',
-        ':', '@', '%'
-      ),
-      new Pchar()
+      Set.of(1, 2, 3, 9, 8, 7),
+      new UnionSet<>(Set.of(1, 2, 3), Set.of(9, 8, 7))
     );
   }
 
-  private void assertSetEquals(final Set<Character> expected, final Set<Character> actual) {
+  private void assertSetEquals(final Set<Integer> expected, final Set<Integer> actual) {
     assertAll(
       () -> assertEquals(expected.size(), actual.size()),
       () -> assertTrue(expected.containsAll(actual))
@@ -46,8 +40,22 @@ class PcharTest {
   @Test
   void testSize() {
     assertEquals(
-      80,
-      new Pchar().size()
+      5,
+      new UnionSet<>(Set.of(1, 2, 3), Set.of(42, 43)).size()
+    );
+  }
+
+  @Test
+  void testNoDuplicates() {
+    assertAll(
+      () -> assertEquals(
+        5,
+        new UnionSet<>(Set.of(1, 2, 3), Set.of(3, 42, 43)).size()
+      ),
+      () -> assertSetEquals(
+        Set.of(1, 2, 3, 42, 43),
+        new UnionSet<>(Set.of(1, 2, 3), Set.of(3, 42, 43))
+      )
     );
   }
 }

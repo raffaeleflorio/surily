@@ -16,8 +16,8 @@
 package io.github.raffaeleflorio.surily.fragment;
 
 import io.github.raffaeleflorio.surily.PercentEncoded;
-import io.github.raffaeleflorio.surily.set.Pchar;
-import io.github.raffaeleflorio.surily.set.UnionSet;
+import io.github.raffaeleflorio.surily.characters.Pchar;
+import io.github.raffaeleflorio.surily.characters.UnionSet;
 
 import java.nio.charset.Charset;
 import java.util.Set;

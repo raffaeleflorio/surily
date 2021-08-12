@@ -13,21 +13,20 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package io.github.raffaeleflorio.surily.set;
+package io.github.raffaeleflorio.surily.characters;
 
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class EnglishLowerCaseAlphabetTest {
+class GenDelimsTest {
   @Test
   void testIterator() {
     assertSetEquals(
-      Set.of('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'),
-      new EnglishLowerCaseAlphabet()
+      Set.of(':', '/', '?', '#', '[', ']', '@'),
+      new GenDelims()
     );
   }
 
@@ -41,28 +40,8 @@ class EnglishLowerCaseAlphabetTest {
   @Test
   void testSize() {
     assertEquals(
-      26,
-      new EnglishLowerCaseAlphabet().size()
+      7,
+      new GenDelims().size()
     );
-  }
-
-
-  @Nested
-  class ImmutabilityTest {
-    @Test
-    void testAdd() {
-      assertThrows(
-        UnsupportedOperationException.class,
-        () -> new EnglishLowerCaseAlphabet().add('~')
-      );
-    }
-
-    @Test
-    void testRemove() {
-      assertThrows(
-        UnsupportedOperationException.class,
-        () -> new EnglishLowerCaseAlphabet().remove('z')
-      );
-    }
   }
 }

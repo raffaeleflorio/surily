@@ -13,48 +13,43 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package io.github.raffaeleflorio.surily.set;
+package io.github.raffaeleflorio.surily.characters;
 
 import java.util.AbstractSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.stream.Stream;
 
 /**
- * Union set
+ * English lower-case alphabet (i.e. a-z)
  *
- * @param <T> The elements type
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)
  * @since 1.0.0
  */
-public final class UnionSet<T> extends AbstractSet<T> {
+public final class EnglishLowerCaseAlphabet extends AbstractSet<Character> {
   /**
-   * Builds the union set
+   * Builds the alphabet set
    *
-   * @param one A set
-   * @param two Another set
    * @since 1.0.0
    */
-  public UnionSet(final Set<T> one, final Set<T> two) {
-    this.one = one;
-    this.two = two;
+  public EnglishLowerCaseAlphabet() {
+    this(
+      Set.of('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z')
+    );
+  }
+
+  private EnglishLowerCaseAlphabet(final Set<Character> alphabet) {
+    this.alphabet = alphabet;
   }
 
   @Override
-  public Iterator<T> iterator() {
-    return stream().iterator();
-  }
-
-  @Override
-  public Stream<T> stream() {
-    return Stream.concat(one.stream(), two.stream()).distinct();
+  public Iterator<Character> iterator() {
+    return alphabet.iterator();
   }
 
   @Override
   public int size() {
-    return Long.valueOf(stream().count()).intValue(); // FIXME
+    return alphabet.size();
   }
 
-  private final Set<T> one;
-  private final Set<T> two;
+  private final Set<Character> alphabet;
 }
