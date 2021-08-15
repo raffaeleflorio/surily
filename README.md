@@ -73,6 +73,20 @@ class Examples {
       ).encoded(StandardCharsets.US_ASCII)
     );
   }
+
+  void assertISBN() {
+    assertEquals(
+      "urn:isbn:0048230464",
+      new AbsoluteUri(
+        new Scheme("urn"),
+        new RelativePath(
+          List.of(
+            new PathSegment("isbn:0048230464")
+          )
+        )
+      ).encoded(StandardCharsets.UTF_8)
+    );
+  }
   // WIP
 }
 ```
