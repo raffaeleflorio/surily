@@ -24,11 +24,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class NonColonPathSegmentTest {
   @Test
-  void testEncoded() {
+  void testIllegalSegmentEncoded() {
     var illegal = "segment:with:colon";
     assertIllegalNonColonSegment(
       illegal,
       () -> new NonColonPathSegment(illegal).encoded(StandardCharsets.ISO_8859_1)
+    );
+  }
+
+  @Test
+  void testEncoded() {
+    var expected = "ok";
+    assertEquals(
+      expected,
+      new NonColonPathSegment(expected).encoded(StandardCharsets.US_ASCII)
     );
   }
 
@@ -40,11 +49,20 @@ class NonColonPathSegmentTest {
   }
 
   @Test
-  void testAsString() {
+  void testIllegalSegmentAsString() {
     var illegal = ":::";
     assertIllegalNonColonSegment(
       illegal,
       () -> new NonColonPathSegment(illegal).asString()
+    );
+  }
+
+  @Test
+  void testAsString() {
+    var expected = "ok";
+    assertEquals(
+      expected,
+      new NonColonPathSegment(expected).asString()
     );
   }
 
