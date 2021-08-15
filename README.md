@@ -20,7 +20,7 @@ import io.github.raffaeleflorio.surily.authority.RegName;
 import io.github.raffaeleflorio.surily.fragment.Fragment;
 import io.github.raffaeleflorio.surily.path.AbsolutePath;
 import io.github.raffaeleflorio.surily.path.DoubleDotSegment;
-import io.github.raffaeleflorio.surily.path.NoSchemePath;
+import io.github.raffaeleflorio.surily.path.RelativePath;
 import io.github.raffaeleflorio.surily.path.PathSegment;
 import io.github.raffaeleflorio.surily.query.PairQuery;
 import io.github.raffaeleflorio.surily.scheme.Scheme;
@@ -61,7 +61,7 @@ class Examples {
   void assertPathTraversal() {
     assertEquals(
       "../../../../etc/passwd",
-      new NoSchemePath(
+      new RelativePath(
         List.of(
           new DoubleDotSegment(),
           new DoubleDotSegment(),

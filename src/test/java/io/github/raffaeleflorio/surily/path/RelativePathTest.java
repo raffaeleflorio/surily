@@ -27,12 +27,12 @@ import java.util.stream.StreamSupport;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class NoSchemePathTest {
+class RelativePathTest {
   @Test
   void testEncoded() {
     Assertions.assertEquals(
       "%2F/../../ok%5B.txt",
-      new NoSchemePath(
+      new RelativePath(
         List.of(
           new PathSegmentSubcomponent.NormalFake("%2F", "/"),
           new PathSegmentSubcomponent.NormalFake("..", ".."),
@@ -45,23 +45,13 @@ class NoSchemePathTest {
 
   @Test
   void testFirstSegmentWithColon() {
-    var illegal = "x:y:z";
-    assertIllegalNonColonSegment(
-      illegal,
-      () -> new NoSchemePath(
+    assertEquals(
+      "x:y:z",
+      new RelativePath(
         List.of(
-          new PathSegmentSubcomponent.NormalFake(illegal, illegal),
-          new PathSegmentSubcomponent.NormalFake(illegal, illegal)
+          new PathSegmentSubcomponent.NormalFake("x:y:z", "")
         )
       ).encoded(StandardCharsets.ISO_8859_1)
-    );
-  }
-
-  private void assertIllegalNonColonSegment(final String segment, final Executable executable) {
-    assertThrowsWithMessage(
-      IllegalStateException.class,
-      executable,
-      String.format("Illegal non-colon segment: <%s>", segment)
     );
   }
 
@@ -69,7 +59,7 @@ class NoSchemePathTest {
   void testIterator() {
     assertIterableEquals(
       List.of(".", "segment:with:colon"),
-      encoded(new NoSchemePath(
+      encoded(new RelativePath(
           List.of(
             new PathSegmentSubcomponent.NormalFake(".", "."),
             new PathSegmentSubcomponent.NormalFake("segment:with:colon", "segment:with:colon")
@@ -79,7 +69,7 @@ class NoSchemePathTest {
     );
   }
 
-  private Iterable<?> encoded(final NoSchemePath path) {
+  private Iterable<?> encoded(final RelativePath path) {
     return StreamSupport.stream(path.spliterator(), false)
       .map(segment -> segment.encoded(StandardCharsets.UTF_8))
       .collect(Collectors.toUnmodifiableList());
@@ -89,17 +79,21 @@ class NoSchemePathTest {
   void testFirstSegmentEmpty() {
     assertAll(
       () -> assertIllegalNonZeroSegment(
-        () -> new NoSchemePath(List.of(new PathSegmentSubcomponent.NormalFake("", ""))).asString()
+        () -> new RelativePath(List.of(new PathSegmentSubcomponent.NormalFake("", "")))
+          .asString()
       ),
       () -> assertIllegalNonZeroSegment(
-        () -> new NoSchemePath(List.of(new PathSegmentSubcomponent.NormalFake("", ""))).encoded(StandardCharsets.UTF_8)
+        () -> new RelativePath(List.of(new PathSegmentSubcomponent.NormalFake("", "")))
+          .encoded(StandardCharsets.UTF_8)
       ),
       () -> assertIllegalNonZeroSegment(
-        () -> new NoSchemePath(List.of(new PathSegmentSubcomponent.NormalFake("", ""))).iterator().next().asString()
+        () -> new RelativePath(List.of(new PathSegmentSubcomponent.NormalFake("", "")))
+          .iterator()
+          .next()
+          .asString()
       )
     );
   }
-
 
   private void assertIllegalNonZeroSegment(final Executable executable) {
     assertThrowsWithMessage(
@@ -120,7 +114,7 @@ class NoSchemePathTest {
   void testZeroSegmentsExceptFirstOne() {
     assertEquals(
       ".///",
-      new NoSchemePath(
+      new RelativePath(
         List.of(
           new PathSegmentSubcomponent.NormalFake(".", ""),
           new PathSegmentSubcomponent.NormalFake("", ""),
@@ -132,25 +126,10 @@ class NoSchemePathTest {
   }
 
   @Test
-  void testColonSegmentsExceptFirstOne() {
-    assertEquals(
-      "any/:/:::x:::/::",
-      new NoSchemePath(
-        List.of(
-          new PathSegmentSubcomponent.NormalFake("", "any"),
-          new PathSegmentSubcomponent.NormalFake("", ":"),
-          new PathSegmentSubcomponent.NormalFake("", ":::x:::"),
-          new PathSegmentSubcomponent.NormalFake("", "::")
-        )
-      ).asString()
-    );
-  }
-
-  @Test
   void testUnsupportedHierPartWithAuthority() {
     assertThrowsWithMessage(
       IllegalStateException.class,
-      () -> new NoSchemePath(List.of()).hierPart(new AuthorityComponent.Fake("", "")),
+      () -> new RelativePath(List.of()).hierPart(new AuthorityComponent.Fake("", "")),
       "Unable to build a hier-part with an authority"
     );
   }
@@ -159,7 +138,7 @@ class NoSchemePathTest {
   void testUnsupportedRelativePartWithAuthority() {
     assertThrowsWithMessage(
       IllegalStateException.class,
-      () -> new NoSchemePath(List.of()).relativePart(new AuthorityComponent.Fake("", "")),
+      () -> new RelativePath(List.of()).relativePart(new AuthorityComponent.Fake("", "")),
       "Unable to build a relative-part with an authority"
     );
   }
@@ -168,7 +147,7 @@ class NoSchemePathTest {
   void testRelativePartWithoutAuthority() {
     assertEquals(
       "relative/part",
-      new NoSchemePath(
+      new RelativePath(
         List.of(
           new PathSegmentSubcomponent.NormalFake("relative", ""),
           new PathSegmentSubcomponent.NormalFake("part", "")
@@ -181,11 +160,45 @@ class NoSchemePathTest {
   void testHierPartWithoutAuthority() {
     assertEquals(
       "./hier/part",
-      new NoSchemePath(
+      new RelativePath(
         List.of(
           new PathSegmentSubcomponent.SingleDotFake("", "."),
           new PathSegmentSubcomponent.NormalFake("", "hier"),
           new PathSegmentSubcomponent.NormalFake("", "part")
+        )
+      ).hierPart().asString()
+    );
+  }
+
+  @Test
+  void testRelativePartWithColonSegment() {
+    var illegal = "colon:not:allowed:here";
+    assertIllegalNonColonSegment(
+      illegal,
+      () -> new RelativePath(
+        List.of(
+          new PathSegmentSubcomponent.NormalFake(illegal, "")
+        )
+      ).relativePart().encoded(StandardCharsets.UTF_8)
+    );
+  }
+
+  private void assertIllegalNonColonSegment(final String segment, final Executable executable) {
+    assertThrowsWithMessage(
+      IllegalStateException.class,
+      executable,
+      String.format("Illegal non-colon segment: <%s>", segment)
+    );
+  }
+
+  @Test
+  void testHierPartWithColonSegment() {
+    var expected = "colon:allowed:in:this:context";
+    assertEquals(
+      expected,
+      new RelativePath(
+        List.of(
+          new PathSegmentSubcomponent.NormalFake("", "colon:allowed:in:this:context")
         )
       ).hierPart().asString()
     );

@@ -29,67 +29,79 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
- * RFC3986 compliant noscheme {@link PathComponent} like: ../../../file.json
+ * RFC3986 compliant relative {@link PathComponent} like: ../../../file.json
  *
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)
  * @since 1.0.0
  */
-public final class NoSchemePath implements PathComponent {
+public final class RelativePath implements PathComponent {
   /**
    * Builds a path
    *
    * @param segments The segments
    * @since 1.0.0
    */
-  public NoSchemePath(final List<PathSegmentSubcomponent> segments) {
-    this(segments, s -> new NonZeroPathSegment(new NonColonPathSegment(s)), JoinedComponents::new);
+  public RelativePath(final List<PathSegmentSubcomponent> segments) {
+    this(
+      segments,
+      NonZeroPathSegment::new,
+      s -> new NonColonPathSegment(new NonZeroPathSegment(s)),
+      JoinedComponents::new
+    );
   }
 
   /**
    * Builds a path
    *
-   * @param segments The segments
-   * @param firstFn  The function to apply to the first segment
-   * @param joinedFn The function to build joined components
+   * @param segments   The segments
+   * @param rootlessFn The function to apply to a rootless segment
+   * @param noSchemeFn The function to apply to a noscheme segment
+   * @param joinedFn   The function to build joined components
    * @since 1.0.0
    */
-  NoSchemePath(
+  RelativePath(
     final List<PathSegmentSubcomponent> segments,
-    final Function<PathSegmentSubcomponent, PathSegmentSubcomponent> firstFn,
+    final Function<PathSegmentSubcomponent, PathSegmentSubcomponent> rootlessFn,
+    final Function<PathSegmentSubcomponent, PathSegmentSubcomponent> noSchemeFn,
     final BiFunction<List<UriComponent>, String, UriComponent> joinedFn
   ) {
     this.segments = segments;
-    this.firstFn = firstFn;
+    this.rootlessFn = rootlessFn;
+    this.noSchemeFn = noSchemeFn;
     this.joinedFn = joinedFn;
   }
 
   @Override
   public CharSequence encoded(final Charset charset) {
-    return formattedSegments().encoded(charset);
+    return formattedSegments(rootlessFn).encoded(charset);
   }
 
-  private UriComponent formattedSegments() {
-    return joinedFn.apply(segments().collect(Collectors.toUnmodifiableList()), "/");
+  private UriComponent formattedSegments(
+    final Function<PathSegmentSubcomponent, PathSegmentSubcomponent> firstFn
+  ) {
+    return joinedFn.apply(segments(firstFn).collect(Collectors.toUnmodifiableList()), "/");
   }
 
-  private Stream<PathSegmentSubcomponent> segments() {
+  private Stream<PathSegmentSubcomponent> segments(
+    final Function<PathSegmentSubcomponent, PathSegmentSubcomponent> firstFn
+  ) {
     return IntStream.range(0, segments.size())
       .mapToObj(i -> i == 0 ? firstFn.apply(segments.get(0)) : segments.get(i));
   }
 
   @Override
   public String asString() {
-    return formattedSegments().asString();
+    return formattedSegments(rootlessFn).asString();
   }
 
   @Override
   public Iterator<PathSegmentSubcomponent> iterator() {
-    return segments().iterator();
+    return segments(rootlessFn).iterator();
   }
 
   @Override
   public UriComponent relativePart() {
-    return this;
+    return formattedSegments(noSchemeFn);
   }
 
   @Override
@@ -108,6 +120,7 @@ public final class NoSchemePath implements PathComponent {
   }
 
   private final List<PathSegmentSubcomponent> segments;
-  private final Function<PathSegmentSubcomponent, PathSegmentSubcomponent> firstFn;
+  private final Function<PathSegmentSubcomponent, PathSegmentSubcomponent> rootlessFn;
+  private final Function<PathSegmentSubcomponent, PathSegmentSubcomponent> noSchemeFn;
   private final BiFunction<List<UriComponent>, String, UriComponent> joinedFn;
 }
