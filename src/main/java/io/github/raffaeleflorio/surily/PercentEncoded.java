@@ -15,10 +15,10 @@
  */
 package io.github.raffaeleflorio.surily;
 
-import io.github.raffaeleflorio.surily.characters.IntersectionSet;
 import io.github.raffaeleflorio.surily.characters.ReservedCharacters;
-import io.github.raffaeleflorio.surily.characters.UnionSet;
 import io.github.raffaeleflorio.surily.characters.UnreservedCharacters;
+import io.github.raffaeleflorio.surily.set.IntersectionSet;
+import io.github.raffaeleflorio.surily.set.UnionSet;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;

@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package io.github.raffaeleflorio.surily.characters;
+package io.github.raffaeleflorio.surily.set;
 
 import org.junit.jupiter.api.Test;
 
@@ -21,16 +21,16 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UnionSetTest {
+class DiffSetTest {
   @Test
-  void testUnion() {
+  void testDifference() {
     assertSetEquals(
-      Set.of(1, 2, 3, 9, 8, 7),
-      new UnionSet<>(Set.of(1, 2, 3), Set.of(9, 8, 7))
+      Set.of("42"),
+      new DiffSet<>(Set.of("A", "B", "C", "D", "42"), Set.of("A", "B", "C", "D"))
     );
   }
 
-  private void assertSetEquals(final Set<Integer> expected, final Set<Integer> actual) {
+  private void assertSetEquals(final Set<String> expected, final Set<String> actual) {
     assertAll(
       () -> assertEquals(expected.size(), actual.size()),
       () -> assertTrue(expected.containsAll(actual))
@@ -40,22 +40,8 @@ class UnionSetTest {
   @Test
   void testSize() {
     assertEquals(
-      5,
-      new UnionSet<>(Set.of(1, 2, 3), Set.of(42, 43)).size()
-    );
-  }
-
-  @Test
-  void testNoDuplicates() {
-    assertAll(
-      () -> assertEquals(
-        5,
-        new UnionSet<>(Set.of(1, 2, 3), Set.of(3, 42, 43)).size()
-      ),
-      () -> assertSetEquals(
-        Set.of(1, 2, 3, 42, 43),
-        new UnionSet<>(Set.of(1, 2, 3), Set.of(3, 42, 43))
-      )
+      2,
+      new DiffSet<>(Set.of("a string", "a number", "another string"), Set.of("a number")).size()
     );
   }
 }

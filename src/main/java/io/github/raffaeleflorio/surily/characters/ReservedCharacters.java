@@ -15,6 +15,8 @@
  */
 package io.github.raffaeleflorio.surily.characters;
 
+import io.github.raffaeleflorio.surily.set.UnionSet;
+
 import java.util.AbstractSet;
 import java.util.Iterator;
 import java.util.Set;

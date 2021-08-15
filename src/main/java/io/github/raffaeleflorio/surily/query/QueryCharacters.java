@@ -16,7 +16,7 @@
 package io.github.raffaeleflorio.surily.query;
 
 import io.github.raffaeleflorio.surily.characters.Pchar;
-import io.github.raffaeleflorio.surily.characters.UnionSet;
+import io.github.raffaeleflorio.surily.set.UnionSet;
 
 import java.util.AbstractSet;
 import java.util.Iterator;

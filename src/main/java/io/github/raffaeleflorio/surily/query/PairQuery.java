@@ -16,7 +16,7 @@
 package io.github.raffaeleflorio.surily.query;
 
 import io.github.raffaeleflorio.surily.PercentEncoded;
-import io.github.raffaeleflorio.surily.characters.DiffSet;
+import io.github.raffaeleflorio.surily.set.DiffSet;
 
 import java.nio.charset.Charset;
 import java.util.Set;
