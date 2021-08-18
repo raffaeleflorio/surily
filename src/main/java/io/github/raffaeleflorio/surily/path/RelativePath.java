@@ -15,6 +15,7 @@
  */
 package io.github.raffaeleflorio.surily.path;
 
+import io.github.raffaeleflorio.surily.FormattedComponents;
 import io.github.raffaeleflorio.surily.JoinedComponents;
 import io.github.raffaeleflorio.surily.UriComponent;
 import io.github.raffaeleflorio.surily.authority.AuthorityComponent;
@@ -36,6 +37,15 @@ import java.util.stream.Stream;
  */
 public final class RelativePath implements PathComponent {
   /**
+   * Builds an empty path (i.e. "")
+   *
+   * @since 1.0.0
+   */
+  public RelativePath() {
+    this(List.of());
+  }
+
+  /**
    * Builds a path
    *
    * @param segments The segments
@@ -46,29 +56,33 @@ public final class RelativePath implements PathComponent {
       segments,
       NonZeroPathSegment::new,
       s -> new NonColonPathSegment(new NonZeroPathSegment(s)),
-      JoinedComponents::new
+      JoinedComponents::new,
+      FormattedComponents::new
     );
   }
 
   /**
    * Builds a path
    *
-   * @param segments   The segments
-   * @param rootlessFn The function to apply to a rootless segment
-   * @param noSchemeFn The function to apply to a noscheme segment
-   * @param joinedFn   The function to build joined components
+   * @param segments    The segments
+   * @param rootlessFn  The function to apply to a rootless segment
+   * @param noSchemeFn  The function to apply to a noscheme segment
+   * @param joinedFn    The function to build joined components
+   * @param formattedFn The function to build formatted components
    * @since 1.0.0
    */
   RelativePath(
     final List<PathSegmentSubcomponent> segments,
     final Function<PathSegmentSubcomponent, PathSegmentSubcomponent> rootlessFn,
     final Function<PathSegmentSubcomponent, PathSegmentSubcomponent> noSchemeFn,
-    final BiFunction<List<UriComponent>, String, UriComponent> joinedFn
+    final BiFunction<List<UriComponent>, String, UriComponent> joinedFn,
+    final BiFunction<String, List<UriComponent>, UriComponent> formattedFn
   ) {
     this.segments = segments;
     this.rootlessFn = rootlessFn;
     this.noSchemeFn = noSchemeFn;
     this.joinedFn = joinedFn;
+    this.formattedFn = formattedFn;
   }
 
   @Override
@@ -106,7 +120,16 @@ public final class RelativePath implements PathComponent {
 
   @Override
   public UriComponent relativePart(final AuthorityComponent authority) {
-    throw new IllegalStateException("Unable to build a relative-part with an authority");
+    return ifEmptyElse(
+      x -> part(authority),
+      y -> {
+        throw new IllegalStateException("Unable to build a relative-part with an authority and a full relative-path");
+      }
+    );
+  }
+
+  private UriComponent part(final AuthorityComponent authority) {
+    return formattedFn.apply("//%s", List.of(authority));
   }
 
   @Override
@@ -116,16 +139,27 @@ public final class RelativePath implements PathComponent {
 
   @Override
   public UriComponent hierPart(final AuthorityComponent authority) {
-    throw new IllegalStateException("Unable to build a hier-part with an authority");
+    return ifEmptyElse(
+      x -> part(authority),
+      y -> {
+        throw new IllegalStateException("Unable to build a hier-part with an authority and a full relative-path");
+      }
+    );
   }
 
   @Override
   public PathComponent segments(final List<PathSegmentSubcomponent> segments) {
-    return new RelativePath(segments, rootlessFn, noSchemeFn, joinedFn);
+    return new RelativePath(segments, rootlessFn, noSchemeFn, joinedFn, formattedFn);
+  }
+
+  @Override
+  public <T> T ifEmptyElse(final Function<PathComponent, T> emptyFn, final Function<PathComponent, T> fullFn) {
+    return segments.isEmpty() ? emptyFn.apply(this) : fullFn.apply(this);
   }
 
   private final List<PathSegmentSubcomponent> segments;
   private final Function<PathSegmentSubcomponent, PathSegmentSubcomponent> rootlessFn;
   private final Function<PathSegmentSubcomponent, PathSegmentSubcomponent> noSchemeFn;
   private final BiFunction<List<UriComponent>, String, UriComponent> joinedFn;
+  private final BiFunction<String, List<UriComponent>, UriComponent> formattedFn;
 }

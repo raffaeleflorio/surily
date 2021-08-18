@@ -21,6 +21,7 @@ import io.github.raffaeleflorio.surily.authority.AuthorityComponent;
 import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * Path component of an URI
@@ -67,6 +68,16 @@ public interface PathComponent extends UriComponent, Iterable<PathSegmentSubcomp
    * @return The new path
    */
   PathComponent segments(List<PathSegmentSubcomponent> segments);
+
+  /**
+   * Executes a function if the path representations are empty, otherwise another one
+   *
+   * @param emptyFn The function to execute if empty
+   * @param fullFn  The function to execute if full
+   * @param <T>     The return type
+   * @return The return value
+   */
+  <T> T ifEmptyElse(Function<PathComponent, T> emptyFn, Function<PathComponent, T> fullFn);
 
   /**
    * {@link PathComponent} for testing purpose
@@ -189,6 +200,11 @@ public interface PathComponent extends UriComponent, Iterable<PathSegmentSubcomp
     @Override
     public PathComponent segments(final List<PathSegmentSubcomponent> segments) {
       return new PathComponent.Fake(encoded, asString, segments, relativePart, hierPart);
+    }
+
+    @Override
+    public <T> T ifEmptyElse(final Function<PathComponent, T> emptyFn, final Function<PathComponent, T> fullFn) {
+      return encoded.length() == 0 && asString.isEmpty() ? emptyFn.apply(this) : fullFn.apply(this);
     }
 
     private final CharSequence encoded;

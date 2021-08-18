@@ -126,20 +126,48 @@ class RelativePathTest {
   }
 
   @Test
-  void testUnsupportedHierPartWithAuthority() {
+  void testHierPartWithAuthorityAndFull() {
     assertThrowsWithMessage(
       IllegalStateException.class,
-      () -> new RelativePath(List.of()).hierPart(new AuthorityComponent.Fake("", "")),
-      "Unable to build a hier-part with an authority"
+      () -> new RelativePath(
+        List.of(
+          new PathSegmentSubcomponent.NormalFake("", "")
+        )
+      ).hierPart(new AuthorityComponent.Fake("", "")),
+      "Unable to build a hier-part with an authority and a full relative-path"
     );
   }
 
   @Test
-  void testUnsupportedRelativePartWithAuthority() {
+  void testHierPartWithAuthorityAndEmpty() {
+    assertEquals(
+      "//authority",
+      new RelativePath()
+        .hierPart(new AuthorityComponent.Fake("", "authority"))
+        .asString()
+    );
+  }
+
+  @Test
+  void testRelativePartWithAuthorityAndFull() {
     assertThrowsWithMessage(
       IllegalStateException.class,
-      () -> new RelativePath(List.of()).relativePart(new AuthorityComponent.Fake("", "")),
-      "Unable to build a relative-part with an authority"
+      () -> new RelativePath(
+        List.of(
+          new PathSegmentSubcomponent.NormalFake("", "")
+        )
+      ).relativePart(new AuthorityComponent.Fake("", "")),
+      "Unable to build a relative-part with an authority and a full relative-path"
+    );
+  }
+
+  @Test
+  void testRelativePartWithAuthorityAndEmpty() {
+    assertEquals(
+      "//authority",
+      new RelativePath()
+        .relativePart(new AuthorityComponent.Fake("authority", ""))
+        .encoded(StandardCharsets.ISO_8859_1)
     );
   }
 
@@ -218,5 +246,30 @@ class RelativePathTest {
         )
         .encoded(StandardCharsets.UTF_8)
     );
+  }
+
+  @Test
+  void testEmptyPathRepresentations() {
+    assertAll(
+      () -> assertEquals("", new RelativePath().asString()),
+      () -> assertEquals("", new RelativePath().encoded(StandardCharsets.UTF_8))
+    );
+  }
+
+  @Test
+  void testIfEmptyElseFull() {
+    assertFalse(
+      new RelativePath(
+        List.of(
+          new PathSegmentSubcomponent.DoubleDotFake("", ""),
+          new PathSegmentSubcomponent.SingleDotFake("", "")
+        )
+      ).<Boolean>ifEmptyElse(x -> true, y -> false)
+    );
+  }
+
+  @Test
+  void testIfEmptyElseEmpty() {
+    assertTrue(new RelativePath().<Boolean>ifEmptyElse(x -> true, y -> false));
   }
 }

@@ -89,4 +89,9 @@ class EmptyPathTest {
       assertThrows(expectedException, executable).getMessage()
     );
   }
+
+  @Test
+  void testIfEmptyElse() {
+    assertTrue(new EmptyPath().<Boolean>ifEmptyElse(x -> true, y -> false));
+  }
 }

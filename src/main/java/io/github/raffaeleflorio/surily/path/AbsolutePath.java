@@ -132,6 +132,11 @@ public final class AbsolutePath implements PathComponent {
     return new AbsolutePath(segments, zeroSegmentFn, formattedFn, joinedFn);
   }
 
+  @Override
+  public <T> T ifEmptyElse(final Function<PathComponent, T> emptyFn, final Function<PathComponent, T> fullFn) {
+    return fullFn.apply(this);
+  }
+
   private final List<PathSegmentSubcomponent> segments;
   private final Function<PathSegmentSubcomponent, PathSegmentSubcomponent> zeroSegmentFn;
   private final BiFunction<String, List<UriComponent>, UriComponent> formattedFn;

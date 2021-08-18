@@ -23,6 +23,7 @@ import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 /**
@@ -78,6 +79,11 @@ public final class EmptyPath implements PathComponent {
   @Override
   public PathComponent segments(final List<PathSegmentSubcomponent> segments) {
     throw new IllegalStateException("An empty path cannot have segments");
+  }
+
+  @Override
+  public <T> T ifEmptyElse(final Function<PathComponent, T> emptyFn, final Function<PathComponent, T> fullFn) {
+    return emptyFn.apply(this);
   }
 
   @Override

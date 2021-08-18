@@ -110,5 +110,22 @@ class PathComponentTest {
         new PathComponent.Fake(List.of()).segments(expected)
       );
     }
+
+    @Test
+    void testIfEmptyElseBothRepresentationsEmpty() {
+      assertTrue(new PathComponent.Fake("", "").<Boolean>ifEmptyElse(x -> true, y -> false));
+    }
+
+    @Test
+    void testIfEmptyElseOneRepresentationEmpty() {
+      assertAll(
+        () -> assertFalse(new PathComponent.Fake("", "any")
+          .<Boolean>ifEmptyElse(x -> true, y -> false)
+        ),
+        () -> assertFalse(new PathComponent.Fake("any", "")
+          .<Boolean>ifEmptyElse(x -> true, y -> false)
+        )
+      );
+    }
   }
 }

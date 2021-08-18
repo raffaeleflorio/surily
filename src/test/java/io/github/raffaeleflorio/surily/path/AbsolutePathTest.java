@@ -194,4 +194,28 @@ class AbsolutePathTest {
         ).asString()
     );
   }
+
+  @Test
+  void testAbsoluteEmptyRepresentations() {
+    assertAll(
+      () -> assertEquals("/", new AbsolutePath().asString()),
+      () -> assertEquals("/", new AbsolutePath().encoded(StandardCharsets.UTF_8))
+    );
+  }
+
+  @Test
+  void testIfEmptyElseWithAbsoluteEmpty() {
+    assertFalse(new AbsolutePath().<Boolean>ifEmptyElse(x -> true, y -> false));
+  }
+
+  @Test
+  void testIfEmptyElse() {
+    assertFalse(
+      new AbsolutePath(
+        List.of(
+          new PathSegmentSubcomponent.NormalFake("", "")
+        )
+      ).<Boolean>ifEmptyElse(x -> true, y -> false)
+    );
+  }
 }
