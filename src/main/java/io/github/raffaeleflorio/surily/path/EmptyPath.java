@@ -15,14 +15,12 @@
  */
 package io.github.raffaeleflorio.surily.path;
 
-import io.github.raffaeleflorio.surily.FormattedComponents;
 import io.github.raffaeleflorio.surily.UriComponent;
 import io.github.raffaeleflorio.surily.authority.AuthorityComponent;
 
 import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -35,45 +33,43 @@ import java.util.stream.Stream;
 public final class EmptyPath implements PathComponent {
   /**
    * Builds an empty path
-   *
-   * @since 1.0.0
    */
   public EmptyPath() {
-    this(FormattedComponents::new);
+    this(RelativePath::new);
   }
 
   /**
    * Builds an empty path
    *
-   * @param formattedFn The function to format components
+   * @param relativeFn The function to build relative path
    * @since 1.0.0
    */
-  EmptyPath(final BiFunction<String, List<UriComponent>, UriComponent> formattedFn) {
-    this.formattedFn = formattedFn;
+  EmptyPath(final Function<List<PathSegmentSubcomponent>, PathComponent> relativeFn) {
+    this.relativeFn = relativeFn;
   }
 
   @Override
   public UriComponent relativePart() {
-    return this;
+    return relative().relativePart();
+  }
+
+  private PathComponent relative() {
+    return relativeFn.apply(List.of());
   }
 
   @Override
   public UriComponent relativePart(final AuthorityComponent authority) {
-    return part(authority);
-  }
-
-  private UriComponent part(final AuthorityComponent authority) {
-    return formattedFn.apply("//%s", List.of(authority));
+    return relative().relativePart(authority);
   }
 
   @Override
   public UriComponent hierPart() {
-    return this;
+    return relative().hierPart();
   }
 
   @Override
   public UriComponent hierPart(final AuthorityComponent authority) {
-    return part(authority);
+    return relative().hierPart(authority);
   }
 
   @Override
@@ -82,7 +78,10 @@ public final class EmptyPath implements PathComponent {
   }
 
   @Override
-  public <T> T ifEmptyElse(final Function<PathComponent, T> emptyFn, final Function<PathComponent, T> fullFn) {
+  public <T> T ifEmptyElse(
+    final Function<PathComponent, T> emptyFn,
+    final Function<PathComponent, T> fullFn
+  ) {
     return emptyFn.apply(this);
   }
 
@@ -101,5 +100,5 @@ public final class EmptyPath implements PathComponent {
     return Stream.<PathSegmentSubcomponent>empty().iterator();
   }
 
-  private final BiFunction<String, List<UriComponent>, UriComponent> formattedFn;
+  private final Function<List<PathSegmentSubcomponent>, PathComponent> relativeFn;
 }
