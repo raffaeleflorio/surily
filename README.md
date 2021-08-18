@@ -18,10 +18,7 @@ import io.github.raffaeleflorio.surily.*;
 import io.github.raffaeleflorio.surily.authority.Authority;
 import io.github.raffaeleflorio.surily.authority.RegName;
 import io.github.raffaeleflorio.surily.fragment.Fragment;
-import io.github.raffaeleflorio.surily.path.AbsolutePath;
-import io.github.raffaeleflorio.surily.path.DoubleDotSegment;
-import io.github.raffaeleflorio.surily.path.RelativePath;
-import io.github.raffaeleflorio.surily.path.PathSegment;
+import io.github.raffaeleflorio.surily.path.*;
 import io.github.raffaeleflorio.surily.query.PairQuery;
 import io.github.raffaeleflorio.surily.scheme.Scheme;
 
@@ -69,6 +66,26 @@ class Examples {
           new DoubleDotSegment(),
           new PathSegment("etc"),
           new PathSegment("passwd")
+        )
+      ).encoded(StandardCharsets.US_ASCII)
+    );
+  }
+
+  void assertNormalizedPathTraversal() {
+    assertEquals(
+      "etc/passwd",
+      new RelativePath(
+        new NormalizedSegments(
+          new RelativePath(
+            List.of(
+              new DoubleDotSegment(),
+              new DoubleDotSegment(),
+              new DoubleDotSegment(),
+              new DoubleDotSegment(),
+              new PathSegment("etc"),
+              new PathSegment("passwd")
+            )
+          )
         )
       ).encoded(StandardCharsets.US_ASCII)
     );
