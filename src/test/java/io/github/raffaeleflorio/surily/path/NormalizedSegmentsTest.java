@@ -21,8 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class NormalizedSegmentsTest {
   @Test
@@ -73,6 +72,36 @@ class NormalizedSegmentsTest {
           )
         )
       )
+    );
+  }
+
+  @Test
+  void testSize() {
+    assertEquals(
+      1,
+      new NormalizedSegments(
+        List.of(
+          new PathSegmentSubcomponent.DoubleDotFake("", ""),
+          new PathSegmentSubcomponent.DoubleDotFake("", ""),
+          new PathSegmentSubcomponent.NormalFake("normal", "normal"),
+          new PathSegmentSubcomponent.SingleDotFake("", "")
+        )
+      ).size()
+    );
+  }
+
+  @Test
+  void testGet() {
+    assertEquals(
+      "normal",
+      new NormalizedSegments(
+        List.of(
+          new PathSegmentSubcomponent.DoubleDotFake("", ""),
+          new PathSegmentSubcomponent.DoubleDotFake("", ""),
+          new PathSegmentSubcomponent.NormalFake("normal", "normal"),
+          new PathSegmentSubcomponent.SingleDotFake("", "")
+        )
+      ).get(0).asString()
     );
   }
 }

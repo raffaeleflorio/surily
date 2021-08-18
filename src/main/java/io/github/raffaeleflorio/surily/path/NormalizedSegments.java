@@ -15,18 +15,20 @@
  */
 package io.github.raffaeleflorio.surily.path;
 
+import java.util.AbstractList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Stack;
 import java.util.function.Function;
 
 /**
- * {@link PathSegmentSubcomponent} without dot segments
+ * Immutable list of normalized {@link PathSegmentSubcomponent}s. For example [., .., ., path] becomes [path]
  *
  * @author Raffaele Florio (raffaeleflorio@protonmail.com)
  * @see <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-5.2.4">RFC3986 definition</a>
  * @since 1.0.0
  */
-public final class NormalizedSegments implements Iterable<PathSegmentSubcomponent> {
+public final class NormalizedSegments extends AbstractList<PathSegmentSubcomponent> {
   /**
    * Builds normalized segments
    *
@@ -37,7 +39,21 @@ public final class NormalizedSegments implements Iterable<PathSegmentSubcomponen
   }
 
   @Override
+  public PathSegmentSubcomponent get(final int index) {
+    return normalizedList().get(index);
+  }
+
+  @Override
   public Iterator<PathSegmentSubcomponent> iterator() {
+    return normalizedList().iterator();
+  }
+
+  @Override
+  public int size() {
+    return normalizedList().size();
+  }
+
+  private List<PathSegmentSubcomponent> normalizedList() {
     var ret = new Stack<PathSegmentSubcomponent>();
     origin.forEach(i -> i.ifDotElse(
         Function.identity(),
@@ -45,7 +61,7 @@ public final class NormalizedSegments implements Iterable<PathSegmentSubcomponen
         ret::push
       )
     );
-    return ret.iterator();
+    return ret;
   }
 
   private final Iterable<PathSegmentSubcomponent> origin;
