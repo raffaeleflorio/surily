@@ -61,6 +61,14 @@ public interface PathComponent extends UriComponent, Iterable<PathSegmentSubcomp
   UriComponent hierPart(AuthorityComponent authority);
 
   /**
+   * Builds a path with new segments
+   *
+   * @param segments The segments
+   * @return The new path
+   */
+  PathComponent segments(List<PathSegmentSubcomponent> segments);
+
+  /**
    * {@link PathComponent} for testing purpose
    *
    * @author Raffaele Florio (raffaeleflorio@protonmail.com)
@@ -176,6 +184,11 @@ public interface PathComponent extends UriComponent, Iterable<PathSegmentSubcomp
     @Override
     public UriComponent hierPart(final AuthorityComponent authority) {
       return hierPart;
+    }
+
+    @Override
+    public PathComponent segments(final List<PathSegmentSubcomponent> segments) {
+      return new PathComponent.Fake(encoded, asString, segments, relativePart, hierPart);
     }
 
     private final CharSequence encoded;

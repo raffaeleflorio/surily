@@ -203,4 +203,20 @@ class RelativePathTest {
       ).hierPart().asString()
     );
   }
+
+  @Test
+  void testSegments() {
+    assertEquals(
+      "updated/relative/path",
+      new RelativePath(List.of())
+        .segments(
+          List.of(
+            new PathSegmentSubcomponent.NormalFake("updated", ""),
+            new PathSegmentSubcomponent.NormalFake("relative", ""),
+            new PathSegmentSubcomponent.NormalFake("path", "")
+          )
+        )
+        .encoded(StandardCharsets.UTF_8)
+    );
+  }
 }

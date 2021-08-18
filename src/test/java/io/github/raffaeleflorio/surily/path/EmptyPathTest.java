@@ -17,8 +17,10 @@ package io.github.raffaeleflorio.surily.path;
 
 import io.github.raffaeleflorio.surily.authority.AuthorityComponent;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -65,6 +67,26 @@ class EmptyPathTest {
       new EmptyPath()
         .hierPart(new AuthorityComponent.Fake("", "authority"))
         .asString()
+    );
+  }
+
+  @Test
+  void testSegments() {
+    assertThrowsWithMessage(
+      "An empty path cannot have segments",
+      IllegalStateException.class,
+      () -> new EmptyPath().segments(List.of())
+    );
+  }
+
+  private void assertThrowsWithMessage(
+    final String expectedMessage,
+    final Class<? extends Throwable> expectedException,
+    final Executable executable
+  ) {
+    assertEquals(
+      expectedMessage,
+      assertThrows(expectedException, executable).getMessage()
     );
   }
 }

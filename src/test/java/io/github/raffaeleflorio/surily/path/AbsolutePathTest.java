@@ -179,4 +179,19 @@ class AbsolutePathTest {
       ).asString()
     );
   }
+
+  @Test
+  void testSegments() {
+    assertEquals(
+      "/updated/absolute/path",
+      new AbsolutePath()
+        .segments(
+          List.of(
+            new PathSegmentSubcomponent.NormalFake("", "updated"),
+            new PathSegmentSubcomponent.NormalFake("", "absolute"),
+            new PathSegmentSubcomponent.NormalFake("", "path")
+          )
+        ).asString()
+    );
+  }
 }

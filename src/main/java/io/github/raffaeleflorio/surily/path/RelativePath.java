@@ -119,6 +119,11 @@ public final class RelativePath implements PathComponent {
     throw new IllegalStateException("Unable to build a hier-part with an authority");
   }
 
+  @Override
+  public PathComponent segments(final List<PathSegmentSubcomponent> segments) {
+    return new RelativePath(segments, rootlessFn, noSchemeFn, joinedFn);
+  }
+
   private final List<PathSegmentSubcomponent> segments;
   private final Function<PathSegmentSubcomponent, PathSegmentSubcomponent> rootlessFn;
   private final Function<PathSegmentSubcomponent, PathSegmentSubcomponent> noSchemeFn;

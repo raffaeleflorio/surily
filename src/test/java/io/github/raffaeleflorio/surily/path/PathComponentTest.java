@@ -96,5 +96,19 @@ class PathComponentTest {
         )
       );
     }
+
+    @Test
+    void testSegments() {
+      var expected = List.<PathSegmentSubcomponent>of(
+        new PathSegmentSubcomponent.NormalFake("one", "one"),
+        new PathSegmentSubcomponent.NormalFake("two", "two"),
+        new PathSegmentSubcomponent.NormalFake("three", "three"),
+        new PathSegmentSubcomponent.NormalFake("four", "four")
+      );
+      assertIterableEquals(
+        expected,
+        new PathComponent.Fake(List.of()).segments(expected)
+      );
+    }
   }
 }

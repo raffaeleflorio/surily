@@ -76,6 +76,11 @@ public final class EmptyPath implements PathComponent {
   }
 
   @Override
+  public PathComponent segments(final List<PathSegmentSubcomponent> segments) {
+    throw new IllegalStateException("An empty path cannot have segments");
+  }
+
+  @Override
   public CharSequence encoded(final Charset charset) {
     return "";
   }

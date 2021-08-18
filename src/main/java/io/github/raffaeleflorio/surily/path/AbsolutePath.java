@@ -127,6 +127,11 @@ public final class AbsolutePath implements PathComponent {
     return part(authority, this);
   }
 
+  @Override
+  public PathComponent segments(final List<PathSegmentSubcomponent> segments) {
+    return new AbsolutePath(segments, zeroSegmentFn, formattedFn, joinedFn);
+  }
+
   private final List<PathSegmentSubcomponent> segments;
   private final Function<PathSegmentSubcomponent, PathSegmentSubcomponent> zeroSegmentFn;
   private final BiFunction<String, List<UriComponent>, UriComponent> formattedFn;
