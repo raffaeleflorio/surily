@@ -88,4 +88,195 @@ public interface UriReference {
    * @since 1.0.0
    */
   FragmentComponent fragment();
+
+  /**
+   * {@link UriReference} for testing purpose
+   *
+   * @author Raffaele Florio (raffaeleflorio@protonmail.com)
+   * @since 1.0.0
+   */
+  final class Fake implements UriReference {
+    /**
+     * Builds a fake with empty components
+     *
+     * @param encoded  The encoded representations
+     * @param asString The asString representations
+     * @since 1.0.0
+     */
+    public Fake(final CharSequence encoded, final String asString) {
+      this(
+        encoded,
+        asString,
+        new SchemeComponent.Fake("", ""),
+        new AuthorityComponent.Fake("", ""),
+        new PathComponent.Fake("", ""),
+        new QueryComponent.Fake("", ""),
+        new FragmentComponent.Fake("", "")
+      );
+    }
+
+
+    /**
+     * Builds a fake with empty components and representations
+     *
+     * @param scheme The scheme
+     * @since 1.0.0
+     */
+    public Fake(final SchemeComponent scheme) {
+      this(
+        "",
+        "",
+        scheme,
+        new AuthorityComponent.Fake("", ""),
+        new PathComponent.Fake("", ""),
+        new QueryComponent.Fake("", ""),
+        new FragmentComponent.Fake("", "")
+      );
+    }
+
+    /**
+     * Builds a fake with empty components and representations
+     *
+     * @param authority The authority
+     * @since 1.0.0
+     */
+    public Fake(final AuthorityComponent authority) {
+      this(
+        "",
+        "",
+        new SchemeComponent.Fake("", ""),
+        authority,
+        new PathComponent.Fake("", ""),
+        new QueryComponent.Fake("", ""),
+        new FragmentComponent.Fake("", "")
+      );
+    }
+
+    /**
+     * Builds a fake with empty components and representations
+     *
+     * @param path The path
+     * @since 1.0.0
+     */
+    public Fake(final PathComponent path) {
+      this(
+        "",
+        "",
+        new SchemeComponent.Fake("", ""),
+        new AuthorityComponent.Fake("", ""),
+        path,
+        new QueryComponent.Fake("", ""),
+        new FragmentComponent.Fake("", "")
+      );
+    }
+
+    /**
+     * Builds a fake with empty components and representations
+     *
+     * @param query The query
+     * @since 1.0.0
+     */
+    public Fake(final QueryComponent query) {
+      this(
+        "",
+        "",
+        new SchemeComponent.Fake("", ""),
+        new AuthorityComponent.Fake("", ""),
+        new PathComponent.Fake("", ""),
+        query,
+        new FragmentComponent.Fake("", "")
+      );
+    }
+
+    /**
+     * Builds a fake with empty components and representations
+     *
+     * @param fragment The fragment
+     * @since 1.0.0
+     */
+    public Fake(final FragmentComponent fragment) {
+      this(
+        "",
+        "",
+        new SchemeComponent.Fake("", ""),
+        new AuthorityComponent.Fake("", ""),
+        new PathComponent.Fake("", ""),
+        new QueryComponent.Fake("", ""),
+        fragment
+      );
+    }
+
+    /**
+     * Builds a fake
+     *
+     * @param encoded   The encoded representation
+     * @param asString  The asString representation
+     * @param scheme    The scheme
+     * @param authority The authority
+     * @param path      The path
+     * @param query     The query
+     * @param fragment  The fragment
+     * @since 1.0.0
+     */
+    public Fake(
+      final CharSequence encoded,
+      final String asString,
+      final SchemeComponent scheme,
+      final AuthorityComponent authority,
+      final PathComponent path,
+      final QueryComponent query,
+      final FragmentComponent fragment
+    ) {
+      this.encoded = encoded;
+      this.asString = asString;
+      this.scheme = scheme;
+      this.authority = authority;
+      this.path = path;
+      this.query = query;
+      this.fragment = fragment;
+    }
+
+    @Override
+    public CharSequence encoded(final Charset charset) {
+      return encoded;
+    }
+
+    @Override
+    public String asString() {
+      return asString;
+    }
+
+    @Override
+    public SchemeComponent scheme() {
+      return scheme;
+    }
+
+    @Override
+    public AuthorityComponent authority() {
+      return authority;
+    }
+
+    @Override
+    public PathComponent path() {
+      return path;
+    }
+
+    @Override
+    public QueryComponent query() {
+      return query;
+    }
+
+    @Override
+    public FragmentComponent fragment() {
+      return fragment;
+    }
+
+    private final CharSequence encoded;
+    private final String asString;
+    private final SchemeComponent scheme;
+    private final AuthorityComponent authority;
+    private final PathComponent path;
+    private final QueryComponent query;
+    private final FragmentComponent fragment;
+  }
 }
