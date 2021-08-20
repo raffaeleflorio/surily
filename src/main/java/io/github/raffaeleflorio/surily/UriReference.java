@@ -115,7 +115,6 @@ public interface UriReference {
       );
     }
 
-
     /**
      * Builds a fake with empty components and representations
      *
@@ -141,12 +140,23 @@ public interface UriReference {
      * @since 1.0.0
      */
     public Fake(final AuthorityComponent authority) {
+      this(authority, new PathComponent.Fake("", ""));
+    }
+
+    /**
+     * Builds a fake with empty components and representations
+     *
+     * @param authority The authority
+     * @param path      The path
+     * @since 1.0.0
+     */
+    public Fake(final AuthorityComponent authority, final PathComponent path) {
       this(
         "",
         "",
         new SchemeComponent.Fake("", ""),
         authority,
-        new PathComponent.Fake("", ""),
+        path,
         new QueryComponent.Fake("", ""),
         new FragmentComponent.Fake("", "")
       );
@@ -159,15 +169,7 @@ public interface UriReference {
      * @since 1.0.0
      */
     public Fake(final PathComponent path) {
-      this(
-        "",
-        "",
-        new SchemeComponent.Fake("", ""),
-        new AuthorityComponent.Fake("", ""),
-        path,
-        new QueryComponent.Fake("", ""),
-        new FragmentComponent.Fake("", "")
-      );
+      this(new AuthorityComponent.Fake("", ""), path);
     }
 
     /**
