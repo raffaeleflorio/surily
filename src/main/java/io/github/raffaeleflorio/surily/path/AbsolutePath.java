@@ -133,8 +133,13 @@ public final class AbsolutePath implements PathComponent {
   }
 
   @Override
-  public <T> T ifEmptyElse(final Function<PathComponent, T> emptyFn, final Function<PathComponent, T> fullFn) {
+  public <T> T ifEmptyElse(final Function<PathComponent, T> absoluteFn, final Function<PathComponent, T> fullFn) {
     return fullFn.apply(this);
+  }
+
+  @Override
+  public <T> T ifAbsoluteElse(final Function<PathComponent, T> absoluteFn, final Function<PathComponent, T> relativeFn) {
+    return absoluteFn.apply(this);
   }
 
   private final List<PathSegmentSubcomponent> segments;

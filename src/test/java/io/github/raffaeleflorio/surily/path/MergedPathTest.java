@@ -223,4 +223,30 @@ class MergedPathTest {
       ).asString()
     );
   }
+
+  @Test
+  void testIfAbsoluteElseTrue() {
+    assertTrue(
+      new MergedPath(
+        new UriReference.Fake(
+          new AuthorityComponent.Fake("", ""),
+          new PathComponent.Fake("", "")
+        ),
+        new PathComponent.Fake(List.of())
+      ).<Boolean>ifAbsoluteElse(x -> true, x -> false)
+    );
+  }
+
+  @Test
+  void testIfAbsoluteElseFalse() {
+    assertFalse(
+      new MergedPath(
+        new UriReference.Fake(
+          new AuthorityComponent.Fake("", ""),
+          new PathComponent.Fake("x", "y")
+        ),
+        new RelativePath()
+      ).<Boolean>ifAbsoluteElse(x -> true, x -> false)
+    );
+  }
 }

@@ -127,5 +127,21 @@ class PathComponentTest {
         )
       );
     }
+
+    @Test
+    void testIfAbsoluteElse() {
+      assertTrue(
+        new PathComponent.Fake("/ok", "/ok")
+          .<Boolean>ifAbsoluteElse(x -> true, y -> false)
+      );
+    }
+
+    @Test
+    void testIfAbsoluteElseOneRepresentationsAbsolute() {
+      assertFalse(
+        new PathComponent.Fake("/ok", "nope")
+          .<Boolean>ifAbsoluteElse(x -> true, y -> false)
+      );
+    }
   }
 }

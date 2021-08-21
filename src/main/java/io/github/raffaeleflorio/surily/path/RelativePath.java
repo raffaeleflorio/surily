@@ -153,8 +153,13 @@ public final class RelativePath implements PathComponent {
   }
 
   @Override
-  public <T> T ifEmptyElse(final Function<PathComponent, T> emptyFn, final Function<PathComponent, T> fullFn) {
-    return segments.isEmpty() ? emptyFn.apply(this) : fullFn.apply(this);
+  public <T> T ifEmptyElse(final Function<PathComponent, T> absoluteFn, final Function<PathComponent, T> fullFn) {
+    return segments.isEmpty() ? absoluteFn.apply(this) : fullFn.apply(this);
+  }
+
+  @Override
+  public <T> T ifAbsoluteElse(final Function<PathComponent, T> absoluteFn, final Function<PathComponent, T> relativeFn) {
+    return relativeFn.apply(this);
   }
 
   private final List<PathSegmentSubcomponent> segments;

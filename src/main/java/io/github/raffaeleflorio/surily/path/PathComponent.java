@@ -80,6 +80,16 @@ public interface PathComponent extends UriComponent, Iterable<PathSegmentSubcomp
   <T> T ifEmptyElse(Function<PathComponent, T> emptyFn, Function<PathComponent, T> fullFn);
 
   /**
+   * Executes a function if the path is absolute (i.e. starts with "/"), otherwise another one
+   *
+   * @param absoluteFn The function to execute if the path is absolute
+   * @param relativeFn The function to execute if the path is not absolute
+   * @param <T>        The return type
+   * @return The return value
+   */
+  <T> T ifAbsoluteElse(Function<PathComponent, T> absoluteFn, Function<PathComponent, T> relativeFn);
+
+  /**
    * {@link PathComponent} for testing purpose
    *
    * @author Raffaele Florio (raffaeleflorio@protonmail.com)
@@ -205,6 +215,12 @@ public interface PathComponent extends UriComponent, Iterable<PathSegmentSubcomp
     @Override
     public <T> T ifEmptyElse(final Function<PathComponent, T> emptyFn, final Function<PathComponent, T> fullFn) {
       return encoded.length() == 0 && asString.isEmpty() ? emptyFn.apply(this) : fullFn.apply(this);
+    }
+
+    @Override
+    public <T> T ifAbsoluteElse(final Function<PathComponent, T> absoluteFn, final Function<PathComponent, T> relativeFn) {
+      var fn = (Function<String, Boolean>) s -> s.startsWith("/");
+      return fn.apply(encoded.toString()) && fn.apply(asString) ? absoluteFn.apply(this) : relativeFn.apply(this);
     }
 
     private final CharSequence encoded;

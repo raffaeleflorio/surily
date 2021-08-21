@@ -150,6 +150,11 @@ public final class MergedPath implements PathComponent {
   }
 
   @Override
+  public <T> T ifAbsoluteElse(final Function<PathComponent, T> absoluteFn, final Function<PathComponent, T> relativeFn) {
+    return merged().ifAbsoluteElse(x -> absoluteFn.apply(this), x -> relativeFn.apply(this));
+  }
+
+  @Override
   public Iterator<PathSegmentSubcomponent> iterator() {
     return merged().iterator();
   }

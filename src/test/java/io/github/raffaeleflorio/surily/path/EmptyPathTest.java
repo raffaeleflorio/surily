@@ -94,4 +94,9 @@ class EmptyPathTest {
   void testIfEmptyElse() {
     assertTrue(new EmptyPath().<Boolean>ifEmptyElse(x -> true, y -> false));
   }
+
+  @Test
+  void testIfAbsoluteElse() {
+    assertFalse(new EmptyPath().<Boolean>ifAbsoluteElse(x -> true, x -> false));
+  }
 }

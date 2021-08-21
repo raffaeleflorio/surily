@@ -218,4 +218,9 @@ class AbsolutePathTest {
       ).<Boolean>ifEmptyElse(x -> true, y -> false)
     );
   }
+
+  @Test
+  void testIfAbsoluteElse() {
+    assertTrue(new AbsolutePath().<Boolean>ifAbsoluteElse(x -> true, x -> false));
+  }
 }

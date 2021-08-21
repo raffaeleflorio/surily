@@ -86,6 +86,11 @@ public final class EmptyPath implements PathComponent {
   }
 
   @Override
+  public <T> T ifAbsoluteElse(final Function<PathComponent, T> absoluteFn, final Function<PathComponent, T> relativeFn) {
+    return relativeFn.apply(this);
+  }
+
+  @Override
   public CharSequence encoded(final Charset charset) {
     return "";
   }

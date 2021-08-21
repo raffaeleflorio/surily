@@ -272,4 +272,9 @@ class RelativePathTest {
   void testIfEmptyElseEmpty() {
     assertTrue(new RelativePath().<Boolean>ifEmptyElse(x -> true, y -> false));
   }
+
+  @Test
+  void testIfAbsoluteElse() {
+    assertFalse(new RelativePath().<Boolean>ifAbsoluteElse(x -> true, y -> false));
+  }
 }
