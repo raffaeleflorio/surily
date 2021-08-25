@@ -62,7 +62,14 @@ public final class ConcatenatedQueries implements QueryComponent {
       (component, charset) -> component
         .encoded(charset)
         .toString()
-        .replace(delimiter.toString(), new PercentEncoded(delimiter.toString(), charset, new DiffSet<>(new QueryCharacters(), Set.of(delimiter))))
+        .replace(
+          delimiter.toString(),
+          new PercentEncoded(
+            delimiter.toString(),
+            charset,
+            new DiffSet<>(new QueryCharacters(), Set.of(delimiter))
+          )
+        )
     );
   }
 
@@ -75,7 +82,12 @@ public final class ConcatenatedQueries implements QueryComponent {
    * @param componentEncodingFn The component encoding function
    * @since 1.0.0
    */
-  ConcatenatedQueries(final Iterable<QueryComponent> components, final Character delimiter, final Set<Character> allowedDelimiters, final BiFunction<QueryComponent, Charset, CharSequence> componentEncodingFn) {
+  ConcatenatedQueries(
+    final Iterable<QueryComponent> components,
+    final Character delimiter,
+    final Set<Character> allowedDelimiters,
+    final BiFunction<QueryComponent, Charset, CharSequence> componentEncodingFn
+  ) {
     this.components = components;
     this.delimiter = delimiter;
     this.allowedDelimiters = allowedDelimiters;

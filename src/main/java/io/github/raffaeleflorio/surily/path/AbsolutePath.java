@@ -82,10 +82,11 @@ public final class AbsolutePath implements PathComponent {
   }
 
   private UriComponent formattedSegments() {
-    return formattedFn.apply(
-      "/%s",
-      List.of(joinedFn.apply(segments().collect(Collectors.toUnmodifiableList()), "/"))
-    );
+    return formattedFn.apply("/%s", List.of(joinedSegments()));
+  }
+
+  private UriComponent joinedSegments() {
+    return joinedFn.apply(segments().collect(Collectors.toUnmodifiableList()), "/");
   }
 
   private Stream<PathSegmentSubcomponent> segments() {
@@ -114,7 +115,7 @@ public final class AbsolutePath implements PathComponent {
   }
 
   private UriComponent part(final AuthorityComponent authority, final PathComponent path) {
-    return formattedFn.apply("//%s%s", List.of(authority, this));
+    return formattedFn.apply("//%s%s", List.of(authority, path));
   }
 
   @Override
@@ -133,7 +134,7 @@ public final class AbsolutePath implements PathComponent {
   }
 
   @Override
-  public <T> T ifEmptyElse(final Function<PathComponent, T> absoluteFn, final Function<PathComponent, T> fullFn) {
+  public <T> T ifEmptyElse(final Function<PathComponent, T> emptyFn, final Function<PathComponent, T> fullFn) {
     return fullFn.apply(this);
   }
 

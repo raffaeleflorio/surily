@@ -46,7 +46,11 @@ public final class FormattedComponents implements UriComponent {
    * @param formatFn     The function used to format strings
    * @since 1.0.0
    */
-  FormattedComponents(final String formatString, final List<UriComponent> components, final BiFunction<String, Object[], String> formatFn) {
+  FormattedComponents(
+    final String formatString,
+    final List<UriComponent> components,
+    final BiFunction<String, Object[], String> formatFn
+  ) {
     this.formatString = formatString;
     this.components = components;
     this.formatFn = formatFn;

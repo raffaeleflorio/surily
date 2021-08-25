@@ -58,10 +58,15 @@ public final class ArrayQuery implements QueryComponent {
    * @param key               The key
    * @param values            The values
    * @param keyValueDelimiter The key-value delimiter
-   * @param pairsDelimiter    The pars delimiter
+   * @param pairsDelimiter    The pairs delimiter
    * @since 1.0.0
    */
-  public ArrayQuery(final CharSequence key, final Iterable<CharSequence> values, final Character keyValueDelimiter, final Character pairsDelimiter) {
+  public ArrayQuery(
+    final CharSequence key,
+    final Iterable<CharSequence> values,
+    final Character keyValueDelimiter,
+    final Character pairsDelimiter
+  ) {
     this(
       key,
       values,
@@ -82,7 +87,11 @@ public final class ArrayQuery implements QueryComponent {
    * @param concatenatedFn The function used to concatenate each key-value pair
    * @since 1.0.0
    */
-  ArrayQuery(final CharSequence key, final Iterable<CharSequence> values, final BiFunction<CharSequence, Iterable<CharSequence>, QueryComponent> concatenatedFn) {
+  ArrayQuery(
+    final CharSequence key,
+    final Iterable<CharSequence> values,
+    final BiFunction<CharSequence, Iterable<CharSequence>, QueryComponent> concatenatedFn
+  ) {
     this.key = key;
     this.values = values;
     this.concatenatedFn = concatenatedFn;

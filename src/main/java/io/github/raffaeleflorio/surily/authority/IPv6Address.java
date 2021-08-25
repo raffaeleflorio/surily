@@ -17,6 +17,7 @@ package io.github.raffaeleflorio.surily.authority;
 
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
@@ -45,7 +46,19 @@ public final class IPv6Address implements HostSubcomponent {
    * @since 1.0.0
    */
   public IPv6Address(final CharSequence address) {
+    this(address, Pattern::matches);
+  }
+
+  /**
+   * Builds an IPv6 address
+   *
+   * @param address The address
+   * @param matchFn The function used to match a string against a regexp
+   * @since 1.0.0
+   */
+  IPv6Address(final CharSequence address, final BiFunction<String, CharSequence, Boolean> matchFn) {
     this.address = address;
+    this.matchFn = matchFn;
   }
 
   @Override
@@ -91,7 +104,7 @@ public final class IPv6Address implements HostSubcomponent {
     var seventh = String.format("((%s:){0,4}%s)?::(%s)", h16, h16, ls32);
     var eighth = String.format("((%s:){0,5}%s)?::%s", h16, h16, h16);
     var ninth = String.format("((%s:){0,6}%s)?::", h16, h16);
-    return Pattern.matches(
+    return matchFn.apply(
       String.format(
         "^((%s)|(%s)|(%s)|(%s)|(%s)|(%s)|(%s)|(%s)|(%s))$",
         first, second, third, fourth, fifth, sixth, seventh, eighth, ninth
@@ -103,7 +116,8 @@ public final class IPv6Address implements HostSubcomponent {
   private RuntimeException illegalIPAddress() {
     return new IllegalStateException(
       String.format(
-        "Illegal IPv6 address: <%s>", address.length() > 4096 ? address.toString().substring(0, 4096).concat("...") : address)
+        "Illegal IPv6 address: <%s>",
+        address.length() > 4096 ? address.toString().substring(0, 4096).concat("...") : address)
     );
   }
 
@@ -118,4 +132,5 @@ public final class IPv6Address implements HostSubcomponent {
   }
 
   private final CharSequence address;
+  private final BiFunction<String, CharSequence, Boolean> matchFn;
 }

@@ -87,10 +87,10 @@ public final class RelativePath implements PathComponent {
 
   @Override
   public CharSequence encoded(final Charset charset) {
-    return formattedSegments(rootlessFn).encoded(charset);
+    return joinedSegments(rootlessFn).encoded(charset);
   }
 
-  private UriComponent formattedSegments(
+  private UriComponent joinedSegments(
     final Function<PathSegmentSubcomponent, PathSegmentSubcomponent> firstFn
   ) {
     return joinedFn.apply(segments(firstFn).collect(Collectors.toUnmodifiableList()), "/");
@@ -105,7 +105,7 @@ public final class RelativePath implements PathComponent {
 
   @Override
   public String asString() {
-    return formattedSegments(rootlessFn).asString();
+    return joinedSegments(rootlessFn).asString();
   }
 
   @Override
@@ -115,7 +115,7 @@ public final class RelativePath implements PathComponent {
 
   @Override
   public UriComponent relativePart() {
-    return formattedSegments(noSchemeFn);
+    return joinedSegments(noSchemeFn);
   }
 
   @Override
@@ -153,8 +153,8 @@ public final class RelativePath implements PathComponent {
   }
 
   @Override
-  public <T> T ifEmptyElse(final Function<PathComponent, T> absoluteFn, final Function<PathComponent, T> fullFn) {
-    return segments.isEmpty() ? absoluteFn.apply(this) : fullFn.apply(this);
+  public <T> T ifEmptyElse(final Function<PathComponent, T> emptyFn, final Function<PathComponent, T> fullFn) {
+    return segments.isEmpty() ? emptyFn.apply(this) : fullFn.apply(this);
   }
 
   @Override

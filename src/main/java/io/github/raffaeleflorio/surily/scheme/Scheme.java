@@ -16,8 +16,10 @@
 package io.github.raffaeleflorio.surily.scheme;
 
 import java.nio.charset.Charset;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 
 /**
  * RFC3986 {@link SchemeComponent}
@@ -33,7 +35,19 @@ public final class Scheme implements SchemeComponent {
    * @since 1.0.0
    */
   public Scheme(final CharSequence scheme) {
+    this(scheme, Pattern::matches);
+  }
+
+  /**
+   * Builds a scheme
+   *
+   * @param scheme  The scheme
+   * @param matchFn The function to match a string against a regexp
+   * @since 1.0.0
+   */
+  Scheme(final CharSequence scheme, final BiFunction<String, CharSequence, Boolean> matchFn) {
     this.scheme = scheme;
+    this.matchFn = matchFn;
   }
 
   @Override
@@ -42,9 +56,8 @@ public final class Scheme implements SchemeComponent {
   }
 
   private String validated() {
-    var x = scheme.toString();
-    if (x.matches("[a-zA-Z][a-zA-Z0-9+\\-.]*")) {
-      return x;
+    if (matchFn.apply("[a-zA-Z][a-zA-Z0-9+\\-.]*", scheme)) {
+      return scheme.toString();
     }
     throw illegalSchemeExcpetion();
   }
@@ -69,4 +82,5 @@ public final class Scheme implements SchemeComponent {
   }
 
   private final CharSequence scheme;
+  private final BiFunction<String, CharSequence, Boolean> matchFn;
 }

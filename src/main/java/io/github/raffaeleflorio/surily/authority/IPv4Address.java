@@ -37,7 +37,12 @@ public final class IPv4Address implements HostSubcomponent {
    * @param third  The third IP octet
    * @param fourth The fourth IP octet
    */
-  public IPv4Address(final Integer first, final Integer second, final Integer third, final Integer fourth) {
+  public IPv4Address(
+    final Integer first,
+    final Integer second,
+    final Integer third,
+    final Integer fourth
+  ) {
     this(List.of(first.toString(), second.toString(), third.toString(), fourth.toString()));
   }
 
@@ -103,7 +108,8 @@ public final class IPv4Address implements HostSubcomponent {
   private RuntimeException illegalIPAddress() {
     return new IllegalStateException(
       String.format(
-        "Illegal IPv4 address: <%s>", address.length() > 4096 ? address.toString().substring(0, 4096).concat("...") : address
+        "Illegal IPv4 address: <%s>",
+        address.length() > 4096 ? address.toString().substring(0, 4096).concat("...") : address
       )
     );
   }

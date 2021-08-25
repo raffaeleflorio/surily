@@ -25,11 +25,16 @@ import java.util.function.Function;
  * @since 1.0.0
  */
 public final class DotSegment implements PathSegmentSubcomponent {
+  /**
+   * Builds a single dot segment
+   *
+   * @since 1.0.0
+   */
   public DotSegment() {
     this(new PathSegment("."));
   }
 
-  DotSegment(final PathSegment origin) {
+  private DotSegment(final PathSegment origin) {
     this.origin = origin;
   }
 
@@ -49,7 +54,7 @@ public final class DotSegment implements PathSegmentSubcomponent {
     Function<PathSegmentSubcomponent, T> doubleFn,
     Function<PathSegmentSubcomponent, T> normalSegmentFn
   ) {
-    return origin.ifDotElse(singleFn, doubleFn, normalSegmentFn);
+    return singleFn.apply(this);
   }
 
   private final PathSegmentSubcomponent origin;

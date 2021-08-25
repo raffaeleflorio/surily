@@ -74,7 +74,11 @@ public final class Authority implements AuthorityComponent {
    * @param port     The port
    * @since 1.0.0
    */
-  public Authority(final UserinfoSubComponent userinfo, final HostSubcomponent host, final PortSubcomponent port) {
+  public Authority(
+    final UserinfoSubComponent userinfo,
+    final HostSubcomponent host,
+    final PortSubcomponent port
+  ) {
     this(userinfo, host, port, FormattedComponents::new, JoinedComponents::new);
   }
 
@@ -88,7 +92,13 @@ public final class Authority implements AuthorityComponent {
    * @param joinedFn    The function used to join components
    * @since 1.0.0
    */
-  Authority(final UserinfoSubComponent userinfo, final HostSubcomponent host, final PortSubcomponent port, final BiFunction<String, List<UriComponent>, UriComponent> formattedFn, final BiFunction<List<UriComponent>, String, UriComponent> joinedFn) {
+  Authority(
+    final UserinfoSubComponent userinfo,
+    final HostSubcomponent host,
+    final PortSubcomponent port,
+    final BiFunction<String, List<UriComponent>, UriComponent> formattedFn,
+    final BiFunction<List<UriComponent>, String, UriComponent> joinedFn
+  ) {
     this.userinfo = userinfo;
     this.host = host;
     this.port = port;

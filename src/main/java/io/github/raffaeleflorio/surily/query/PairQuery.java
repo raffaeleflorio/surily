@@ -50,7 +50,7 @@ public final class PairQuery implements QueryComponent {
    * @param delimiter The delimiter (e.g. =)
    * @since 1.0.0
    */
-  PairQuery(final CharSequence key, final CharSequence value, final Character delimiter) {
+  public PairQuery(final CharSequence key, final CharSequence value, final Character delimiter) {
     this(
       key,
       value,
@@ -72,7 +72,14 @@ public final class PairQuery implements QueryComponent {
    * @param allowedDelimiters The allowed delimiters
    * @since 1.0.0
    */
-  PairQuery(final CharSequence key, final CharSequence value, final Character delimiter, final BiFunction<CharSequence, Charset, CharSequence> keyEncoding, final BiFunction<CharSequence, Charset, CharSequence> valueEncoding, final Set<Character> allowedDelimiters) {
+  PairQuery(
+    final CharSequence key,
+    final CharSequence value,
+    final Character delimiter,
+    final BiFunction<CharSequence, Charset, CharSequence> keyEncoding,
+    final BiFunction<CharSequence, Charset, CharSequence> valueEncoding,
+    final Set<Character> allowedDelimiters
+  ) {
     this.key = key;
     this.value = value;
     this.delimiter = delimiter;

@@ -32,7 +32,6 @@ public final class UndefinedScheme implements SchemeComponent {
    * @since 1.0.0
    */
   public UndefinedScheme() {
-
   }
 
   @Override

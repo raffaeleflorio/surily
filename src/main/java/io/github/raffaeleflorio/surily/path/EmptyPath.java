@@ -22,7 +22,6 @@ import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 /**
  * RFC3986 compliant empty {@link PathComponent}
@@ -35,41 +34,31 @@ public final class EmptyPath implements PathComponent {
    * Builds an empty path
    */
   public EmptyPath() {
-    this(RelativePath::new);
+    this(new RelativePath());
   }
 
-  /**
-   * Builds an empty path
-   *
-   * @param relativeFn The function to build relative path
-   * @since 1.0.0
-   */
-  EmptyPath(final Function<List<PathSegmentSubcomponent>, PathComponent> relativeFn) {
-    this.relativeFn = relativeFn;
+  private EmptyPath(final PathComponent origin) {
+    this.origin = origin;
   }
 
   @Override
   public UriComponent relativePart() {
-    return relative().relativePart();
-  }
-
-  private PathComponent relative() {
-    return relativeFn.apply(List.of());
+    return origin.relativePart();
   }
 
   @Override
   public UriComponent relativePart(final AuthorityComponent authority) {
-    return relative().relativePart(authority);
+    return origin.relativePart(authority);
   }
 
   @Override
   public UriComponent hierPart() {
-    return relative().hierPart();
+    return origin.hierPart();
   }
 
   @Override
   public UriComponent hierPart(final AuthorityComponent authority) {
-    return relative().hierPart(authority);
+    return origin.hierPart(authority);
   }
 
   @Override
@@ -92,18 +81,18 @@ public final class EmptyPath implements PathComponent {
 
   @Override
   public CharSequence encoded(final Charset charset) {
-    return "";
+    return origin.encoded(charset);
   }
 
   @Override
   public String asString() {
-    return "";
+    return origin.asString();
   }
 
   @Override
   public Iterator<PathSegmentSubcomponent> iterator() {
-    return Stream.<PathSegmentSubcomponent>empty().iterator();
+    return origin.iterator();
   }
 
-  private final Function<List<PathSegmentSubcomponent>, PathComponent> relativeFn;
+  private final PathComponent origin;
 }

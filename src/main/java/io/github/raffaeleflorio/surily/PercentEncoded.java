@@ -94,7 +94,12 @@ public final class PercentEncoded implements CharSequence {
    * @param hexChars   The hexadecimal chars
    * @since 1.0.0
    */
-  PercentEncoded(final CharSequence origin, final Charset charset, final Set<Character> unreserved, final List<Character> hexChars) {
+  PercentEncoded(
+    final CharSequence origin,
+    final Charset charset,
+    final Set<Character> unreserved,
+    final List<Character> hexChars
+  ) {
     this.origin = origin;
     this.charset = charset;
     this.unreserved = unreserved;
