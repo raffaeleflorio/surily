@@ -18,6 +18,7 @@ package io.github.raffaeleflorio.surily.path;
 import io.github.raffaeleflorio.surily.UriComponent;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.function.Function;
 
 /**
@@ -58,18 +59,27 @@ public interface PathSegmentSubcomponent extends UriComponent {
      * @since 1.0.0
      */
     public NormalFake(final CharSequence encoded, final String asString) {
-      this.encoded = encoded;
-      this.asString = asString;
+      this(new UriComponent.Fake(encoded, asString));
+    }
+
+    /**
+     * Builds a fake with its representations from an {@link UriComponent}
+     *
+     * @param origin The component
+     * @since 1.0.0
+     */
+    public NormalFake(final UriComponent origin) {
+      this.origin = origin;
     }
 
     @Override
     public CharSequence encoded(final Charset charset) {
-      return encoded;
+      return origin.encoded(charset);
     }
 
     @Override
     public String asString() {
-      return asString;
+      return origin.asString();
     }
 
     @Override
@@ -81,8 +91,7 @@ public interface PathSegmentSubcomponent extends UriComponent {
       return normalSegmentFn.apply(this);
     }
 
-    private final CharSequence encoded;
-    private final String asString;
+    private final UriComponent origin;
   }
 
   /**
@@ -100,27 +109,39 @@ public interface PathSegmentSubcomponent extends UriComponent {
      * @since 1.0.0
      */
     public SingleDotFake(final CharSequence encoded, final String asString) {
-      this.encoded = encoded;
-      this.asString = asString;
+      this(new UriComponent.Fake(encoded, asString));
+    }
+
+    /**
+     * Builds a fake with its representations from an {@link UriComponent}
+     *
+     * @param origin The component
+     * @since 1.0.0
+     */
+    public SingleDotFake(final UriComponent origin) {
+      this.origin = origin;
     }
 
     @Override
-    public <T> T ifDotElse(final Function<PathSegmentSubcomponent, T> singleFn, final Function<PathSegmentSubcomponent, T> doubleFn, final Function<PathSegmentSubcomponent, T> normalSegmentFn) {
+    public <T> T ifDotElse(
+      final Function<PathSegmentSubcomponent, T> singleFn,
+      final Function<PathSegmentSubcomponent, T> doubleFn,
+      final Function<PathSegmentSubcomponent, T> normalSegmentFn
+    ) {
       return singleFn.apply(this);
     }
 
     @Override
     public CharSequence encoded(final Charset charset) {
-      return encoded;
+      return origin.encoded(charset);
     }
 
     @Override
     public String asString() {
-      return asString;
+      return origin.asString();
     }
 
-    private final CharSequence encoded;
-    private final String asString;
+    private final UriComponent origin;
   }
 
   /**
@@ -138,26 +159,38 @@ public interface PathSegmentSubcomponent extends UriComponent {
      * @since 1.0.0
      */
     public DoubleDotFake(final CharSequence encoded, final String asString) {
-      this.encoded = encoded;
-      this.asString = asString;
+      this(new UriComponent.Fake(encoded, asString));
+    }
+
+    /**
+     * Builds a fake with its representations from an {@link UriComponent}
+     *
+     * @param origin The component
+     * @since 1.0.0
+     */
+    public DoubleDotFake(final UriComponent origin) {
+      this.origin = origin;
     }
 
     @Override
-    public <T> T ifDotElse(final Function<PathSegmentSubcomponent, T> singleFn, final Function<PathSegmentSubcomponent, T> doubleFn, final Function<PathSegmentSubcomponent, T> normalSegmentFn) {
+    public <T> T ifDotElse(
+      final Function<PathSegmentSubcomponent, T> singleFn,
+      final Function<PathSegmentSubcomponent, T> doubleFn,
+      final Function<PathSegmentSubcomponent, T> normalSegmentFn
+    ) {
       return doubleFn.apply(this);
     }
 
     @Override
     public CharSequence encoded(final Charset charset) {
-      return encoded;
+      return origin.encoded(StandardCharsets.UTF_8);
     }
 
     @Override
     public String asString() {
-      return asString;
+      return origin.asString();
     }
 
-    private final CharSequence encoded;
-    private final String asString;
+    private final UriComponent origin;
   }
 }
