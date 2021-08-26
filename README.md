@@ -28,7 +28,7 @@ class Examples {
   void assertDogFactUri() {
     assertEquals(
       "https://dog-facts-api.herokuapp.com/api/v1/resources/dogs?number=1",
-      new AbsoluteUri(
+      new Uri(
         new Scheme("https"),
         new Authority(
           new RegName("dog-facts-api.herokuapp.com")
