@@ -94,7 +94,7 @@ class Examples {
   void assertISBN() {
     assertEquals(
       "urn:isbn:0048230464",
-      new AbsoluteUri(
+      new Uri(
         new Scheme("urn"),
         new RelativePath(
           List.of(
