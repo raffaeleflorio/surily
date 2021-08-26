@@ -152,8 +152,25 @@ public interface AuthorityComponent extends UriComponent {
       final HostSubcomponent host,
       final PortSubcomponent port
     ) {
-      this.encoded = encoded;
-      this.asString = asString;
+      this(new UriComponent.Fake(encoded, asString), userinfo, host, port);
+    }
+
+    /**
+     * Builds a fake with its representations from an {@link UriComponent}
+     *
+     * @param origin   The component
+     * @param userinfo The userinfo
+     * @param host     The host
+     * @param port     The port
+     * @since 1.0.0
+     */
+    public Fake(
+      final UriComponent origin,
+      final UserinfoSubComponent userinfo,
+      final HostSubcomponent host,
+      final PortSubcomponent port
+    ) {
+      this.origin = origin;
       this.userinfo = userinfo;
       this.host = host;
       this.port = port;
@@ -181,16 +198,15 @@ public interface AuthorityComponent extends UriComponent {
 
     @Override
     public CharSequence encoded(final Charset charset) {
-      return encoded;
+      return origin.encoded(charset);
     }
 
     @Override
     public String asString() {
-      return asString;
+      return origin.asString();
     }
 
-    private final CharSequence encoded;
-    private final String asString;
+    private final UriComponent origin;
     private final UserinfoSubComponent userinfo;
     private final HostSubcomponent host;
     private final PortSubcomponent port;
