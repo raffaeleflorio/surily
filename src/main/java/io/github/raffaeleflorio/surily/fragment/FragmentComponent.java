@@ -54,8 +54,17 @@ public interface FragmentComponent extends UriComponent {
      * @since 1.0.0
      */
     public Fake(final CharSequence encoded, final String asString) {
-      this.encoded = encoded;
-      this.asString = asString;
+      this(new UriComponent.Fake(encoded, asString));
+    }
+
+    /**
+     * Builds a fake with its representations from an {@link UriComponent}
+     *
+     * @param origin The component
+     * @since 1.0.0
+     */
+    public Fake(final UriComponent origin) {
+      this.origin = origin;
     }
 
     @Override
@@ -65,15 +74,14 @@ public interface FragmentComponent extends UriComponent {
 
     @Override
     public CharSequence encoded(final Charset charset) {
-      return encoded;
+      return origin.encoded(charset);
     }
 
     @Override
     public String asString() {
-      return asString;
+      return origin.asString();
     }
 
-    private final CharSequence encoded;
-    private final String asString;
+    private final UriComponent origin;
   }
 }
