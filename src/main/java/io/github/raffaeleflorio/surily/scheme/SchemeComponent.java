@@ -53,18 +53,27 @@ public interface SchemeComponent extends UriComponent {
      * @param asString The asString representation
      */
     public Fake(final CharSequence encoded, final String asString) {
-      this.encoded = encoded;
-      this.asString = asString;
+      this(new UriComponent.Fake(encoded, asString));
+    }
+
+    /**
+     * Builds a fake with its representations from an {@link UriComponent}
+     *
+     * @param origin The component
+     * @since 1.0.0
+     */
+    public Fake(final UriComponent origin) {
+      this.origin = origin;
     }
 
     @Override
     public CharSequence encoded(final Charset charset) {
-      return encoded;
+      return origin.encoded(charset);
     }
 
     @Override
     public String asString() {
-      return asString;
+      return origin.asString();
     }
 
     @Override
@@ -72,7 +81,6 @@ public interface SchemeComponent extends UriComponent {
       return fn.apply(this);
     }
 
-    private final CharSequence encoded;
-    private final String asString;
+    private final UriComponent origin;
   }
 }
